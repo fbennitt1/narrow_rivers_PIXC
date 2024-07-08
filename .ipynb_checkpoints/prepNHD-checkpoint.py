@@ -4,6 +4,7 @@ import pandas as pd
 
 # This function takes some things
 # merges on certain columns from the VAA and EROMMA tables,
+# intersects the waterbodies shapefiles with the flowlines and discards those that are within,
 # finds the physiographic division of each reach,
 # and calculates the width for each reach. It writes out
 # the merged HUC4 files as gpkgs.
@@ -19,6 +20,8 @@ def prepNHD(data_path):
     fieldsVAA = ['NHDPlusID', 'StreamOrde', 'FromNode', 'ToNode',
                 'LevelPathI', 'TerminalFl', 'TotDASqKm', 'VPUID']
     fieldsEROMMA = ['NHDPlusID', 'QBMA', 'VPUID']
+    bins = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 150, 200, 500, 1000]
+    
     
     ## Prep Physiographic Regions
     # https://www.sciencebase.gov/catalog/item/631405bbd34e36012efa304e
@@ -38,15 +41,27 @@ def prepNHD(data_path):
     for i in range(len(codes_huc2)):
         
     # Get all HUC4 paths for current HUC2 (excluding WBD)
-    sub_paths = [fn for fn in os.listdir(os.path.join(datapath, 'HUC2_' +       codes_huc2[i])) if fn.startswith('NHD')]
+    sub_paths = [fn for fn in os.listdir(os.path.join(data_path, 'HUC2_' +       codes_huc2[i])) if fn.startswith('NHD')]
     
         for j in sub_paths:
-            path = os.path.join(datapath, 'HUC2_' + codes_huc2[i],
+            path = os.path.join(data_path, 'HUC2_' + codes_huc2[i],
                             j, j + '.gdb')
             ## Merging
             # Read in NHD flowlines
             basin = gpd.read_file(filename=data_path, layer='NHDFlowline',
                                   columns=fieldsF)
+            # Set CRS to Pseudo-Mercator https://epsg.io/3857
+            basin = basin.to_crs(epsg=3857)
+            
+            # Read in waterbody polygons
+            area = gpd.read_file(filename=data_path, layer='NHDWaterbody')
+            # Set CRS to Pseudo-Mercator https://epsg.io/3857
+            area = area.to_crs(epsg=3857)
+            # Join all waterbodies to a multipolygon
+            area = area.geometry.union_all()
+            # Subset flowlines to those not in waterbodies
+            basin = basin[~test.geometry.within(area)]
+            
             # Read in VAA
             vaa = gpd.read_file(filename=data_path, layer='NHDPlusFlowlineVAA',
                                 columns=fieldsVAA)
@@ -62,7 +77,7 @@ def prepNHD(data_path):
             
             ## Filtering
             # Keep only reaches that are stream types or artificial path
-            basin = basin.loc[(basin.FType == 460 | basin.FType == 558)]
+            basin = basin.loc[(basin.FType == 460) | (basin.FType == 558)]
             # Keep only reaches that are not terminal paths
             basin = basin.loc[basin.TerminalFl == 0]
             # Keep only reaches with non-zero discharge
@@ -79,11 +94,12 @@ def prepNHD(data_path):
             # Calculate width from cumulative drainage area
             basin['WidthM'] = basin.a*basin.TotDASqKm**basin.b
             
+            ## Bin reaches by width
+            basin['Bin'] = pd.cut(basin['WidthM'], bins)
+            
             ## Write out gdf as gpkg file
             save_path = '../narrow_rivers_PIXC_data/'
             save_file = j + '.gpkg'
             if not os.path.isdir(save_path):
                 os.makedirs(save_path)
             basins.to_file(os.path.join(save_path, save_file), driver='GPKG')
-            
-            
