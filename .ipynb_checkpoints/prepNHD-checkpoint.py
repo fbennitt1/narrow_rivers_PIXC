@@ -25,7 +25,7 @@ def prepNHD(data_path):
     
     ## Prep Physiographic Regions
     # https://www.sciencebase.gov/catalog/item/631405bbd34e36012efa304e
-    physio = gpd.read_file('/nas/ceewater/cjgleason/craig/CONUS_ephemeral_data/other_shapefiles/physio.shp')
+    physio = gpd.read_file('/nas/cee-water/cjgleason/craig/CONUS_ephemeral_data/other_shapefiles/physio.shp', engine='pyogrio')
     # Dissolve provinces by division
     physio = physio.dissolve(by='DIVISION').reset_index()
     # Set CRS to Web Mercator
@@ -38,44 +38,47 @@ def prepNHD(data_path):
     
 
     ## Loop through HUC4 basins, prep the data, and write out new file
-    for i in range(len(codes_huc2)):
+    for i in codes_huc2:
         
     # Get all HUC4 paths for current HUC2 (excluding WBD)
-    sub_paths = [fn for fn in os.listdir(os.path.join(data_path, 'HUC2_' +       codes_huc2[i])) if fn.startswith('NHD')]
+    sub_paths = [fn for fn in os.listdir(os.path.join(data_path, 'HUC2_' + i)) if fn.startswith('NHD')]
     
         for j in sub_paths:
-            path = os.path.join(data_path, 'HUC2_' + codes_huc2[i],
-                            j, j + '.gdb')
+            file_path = os.path.join(data_path, 'HUC2_' + i,
+                                    j, j + '.gdb')
             ## Merging
             # Read in NHD flowlines
-            basin = gpd.read_file(filename=data_path, layer='NHDFlowline',
-                                  columns=fieldsF)
+            basin = gpd.read_file(filename=file_path, layer='NHDFlowline',
+                                  columns=fieldsF, engine='pyogrio')
             # Set CRS to Pseudo-Mercator https://epsg.io/3857
             basin = basin.to_crs(epsg=3857)
             
-            # Read in waterbody polygons
-            area = gpd.read_file(filename=data_path, layer='NHDWaterbody')
-            # Set CRS to Pseudo-Mercator https://epsg.io/3857
-            area = area.to_crs(epsg=3857)
-            # Join all waterbodies to a multipolygon
-            area = area.geometry.union_all()
-            # Subset flowlines to those not in waterbodies
-            basin = basin[~test.geometry.within(area)]
-            
             # Read in VAA
-            vaa = gpd.read_file(filename=data_path, layer='NHDPlusFlowlineVAA',
-                                columns=fieldsVAA)
+            vaa = gpd.read_file(filename=file_path, layer='NHDPlusFlowlineVAA',
+                                columns=fieldsVAA, engine='pyogrio')
             # Merge on VAA
             basin = basin.merge(vaa, on=['NHDPlusID', 'VPUID'])
             # Read in EROMMA
-            eromma = gpd.read_file(filename=data_path, layer='NHDPlusEROMMA',
-                        columns=fieldsEROMMA)
+            eromma = gpd.read_file(filename=file_path, layer='NHDPlusEROMMA',
+                        columns=fieldsEROMMA, engine='pyogrio')
             # Merge on EROMMA
             basin = basin.merge(eromma, on=['NHDPlusID', 'VPUID'])
             # Set CRS to Pseudo-Mercator https://epsg.io/3857
             basin = basin.to_crs(epsg=3857)
             
             ## Filtering
+            # Read in NHD Waterbody polygons
+            area = gpd.read_file(filename=file_path, layer='NHDWaterbody',
+                                 engine='pyogrio')
+            # Set CRS to Pseudo-Mercator https://epsg.io/3857
+            area = area.to_crs(epsg=3857)
+            # Find all flowlines within waterbodies
+            subset = basin.sjoin(df=area, how='inner', predicate='within')
+            # Get IDs of these flowlines
+            ids = subset.NHDPlusID.to_list()
+            # Keep only flowlines NOT within waterbodies
+            basin = basin[~basin.NHDPlusID.isin(ids)]
+            
             # Keep only reaches that are stream types or artificial path
             basin = basin.loc[(basin.FType == 460) | (basin.FType == 558)]
             # Keep only reaches that are not terminal paths
@@ -86,10 +89,11 @@ def prepNHD(data_path):
             basin = basin.loc[basin.StreamOrde > 0]
             
             ## Find the physiographic division each reach is within
-            basin = gpd.sjoin(left_df=basin, right_df=physio,
-                             how='left', predicate='within') # do I want within
+            basin = basin.sjoin(df=physio, how='left',
+                            predicate='within').drop(columns='index_right')
             
-            ## Merge on bankfull width coefficient
+            ## Get bankfull widths
+            # Merge on bankfull width coefficient
             basin = basin.merge(bankfull, on='DIVISION', how='left')
             # Calculate width from cumulative drainage area
             basin['WidthM'] = basin.a*basin.TotDASqKm**basin.b
