@@ -1,0 +1,11 @@
+
+CommandNotFoundError: Your shell has not been properly configured to use 'conda activate'.
+you might need to `module load miniconda`.
+
+
+Thu Jul 11 19:45:35 UTC 2024
+Traceback (most recent call last):
+  File "/nas/cee-water/cjgleason/fiona/narrow_rivers_PIXC/prepNHD.py", line 1, in <module>
+    import geopandas as gpd
+ModuleNotFoundError: No module named 'geopandas'
+Thu Jul 11 19:45:35 UTC 2024

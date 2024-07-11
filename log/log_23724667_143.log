@@ -1,0 +1,25 @@
+Removing miniconda version 22.11.1-1
+Loading miniconda version 22.11.1-1
+Thu Jul 11 20:25:32 UTC 2024
+Traceback (most recent call last):
+  File "/nas/cee-water/cjgleason/fiona/narrow_rivers_PIXC/prepNHD.py", line 116, in <module>
+    prepNHD(data_path)
+  File "/nas/cee-water/cjgleason/fiona/narrow_rivers_PIXC/prepNHD.py", line 55, in prepNHD
+    basin = gpd.read_file(filename=file_path, layer='NHDFlowline', engine='pyogrio')
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/small-rivers-1/lib/python3.12/site-packages/geopandas/io/file.py", line 294, in _read_file
+    return _read_file_pyogrio(
+           ^^^^^^^^^^^^^^^^^^^
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/small-rivers-1/lib/python3.12/site-packages/geopandas/io/file.py", line 547, in _read_file_pyogrio
+    return pyogrio.read_dataframe(path_or_bytes, bbox=bbox, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/small-rivers-1/lib/python3.12/site-packages/pyogrio/geopandas.py", line 261, in read_dataframe
+    result = read_func(
+             ^^^^^^^^^^
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/small-rivers-1/lib/python3.12/site-packages/pyogrio/raw.py", line 196, in read
+    return ogr_read(
+           ^^^^^^^^^
+  File "pyogrio/_io.pyx", line 1239, in pyogrio._io.ogr_read
+  File "pyogrio/_io.pyx", line 219, in pyogrio._io.ogr_open
+pyogrio.errors.DataSourceError: /nas/cee-water/cjgleason/craig/CONUS_ephemeral_data/HUC2_08/NHDPLUS_H_1101_HU4_GDB/NHDPLUS_H_1101_HU4_GDB.gdb: No such file or directory
+Thu Jul 11 20:33:00 UTC 2024
