@@ -1,0 +1,6 @@
+Removing miniconda version 22.11.1-1
+Loading miniconda version 22.11.1-1
+Fri Jul 12 21:05:51 UTC 2024
+/work/pi_cjgleason_umass_edu/.conda/envs/small-rivers-1/lib/python3.12/site-packages/pyogrio/raw.py:196: UserWarning: Measured (M) geometry types are not supported. Original type 'Measured 3D MultiLineString' is converted to 'MultiLineString Z'
+  return ogr_read(
+Fri Jul 12 21:16:42 UTC 2024
