@@ -4,9 +4,9 @@
 #SBATCH --ntasks-per-node=1 
 #SBATCH --cpus-per-task=2 
 #SBATCH --mem=10000 #64512  #
-#SBATCH --time=10 #4320 #2880 #in minutes 
+#SBATCH --time=50 #4320 #2880 #in minutes
 
-#SBATCH --array=0-209%50  # % means limit the runs with 5 arrays at a time
+#SBATCH --array=31 # 51-57,108-112,118-124,145-146,169-171,195-196 #0-209 # %5 means limit the runs with 5 arrays at a time
 #SBATCH --output=./log/log_%A_%a.log # job id: %A_ 
 #SBATCH --job-name=prepNHD
 

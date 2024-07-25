@@ -15,17 +15,20 @@ def prepNHD(data_path):
     
     ## Set-up
     mdata_path = '/nas/cee-water/cjgleason/fiona/narrow_rivers_PIXC/data/'
+    # Max binsize of 1000 is plenty for CONUS w/o lakes
+    # Mississippi is ~472 m wide at mouth as calculated here
     bins = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 150, 200, 500, 1000]
     
     # Define dtypes for lookup tables to preserve leading zeros
     dtype_dic= {'HUC4': str, 'HUC2': str, 'toBasin': str, 'level': str}
     # Read in HUC lookup table
-    lookup = pd.read_csv(os.path.join(mdata_path, 'HUC4_lookup.csv'), dtype=dtype_dic)
+    lookup = pd.read_csv(os.path.join(mdata_path, 'HUC4_lookup_no_great_lakes.csv'), dtype=dtype_dic)
     
     # Get slurm job index
     i = slurm
+    
     # Get current HUC2 and HUC4 IDs
-    hu2 = 'HUC2_' + lookup.loc[i,'HUC2']
+    hu2 = 'HUC2_' + lookup.loc[i,'HUC4'][0:2]
     hu4 = 'NHDPLUS_H_' + lookup.loc[i,'HUC4'] + '_HU4_GDB'
 
     # Set data filepath
@@ -87,6 +90,30 @@ def prepNHD(data_path):
     basin = basin.loc[basin.QBMA > 0]
     # Drop reaches with stream order of zero
     basin = basin.loc[basin.StreamOrde > 0]
+<<<<<<< HEAD
+
+    ## Find the physiographic division each reach is within
+    # Using intersects to foil the broken topology even after the dissolve
+    # and neither shapely nor sf fully repaired it
+    basin = basin.sjoin(df=physio, how='left',
+                        predicate='intersects').drop(columns='index_right')
+    # Drop all reaches where DIVISION == NaN (in Canada and off the coast)
+    basin = basin[~basin.DIVISION.isnull()]
+
+    ## Get bankfull widths
+    # Merge on bankfull width coefficient
+    basin = basin.merge(bankfull, on='DIVISION', how='left')
+    # Calculate width from cumulative drainage area
+    basin['WidthM'] = basin.a*basin.TotDASqKm**basin.b
+
+    ## Bin reaches by width
+    basin['Bin'] = pd.cut(basin['WidthM'], bins)
+
+    ## Write out gdf as gpkg file
+    if not os.path.isdir(save_path):
+        os.makedirs(save_path)
+    basin.to_file(os.path.join(save_path, save_file), driver='GPKG')
+=======
 
     ## Find the physiographic division each reach is within
     # Using intersects to foil the broken topology even after the dissolve
@@ -111,6 +138,7 @@ def prepNHD(data_path):
     basin.to_file(os.path.join(save_path, save_file), driver='GPKG')
 
     print(i + ' has been written out.')
+>>>>>>> 21ec809738c4f143908c3a669bf78a5a29a4fa15
             
 data_path = '/nas/cee-water/cjgleason/craig/CONUS_ephemeral_data/'
 prepNHD(data_path)

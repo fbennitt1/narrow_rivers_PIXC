@@ -22,11 +22,18 @@ def prepNHD(data_path):
     # Define dtypes for lookup tables to preserve leading zeros
     dtype_dic= {'HUC4': str, 'HUC2': str, 'toBasin': str, 'level': str}
     # Read in HUC lookup table
+<<<<<<< HEAD
     lookup = pd.read_csv(os.path.join(mdata_path, 'HUC4_lookup_no_great_lakes.csv'), dtype=dtype_dic)
     
     # Get slurm job index
     i = slurm
     
+=======
+    lookup = pd.read_csv(os.path.join(mdata_path, 'HUC4_lookup.csv'), dtype=dtype_dic)
+    
+    # Get slurm job index
+    i = slurm
+>>>>>>> 21ec809738c4f143908c3a669bf78a5a29a4fa15
     # Get current HUC2 and HUC4 IDs
     hu2 = 'HUC2_' + lookup.loc[i,'HUC4'][0:2]
     hu4 = 'NHDPLUS_H_' + lookup.loc[i,'HUC4'] + '_HU4_GDB'
