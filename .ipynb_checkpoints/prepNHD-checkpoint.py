@@ -90,7 +90,6 @@ def prepNHD(data_path):
     basin = basin.loc[basin.QBMA > 0]
     # Drop reaches with stream order of zero
     basin = basin.loc[basin.StreamOrde > 0]
-<<<<<<< HEAD
 
     ## Find the physiographic division each reach is within
     # Using intersects to foil the broken topology even after the dissolve
@@ -113,32 +112,6 @@ def prepNHD(data_path):
     if not os.path.isdir(save_path):
         os.makedirs(save_path)
     basin.to_file(os.path.join(save_path, save_file), driver='GPKG')
-=======
-
-    ## Find the physiographic division each reach is within
-    # Using intersects to foil the broken topology even after the dissolve
-    # and neither shapely nor sf fully repaired it
-    basin = basin.sjoin(df=physio, how='left',
-                        predicate='intersects').drop(columns='index_right')
-    # Drop all reaches where DIVISION == NaN (in Canada and off the coast)
-    basin = basin[~basin.DIVISION.isnull()]
-
-    ## Get bankfull widths
-    # Merge on bankfull width coefficient
-    basin = basin.merge(bankfull, on='DIVISION', how='left')
-    # Calculate width from cumulative drainage area
-    basin['WidthM'] = basin.a*basin.TotDASqKm**basin.b
-
-    ## Bin reaches by width
-    basin['Bin'] = pd.cut(basin['WidthM'], bins)
-
-    ## Write out gdf as gpkg file
-    if not os.path.isdir(save_path):
-        os.makedirs(save_path)
-    basin.to_file(os.path.join(save_path, save_file), driver='GPKG')
-
-    print(i + ' has been written out.')
->>>>>>> 21ec809738c4f143908c3a669bf78a5a29a4fa15
             
 data_path = '/nas/cee-water/cjgleason/craig/CONUS_ephemeral_data/'
 prepNHD(data_path)
