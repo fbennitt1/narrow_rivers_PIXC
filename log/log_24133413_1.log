@@ -1,0 +1,5 @@
+Removing miniconda version 22.11.1-1
+Loading miniconda version 22.11.1-1
+Thu Aug  1 20:38:52 UTC 2024
+python3: can't open file '/nas/cee-water/cjgleason/fiona/narrow_rivers_PIXC/prepNHDkeepWaterBody.py': [Errno 2] No such file or directory
+Thu Aug  1 20:38:53 UTC 2024
