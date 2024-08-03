@@ -58,15 +58,15 @@ def prepNHD(data_path):
     basin = gpd.read_file(filename=file_path, layer='NHDFlowline', engine='pyogrio')
     # Set CRS to Pseudo-Mercator https://epsg.io/3857
     basin = basin.to_crs(epsg=3857)
-
+    
     # Read in VAA
     vaa = gpd.read_file(filename=file_path, layer='NHDPlusFlowlineVAA', engine='pyogrio')
     # Merge on VAA
-    basin = basin.merge(vaa, on=['NHDPlusID', 'VPUID', 'ReachCode'])
+    basin = basin.merge(right=vaa, how=inner, on=['NHDPlusID', 'VPUID', 'ReachCode'])
     # Read in EROMMA
     eromma = gpd.read_file(filename=file_path, layer='NHDPlusEROMMA', engine='pyogrio')
     # Merge on EROMMA
-    basin = basin.merge(eromma, on=['NHDPlusID', 'VPUID'])
+    basin = basin.merge(right=eromma, how=inner, on=['NHDPlusID', 'VPUID'])
 
     ## Filtering
     # Read in NHD Waterbody polygons
