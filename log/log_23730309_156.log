@@ -1,8 +1,0 @@
-Removing miniconda version 22.11.1-1
-Loading miniconda version 22.11.1-1
-Fri Jul 12 20:51:19 UTC 2024
-/work/pi_cjgleason_umass_edu/.conda/envs/small-rivers-1/lib/python3.12/site-packages/pyogrio/raw.py:196: UserWarning: Measured (M) geometry types are not supported. Original type 'Measured 3D MultiLineString' is converted to 'MultiLineString Z'
-  return ogr_read(
-/work/pi_cjgleason_umass_edu/.conda/envs/small-rivers-1/lib/python3.12/site-packages/pyogrio/raw.py:196: RuntimeWarning: organizePolygons() received a polygon with more than 100 parts. The processing may be really slow.  You can skip the processing by setting METHOD=SKIP, or only make it analyze counter-clock wise parts by setting METHOD=ONLY_CCW if you can assume that the outline of holes is counter-clock wise defined
-  return ogr_read(
-Fri Jul 12 21:06:25 UTC 2024

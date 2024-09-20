@@ -62,11 +62,11 @@ def prepNHD(data_path):
     # Read in VAA
     vaa = gpd.read_file(filename=file_path, layer='NHDPlusFlowlineVAA', engine='pyogrio')
     # Merge on VAA
-    basin = basin.merge(right=vaa, how=inner, on=['NHDPlusID', 'VPUID', 'ReachCode'])
+    basin = basin.merge(right=vaa, how='inner', on=['NHDPlusID', 'VPUID', 'ReachCode'])
     # Read in EROMMA
     eromma = gpd.read_file(filename=file_path, layer='NHDPlusEROMMA', engine='pyogrio')
     # Merge on EROMMA
-    basin = basin.merge(right=eromma, how=inner, on=['NHDPlusID', 'VPUID'])
+    basin = basin.merge(right=eromma, how='inner', on=['NHDPlusID', 'VPUID'])
 
     ## Filtering
     # Read in NHD Waterbody polygons
@@ -104,6 +104,9 @@ def prepNHD(data_path):
     basin = basin.merge(bankfull, on='DIVISION', how='left')
     # Calculate width from cumulative drainage area
     basin['WidthM'] = basin.a*basin.TotDASqKm**basin.b
+    
+    # Drop reaches that are shorter than their width
+    basin = basin[basin['LengthKM']*1000 > basin['WidthM']]
 
     ## Bin reaches by width
     basin['Bin'] = pd.cut(basin['WidthM'], bins)
