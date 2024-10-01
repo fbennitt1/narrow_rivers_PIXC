@@ -28,15 +28,15 @@ def prepNHD(data_path):
     i = slurm
     
     # Get current HUC2 and HUC4 IDs
-    hu2 = 'HUC2_' + lookup.loc[i,'HUC4'][0:2]
-    hu4 = 'NHDPLUS_H_' + lookup.loc[i,'HUC4'] + '_HU4_GDB'
+    huc2 = 'HUC2_' + lookup.loc[i,'HUC4'][0:2]
+    huc4 = 'NHDPLUS_H_' + lookup.loc[i,'HUC4'] + '_HU4_GDB'
 
     # Set data filepath
-    file_path = os.path.join(data_path, hu2, hu4, hu4 + '.gdb')
+    file_path = os.path.join(data_path, huc2, huc4, huc4 + '.gdb')
     
     # Set write filepath
-    save_path = os.path.join('../narrow_rivers_PIXC_data/NHD_prepped_with_waterbody/', hu2)
-    save_file = hu4 + '_prepped_with_waterbody.gpkg'
+    save_path = os.path.join('../narrow_rivers_PIXC_data/NHD_prepped_with_waterbody/', huc2)
+    save_file = huc4 + '_prepped_with_waterbody.gpkg'
     
     ## Prep Physiographic Regions
     # https://www.sciencebase.gov/catalog/item/631405bbd34e36012efa304e
