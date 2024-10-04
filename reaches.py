@@ -14,19 +14,21 @@ def readNHD(index):
     
     ## Set-up
     mdata_path = '/nas/cee-water/cjgleason/fiona/narrow_rivers_PIXC/data/'
-    prep_path = '/nas/cee-water/cjgleason/fiona/narrow_rivers_PIXC_data/NHD_prepped/' # _with_waterbody
+    prep_path = '/nas/cee-water/cjgleason/fiona/narrow_rivers_PIXC_data/NHD_prepped/'
 
     # Define dtypes for lookup tables to preserve leading zeros
     dtype_dic= {'HUC4': str, 'HUC2': str, 'toBasin': str, 'level': str}
     # Read in HUC lookup table
-    lookup = pd.read_csv(os.path.join(mdata_path, 'HUC4_lookup_no_great_lakes.csv'), dtype=dtype_dic)
+    lookup = pd.read_csv(os.path.join(mdata_path,
+                                      'HUC4_lookup_no_great_lakes.csv'),
+                         dtype=dtype_dic)
 
     # Get current HUC2 and HUC4 IDs
     huc2 = 'HUC2_' + lookup.loc[index,'HUC4'][0:2]
     huc4 = 'NHDPLUS_H_' + lookup.loc[index,'HUC4'] + '_HU4_GDB'
     
     # Set data filepath
-    file_path = os.path.join(prep_path, huc2, huc4 + '_prepped.gpkg') # _with_waterbody
+    file_path = os.path.join(prep_path, huc2, huc4 + '_prepped.gpkg')
 
     ## Read in prepped NHD flowlines
     features = ['NHDPlusID', 'GNIS_Name', 'LengthKM', 'WidthM', 'Bin', 'geometry']
@@ -80,7 +82,8 @@ def makeGDF(ds, mask, data_var):
                                 geometry=gpd.points_from_xy(
                                     ds.longitude[mask],
                                     ds.latitude[mask]),
-                                crs="EPSG:4326") # PIXC has no native CRS, setting same as River_SP
+                                crs="EPSG:4326") # PIXC has no native CRS,
+                                                 # setting same as River_SP
 
     if data_var == 'classification':
         gdf_PIXC.rename(columns={gdf_PIXC.columns[0]: 'klass'}, inplace=True)
@@ -121,7 +124,7 @@ def segmentReach(reach):
 
     return segments
 
-def getCoverage(reach, basin_crs, gdf_PIXC):
+def getCoverage(reach, basin_crs, gdf_PIXC, num):
     '''
     Ths function takes a segmented reach, explodes it to get one row
     per reach, buffers the reach segments with 1/2 the calculated width
@@ -152,6 +155,8 @@ def getCoverage(reach, basin_crs, gdf_PIXC):
     else:    
         # Get number of pixels in each reach segment
         counts = pd.DataFrame(inside.segment.value_counts().reset_index().sort_index())
+        
         # Calculate coverage (proportion of reaches with >= 1 pixel in them)
-        prop = len(counts.loc[counts['count'] != 0])/10
+        prop = len(counts.loc[counts['count'] >= 1])/10
+        
     return prop
