@@ -2,16 +2,18 @@ import geopandas as gpd
 import os
 import pandas as pd
 
-# This function takes a filepath to the NHD HR Plus (currently located at
-# /nass/cee-water/cjgleason/craig/CONUS_ephemeral_data, merges on the VAA
-# and EROMMA tables, intersects the flowlines with the waterbodies and 
-# discards those that are within, finds the physiographic division for
-# each reach, and calculates the width for each reach. It writes out
-# the merged HUC4 files as gpkgs.
+'''
+This function takes a filepath to the NHD HR Plus (currently located at
+/nas/cee-water/cjgleason/craig/CONUS_ephemeral_data, merges on the VAA
+and EROMMA tables, intersects the flowlines with the waterbodies and 
+discards those that are within, finds the physiographic division for
+each reach, and calculates the width for each reach. It writes out
+the merged HUC4 files as gpkgs.
+'''
 
 slurm = int(os.environ['SLURM_ARRAY_TASK_ID'])
 
-def prepNHD(data_path):
+def prepNHD(data_path, save_path):
     
     ## Set-up
     mdata_path = '/nas/cee-water/cjgleason/fiona/narrow_rivers_PIXC/data/'
@@ -22,7 +24,9 @@ def prepNHD(data_path):
     # Define dtypes for lookup tables to preserve leading zeros
     dtype_dic= {'HUC4': str, 'HUC2': str, 'toBasin': str, 'level': str}
     # Read in HUC lookup table
-    lookup = pd.read_csv(os.path.join(mdata_path, 'HUC4_lookup_no_great_lakes.csv'), dtype=dtype_dic)
+    lookup = pd.read_csv(os.path.join(mdata_path,
+                                      'HUC4_lookup_no_great_lakes.csv'),
+                         dtype=dtype_dic)
     
     # Get slurm job index
     i = slurm
@@ -35,7 +39,7 @@ def prepNHD(data_path):
     file_path = os.path.join(data_path, huc2, huc4, huc4 + '.gdb')
     
     # Set write filepath
-    save_path = os.path.join('../narrow_rivers_PIXC_data/NHD_prepped/', huc2)
+    save_path = os.path.join(save_path, huc2)
     save_file = huc4 + '_prepped.gpkg'
     
     ## Prep Physiographic Regions
@@ -51,7 +55,8 @@ def prepNHD(data_path):
     physio = physio[['DIVISION', 'geometry']]
     
     ## Get bankfull width coefficients from Bieber et al. 2015, Table 3
-    bankfull = pd.read_csv(os.path.join(mdata_path, 'bieger_2015_bankfull_width.csv'))
+    bankfull = pd.read_csv(os.path.join(mdata_path,
+                                        'bieger_2015_bankfull_width.csv'))
 
     ## Merging
     # Read in NHD flowlines
@@ -117,4 +122,6 @@ def prepNHD(data_path):
     basin.to_file(os.path.join(save_path, save_file), driver='GPKG')
             
 data_path = '/nas/cee-water/cjgleason/craig/CONUS_ephemeral_data/'
-prepNHD(data_path)
+save_path = '../narrow_rivers_PIXC_data/NHD_prepped/'
+
+prepNHD(data_path=data_path, save_path=save_path)

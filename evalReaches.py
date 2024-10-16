@@ -1,5 +1,6 @@
-import numpy as np
 import os
+
+import numpy as np
 import pandas as pd
 import xarray as xr
 
@@ -44,7 +45,9 @@ ds_PIXC = xr.open_mfdataset(paths=pixc_path, group='pixel_cloud', engine='h5netc
 mask = bitwiseMask(ds=ds_PIXC)
 
 # Make PIXC GDF
-gdf_PIXC = makeGDF(ds=ds_PIXC, mask=mask, data_var='classification')
+variables = ['azimuth_index', 'range_index', 'water_frac',
+             'classification', 'layover_impact']
+gdf_PIXC = makeGDF(ds=ds_PIXC, mask=mask, data_vars=variables)
 
 # Get bounds of PIXC granule
 bounds_PIXC = gdf_PIXC.union_all().convex_hull

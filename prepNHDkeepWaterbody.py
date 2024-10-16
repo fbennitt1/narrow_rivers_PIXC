@@ -2,16 +2,18 @@ import geopandas as gpd
 import os
 import pandas as pd
 
-# This function takes a filepath to the NHD HR Plus (currently located at
-# /nass/cee-water/cjgleason/craig/CONUS_ephemeral_data, merges on the VAA
-# and EROMMA tables, intersects the flowlines with the waterbodies and 
-# discards those that are within, finds the physiographic division for
-# each reach, and calculates the width for each reach. It writes out
-# the merged HUC4 files as gpkgs.
+'''
+This function takes a filepath to the NHD HR Plus (currently located at
+/nas/cee-water/cjgleason/craig/CONUS_ephemeral_data, merges on the VAA
+and EROMMA tables, intersects the flowlines with the waterbodies and 
+discards those that are within, finds the physiographic division for
+each reach, and calculates the width for each reach. It writes out
+the merged HUC4 files as gpkgs.
+'''
 
 slurm = int(os.environ['SLURM_ARRAY_TASK_ID'])
 
-def prepNHD(data_path):
+def prepNHDwaterbody(data_path, save_path):
     
     ## Set-up
     mdata_path = '/nas/cee-water/cjgleason/fiona/narrow_rivers_PIXC/data/'
@@ -35,7 +37,7 @@ def prepNHD(data_path):
     file_path = os.path.join(data_path, huc2, huc4, huc4 + '.gdb')
     
     # Set write filepath
-    save_path = os.path.join('../narrow_rivers_PIXC_data/NHD_prepped_with_waterbody/', huc2)
+    save_path = os.path.join(save_path, huc2)
     save_file = huc4 + '_prepped_with_waterbody.gpkg'
     
     ## Prep Physiographic Regions
@@ -104,4 +106,6 @@ def prepNHD(data_path):
     basin.to_file(os.path.join(save_path, save_file), driver='GPKG')
             
 data_path = '/nas/cee-water/cjgleason/craig/CONUS_ephemeral_data/'
-prepNHD(data_path)
+save_path = '../narrow_rivers_PIXC_data/NHD_prepped_with_waterbody/'
+
+prepNHDwaterbody(data_path=data_path, save_path=save_path)
