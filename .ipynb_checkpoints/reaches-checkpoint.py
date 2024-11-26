@@ -42,7 +42,7 @@ def readNHD(index):
 def cut(line, distance):
     '''
     This function takes one reach centerline and 1/10th of the reach length
-    and cuts the lie in two at the distance from its starting point. It then
+    and cuts the line in two at the distance from its starting point. It then
     returns the trimmed piece and the remainder of the reach centerline.
     '''
     if distance <= 0.0 or distance >= line.length:
@@ -91,7 +91,7 @@ def makeGDF(ds, mask, data_var):
         gdf_PIXC.rename(columns={gdf_PIXC.columns[0]: data_var}, inplace=True)
     
     # Convert the crs to WGS 84 / Pseudo-Mercator
-    gdf_PIXC = gdf_PIXC.to_crs(epsg=3857)
+    gdf_PIXC = gdf_PIXC.to_crs(epsg=32618)
     
     return gdf_PIXC
 
