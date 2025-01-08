@@ -201,16 +201,6 @@ def makePseudoPixels(pixel, segment_ln, azimuth_res):
     
     return pseudo_pixel
 
-def specialDissolve(reach):
-    reach = reach.dissolve(by='counter', as_index=False)
-    return reach
-
-def specialClip(sj):
-    left = gpd.GeoSeries(sj.pseudo_geom)
-    right = gpd.GeoSeries(sj.buffered)
-    pseudo_geom_clip = left.clip(right)
-    return pseudo_geom_clip
-
 # OLD VERSION
 # def getCoverage(reach, basin_crs, gdf_PIXC, num):
 #     '''
