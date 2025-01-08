@@ -37,7 +37,7 @@ tile_name = pixc_path[-71:-3]
 ## Prepare data
 # Read prepped NHD
 basin, huc4 = readNHD(index=index)
-
+bb
 # Read in PIXC granule
 ds_PIXC = xr.open_mfdataset(paths=pixc_path, group='pixel_cloud', engine='h5netcdf')
 
@@ -47,6 +47,7 @@ mask = bitwiseMask(ds=ds_PIXC)
 # Make PIXC GDF
 variables = ['azimuth_index', 'range_index', 'water_frac',
              'classification', 'layover_impact']
+
 gdf_PIXC = makeGDF(ds=ds_PIXC, mask=mask, data_vars=variables)
 
 # Get bounds of PIXC granule

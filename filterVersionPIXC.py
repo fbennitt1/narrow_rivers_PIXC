@@ -4,7 +4,7 @@ them to find the best version of each granule, and writes
 out a JSON containing the best files for each directory.
 
 Usage:
-    python3 filterVersionRiverSP.py
+    python3 filterVersionPIXC.py
 
 Authors: Fiona Bennitt and Elisa Friedmann
 Date: 2024-10-31
@@ -53,26 +53,33 @@ def filterVersionPIXC(directories, outpath):
 
         # Keep only the best version of each granule
         granules = granules.drop_duplicates(subset=['cycle', 'pass', 'tile'],
-                                            keep='first')    
-
-        # Extract the file names of files passing the test
-        best_files = list(granules['files'])
-
-        print(f"There are {str(len(best_files))} best files in directory.")
-
-
+                                            keep='first')
+        # Reset index
+        granules = granules.reset_index()
+        
         # Split filepath for naming json
         pieces = dirs[0].split('/')
+        
+        # Write out table of best swot granules
+        granules.to_csv(outpath + pieces[-1] + '_best_files.csv', index_label='slurm_index')
 
-        # Write out best files as json
-        with open(os.path.join(outpath, pieces[5] + '_filtered.json'), 'w', encoding='utf-8') as f:
-            json.dump(best_files, f)
+#         # Extract the file names of files passing the test
+#         best_files = list(granules['files'])
+#         print(best_files)
 
-        print(f"Wrote out the unique and most recently processed {str(len(best_files))} files to {outpath}{pieces[5]}_filtered.json")
+#         print(f"There are {str(len(best_files))} best files in directory.")
+
+
+        
+#         # Write out best files as json
+#         with open(os.path.join(outpath, pieces[5] + '_filtered.json'), 'w', encoding='utf-8') as f:
+#             json.dump(best_files, f)
+
+#         print(f"Wrote out the unique and most recently processed {str(len(best_files))} files to {outpath}{pieces[5]}_filtered.json")
 
 # Directories to filter    
-dirs = ['/nas/cee-water/cjgleason/fiona/data_downloads']
+dirs = ['/nas/cee-water/cjgleason/fiona/data/PIXC_v2_0_HUC2_01']
 # Outpath for json
-out = '/nas/cee-water/cjgleason/fiona/'
+out = '/nas/cee-water/cjgleason/fiona/narrow_rivers_PIXC/data/'
 
 filterVersionPIXC(directories=dirs, outpath=out)
