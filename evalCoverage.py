@@ -26,6 +26,7 @@ from reaches import specialClip
 # Get PIXC index metadata
 mdata_path = '/nas/cee-water/cjgleason/fiona/narrow_rivers_PIXC/data/'
 dtype_dic= {'cycle': str, 'pass': str, 'tile': str, 'version': str}
+
 # Read in HUC lookup table
 pixc_lookup = pd.read_csv(os.path.join(mdata_path,
                                        'PIXC_v2_0_HUC2_01_best_files.csv'),
@@ -60,7 +61,7 @@ bbox = gpd.GeoDataFrame({'geometry': [bbox]}, crs="EPSG:4326")
 bbox = bbox.to_crs(epsg='32618')
                    
 # Read in HUC4 boundaries (no Great Lakes)
-data_path = '/nas/cee-water/cjgleason/fiona/narrow_rivers_PIXC/data/all_wbd_no_great_lakes.parquet'
+data_path = '/nas/cee-water/cjgleason/fiona/narrow_rivers_PIXC_data/all_wbd_no_great_lakes.parquet'
 wbd = gpd.read_parquet(path=data_path)
                    
 # Project CRS
