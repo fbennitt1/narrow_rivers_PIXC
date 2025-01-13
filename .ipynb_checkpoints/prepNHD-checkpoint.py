@@ -12,6 +12,7 @@ the merged HUC4 files as gpkgs.
 '''
 
 slurm = int(os.environ['SLURM_ARRAY_TASK_ID'])
+print(slurm)
 
 def prepNHD(data_path, save_path):
     
@@ -40,7 +41,8 @@ def prepNHD(data_path, save_path):
     
     # Set write filepath
     save_path = os.path.join(save_path, huc2)
-    save_file = huc4 + '_prepped.gpkg'
+    # save_file = huc4 + '_prepped.gpkg'
+    save_file = huc4 + '_prepped.parquet'
     
     ## Prep Physiographic Regions
     # https://www.sciencebase.gov/catalog/item/631405bbd34e36012efa304e
@@ -110,16 +112,29 @@ def prepNHD(data_path, save_path):
     # Calculate width from cumulative drainage area
     basin['WidthM'] = basin.a*basin.TotDASqKm**basin.b
     
+    # Calculate the multiplicative factor from the standard error
+    # of estimate for each physiographic division (SEEpd) by exponentiation
+    basin['mul_factor'] = 10**basin.see_phys
+    # Calculate the min width of each reach
+    basin['WidthM_Min'] = basin.WidthM/basin.mul_factor
+    # Calculate the max width of each basin
+    basin['WidthM_Max'] = basin.WidthM*basin.mul_factor
+    
     # Drop reaches that are shorter than their width
     basin = basin[basin['LengthKM']*1000 > basin['WidthM']]
 
-    ## Bin reaches by width
-    basin['Bin'] = pd.cut(basin['WidthM'], bins)
+    ## Bin reaches by width, set to string for parquet
+    basin['Bin'] = pd.cut(basin['WidthM'], bins).astype(str)
 
-    ## Write out gdf as gpkg file
+    # ## Write out gdf as gpkg file
+    # if not os.path.isdir(save_path):
+    #     os.makedirs(save_path)
+    # basin.to_file(os.path.join(save_path, save_file), driver='GPKG')
+    
+    ## Write out gdf as parquet
     if not os.path.isdir(save_path):
         os.makedirs(save_path)
-    basin.to_file(os.path.join(save_path, save_file), driver='GPKG')
+    basin.to_parquet(os.path.join(save_path, save_file))
             
 data_path = '/nas/cee-water/cjgleason/craig/CONUS_ephemeral_data/'
 save_path = '../narrow_rivers_PIXC_data/NHD_prepped/'
