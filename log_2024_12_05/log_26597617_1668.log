@@ -1,0 +1,24 @@
+Removing conda
+Loading conda
+Fri Dec  6 02:04:25 UTC 2024
+/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/site-packages/geopandas/geodataframe.py:1819: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  super().__setitem__(key, value)
+(468047,)
+NHDPLUS_H_0108_HU4_GDB
+read in
+exploded
+NHDPLUS_H_0430_HU4_GDB
+read in
+exploded
+INFO: Pandarallel will run on 128 workers.
+INFO: Pandarallel will use Memory file system to transfer data between the main process and workers.
+read in
+read in
+/var/spool/slurm/slurmd/job26605875/slurm_script: line 21: 890181 Killed                  python3 evalCoverage.py
+Fri Dec  6 02:16:00 UTC 2024
+Script completed.
+slurmstepd-ceewater-cpu009: error: Detected 4 oom_kill events in StepId=26605875.batch. Some of the step tasks have been OOM Killed.

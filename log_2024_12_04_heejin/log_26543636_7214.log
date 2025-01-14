@@ -1,0 +1,21 @@
+Removing conda
+Loading conda
+Wed Dec  4 23:41:00 UTC 2024
+/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/site-packages/geopandas/geodataframe.py:1819: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  super().__setitem__(key, value)
+(533049,)
+NHDPLUS_H_0108_HU4_GDB
+read in
+exploded
+NHDPLUS_H_0110_HU4_GDB
+read in
+exploded
+INFO: Pandarallel will run on 64 workers.
+INFO: Pandarallel will use Memory file system to transfer data between the main process and workers.
+read in
+read in
+Thu Dec  5 00:02:32 UTC 2024

@@ -1,0 +1,26 @@
+Removing conda
+Loading conda
+Thu Dec  5 20:03:15 UTC 2024
+/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/site-packages/geopandas/geodataframe.py:1819: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  super().__setitem__(key, value)
+(739273,)
+NHDPLUS_H_0104_HU4_GDB
+read in
+exploded
+NHDPLUS_H_0106_HU4_GDB
+read in
+exploded
+INFO: Pandarallel will run on 32 workers.
+INFO: Pandarallel will use Memory file system to transfer data between the main process and workers.
+read in
+read in
+Traceback (most recent call last):
+  File "/nas/cee-water/cjgleason/fiona/narrow_rivers_PIXC/evalCoverage.py", line 340, in <module>
+    
+NameError: name 'nodes_desc' is not defined. Did you mean: 'node_desc'?
+Thu Dec  5 20:20:50 UTC 2024
+Script completed.

@@ -1,0 +1,8 @@
+Removing conda
+Loading conda
+Mon Jan 13 19:59:28 UTC 2025
+  File "/nas/cee-water/cjgleason/fiona/narrow_rivers_PIXC/prepNHD.py", line 45
+    save_file = huc4 + '_prepped.parquet
+                       ^
+SyntaxError: unterminated string literal (detected at line 45)
+Mon Jan 13 19:59:28 UTC 2025

@@ -1,0 +1,23 @@
+Removing conda
+Loading conda
+Mon Jan 13 19:20:43 UTC 2025
+/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/site-packages/pyogrio/raw.py:196: UserWarning: Measured (M) geometry types are not supported. Original type 'Measured 3D MultiLineString' is converted to 'MultiLineString Z'
+  return ogr_read(
+2
+Traceback (most recent call last):
+  File "/nas/cee-water/cjgleason/fiona/narrow_rivers_PIXC/prepNHD.py", line 141, in <module>
+    prepNHD(data_path=data_path, save_path=save_path)
+  File "/nas/cee-water/cjgleason/fiona/narrow_rivers_PIXC/prepNHD.py", line 136, in prepNHD
+    basin.to_parquet(os.path.join(save_path, save_file))
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/site-packages/geopandas/geodataframe.py", line 1377, in to_parquet
+    _to_parquet(
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/site-packages/geopandas/io/arrow.py", line 439, in _to_parquet
+    parquet.write_table(table, path, compression=compression, **kwargs)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/site-packages/pyarrow/parquet/core.py", line 1928, in write_table
+    writer.write_table(table, row_group_size=row_group_size)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/site-packages/pyarrow/parquet/core.py", line 1116, in write_table
+    self.writer.write_table(table, row_group_size=row_group_size)
+  File "pyarrow/_parquet.pyx", line 2229, in pyarrow._parquet.ParquetWriter.write_table
+  File "pyarrow/error.pxi", line 92, in pyarrow.lib.check_status
+pyarrow.lib.ArrowNotImplementedError: Unsupported cast from dictionary<values=extension<pandas.interval<ArrowIntervalType>>, indices=int8, ordered=1> to struct using function cast_struct
+Mon Jan 13 19:35:01 UTC 2025

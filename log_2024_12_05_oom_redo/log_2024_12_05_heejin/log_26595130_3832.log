@@ -1,0 +1,1180 @@
+Removing conda
+Loading conda
+Fri Dec  6 01:45:50 UTC 2024
+/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/site-packages/geopandas/geodataframe.py:1819: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  super().__setitem__(key, value)
+(863899,)
+NHDPLUS_H_0108_HU4_GDB
+read in
+exploded
+NHDPLUS_H_0110_HU4_GDB
+read in
+exploded
+INFO: Pandarallel will run on 128 workers.
+INFO: Pandarallel will use Memory file system to transfer data between the main process and workers.
+read in
+read in
+Process ForkPoolWorker-352:
+Traceback (most recent call last):
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/pool.py", line 131, in worker
+    put((job, i, result))
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/queues.py", line 399, in put
+    self._writer.send_bytes(obj)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 200, in send_bytes
+    self._send_bytes(m[offset:offset + size])
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 427, in _send_bytes
+    self._send(header + buf)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 384, in _send
+    n = write(self._handle, buf)
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+BrokenPipeError: [Errno 32] Broken pipe
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/process.py", line 314, in _bootstrap
+    self.run()
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/pool.py", line 136, in worker
+    put((job, i, (False, wrapped)))
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/queues.py", line 399, in put
+    self._writer.send_bytes(obj)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 200, in send_bytes
+    self._send_bytes(m[offset:offset + size])
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 427, in _send_bytes
+    self._send(header + buf)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 384, in _send
+    n = write(self._handle, buf)
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+BrokenPipeError: [Errno 32] Broken pipe
+Process ForkPoolWorker-288:
+Traceback (most recent call last):
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/pool.py", line 131, in worker
+    put((job, i, result))
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/queues.py", line 399, in put
+    self._writer.send_bytes(obj)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 200, in send_bytes
+    self._send_bytes(m[offset:offset + size])
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 427, in _send_bytes
+    self._send(header + buf)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 384, in _send
+    n = write(self._handle, buf)
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+BrokenPipeError: [Errno 32] Broken pipe
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/process.py", line 314, in _bootstrap
+    self.run()
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/pool.py", line 136, in worker
+    put((job, i, (False, wrapped)))
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/queues.py", line 399, in put
+    self._writer.send_bytes(obj)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 200, in send_bytes
+    self._send_bytes(m[offset:offset + size])
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 427, in _send_bytes
+    self._send(header + buf)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 384, in _send
+    n = write(self._handle, buf)
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+BrokenPipeError: [Errno 32] Broken pipe
+Process ForkPoolWorker-260:
+Traceback (most recent call last):
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/pool.py", line 131, in worker
+    put((job, i, result))
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/queues.py", line 399, in put
+    self._writer.send_bytes(obj)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 200, in send_bytes
+    self._send_bytes(m[offset:offset + size])
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 427, in _send_bytes
+    self._send(header + buf)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 384, in _send
+    n = write(self._handle, buf)
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+BrokenPipeError: [Errno 32] Broken pipe
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/process.py", line 314, in _bootstrap
+    self.run()
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/pool.py", line 136, in worker
+    put((job, i, (False, wrapped)))
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/queues.py", line 399, in put
+    self._writer.send_bytes(obj)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 200, in send_bytes
+    self._send_bytes(m[offset:offset + size])
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 427, in _send_bytes
+    self._send(header + buf)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 384, in _send
+    n = write(self._handle, buf)
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+BrokenPipeError: [Errno 32] Broken pipe
+Process ForkPoolWorker-306:
+Traceback (most recent call last):
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/pool.py", line 131, in worker
+    put((job, i, result))
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/queues.py", line 399, in put
+    self._writer.send_bytes(obj)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 200, in send_bytes
+    self._send_bytes(m[offset:offset + size])
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 427, in _send_bytes
+    self._send(header + buf)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 384, in _send
+    n = write(self._handle, buf)
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+BrokenPipeError: [Errno 32] Broken pipe
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/process.py", line 314, in _bootstrap
+    self.run()
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/pool.py", line 136, in worker
+    put((job, i, (False, wrapped)))
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/queues.py", line 399, in put
+    self._writer.send_bytes(obj)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 200, in send_bytes
+    self._send_bytes(m[offset:offset + size])
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 427, in _send_bytes
+    self._send(header + buf)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 384, in _send
+    n = write(self._handle, buf)
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+BrokenPipeError: [Errno 32] Broken pipe
+Process ForkPoolWorker-264:
+Traceback (most recent call last):
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/pool.py", line 131, in worker
+    put((job, i, result))
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/queues.py", line 399, in put
+    self._writer.send_bytes(obj)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 200, in send_bytes
+    self._send_bytes(m[offset:offset + size])
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 427, in _send_bytes
+    self._send(header + buf)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 384, in _send
+    n = write(self._handle, buf)
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+BrokenPipeError: [Errno 32] Broken pipe
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/process.py", line 314, in _bootstrap
+    self.run()
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/pool.py", line 136, in worker
+    put((job, i, (False, wrapped)))
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/queues.py", line 399, in put
+    self._writer.send_bytes(obj)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 200, in send_bytes
+    self._send_bytes(m[offset:offset + size])
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 427, in _send_bytes
+    self._send(header + buf)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 384, in _send
+    n = write(self._handle, buf)
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+BrokenPipeError: [Errno 32] Broken pipe
+Process ForkPoolWorker-373:
+Traceback (most recent call last):
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/pool.py", line 131, in worker
+    put((job, i, result))
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/queues.py", line 399, in put
+    self._writer.send_bytes(obj)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 200, in send_bytes
+    self._send_bytes(m[offset:offset + size])
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 427, in _send_bytes
+    self._send(header + buf)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 384, in _send
+    n = write(self._handle, buf)
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+BrokenPipeError: [Errno 32] Broken pipe
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/process.py", line 314, in _bootstrap
+    self.run()
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/pool.py", line 136, in worker
+    put((job, i, (False, wrapped)))
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/queues.py", line 399, in put
+    self._writer.send_bytes(obj)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 200, in send_bytes
+    self._send_bytes(m[offset:offset + size])
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 427, in _send_bytes
+    self._send(header + buf)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 384, in _send
+    n = write(self._handle, buf)
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+BrokenPipeError: [Errno 32] Broken pipe
+Process ForkPoolWorker-384:
+Traceback (most recent call last):
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/pool.py", line 131, in worker
+    put((job, i, result))
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/queues.py", line 399, in put
+    self._writer.send_bytes(obj)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 200, in send_bytes
+    self._send_bytes(m[offset:offset + size])
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 427, in _send_bytes
+    self._send(header + buf)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 384, in _send
+    n = write(self._handle, buf)
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+BrokenPipeError: [Errno 32] Broken pipe
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/process.py", line 314, in _bootstrap
+    self.run()
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/pool.py", line 136, in worker
+    put((job, i, (False, wrapped)))
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/queues.py", line 399, in put
+    self._writer.send_bytes(obj)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 200, in send_bytes
+    self._send_bytes(m[offset:offset + size])
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 427, in _send_bytes
+    self._send(header + buf)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 384, in _send
+    n = write(self._handle, buf)
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+BrokenPipeError: [Errno 32] Broken pipe
+Process ForkPoolWorker-346:
+Traceback (most recent call last):
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/pool.py", line 131, in worker
+    put((job, i, result))
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/queues.py", line 399, in put
+    self._writer.send_bytes(obj)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 200, in send_bytes
+    self._send_bytes(m[offset:offset + size])
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 427, in _send_bytes
+    self._send(header + buf)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 384, in _send
+    n = write(self._handle, buf)
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+BrokenPipeError: [Errno 32] Broken pipe
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/process.py", line 314, in _bootstrap
+    self.run()
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/pool.py", line 136, in worker
+    put((job, i, (False, wrapped)))
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/queues.py", line 399, in put
+    self._writer.send_bytes(obj)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 200, in send_bytes
+    self._send_bytes(m[offset:offset + size])
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 427, in _send_bytes
+    self._send(header + buf)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 384, in _send
+    n = write(self._handle, buf)
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+BrokenPipeError: [Errno 32] Broken pipe
+Process ForkPoolWorker-338:
+Traceback (most recent call last):
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/pool.py", line 131, in worker
+    put((job, i, result))
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/queues.py", line 399, in put
+    self._writer.send_bytes(obj)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 200, in send_bytes
+    self._send_bytes(m[offset:offset + size])
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 427, in _send_bytes
+    self._send(header + buf)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 384, in _send
+    n = write(self._handle, buf)
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+BrokenPipeError: [Errno 32] Broken pipe
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/process.py", line 314, in _bootstrap
+    self.run()
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/pool.py", line 136, in worker
+    put((job, i, (False, wrapped)))
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/queues.py", line 399, in put
+    self._writer.send_bytes(obj)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 200, in send_bytes
+    self._send_bytes(m[offset:offset + size])
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 427, in _send_bytes
+    self._send(header + buf)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 384, in _send
+    n = write(self._handle, buf)
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+BrokenPipeError: [Errno 32] Broken pipe
+Process ForkPoolWorker-296:
+Traceback (most recent call last):
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/pool.py", line 131, in worker
+    put((job, i, result))
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/queues.py", line 399, in put
+    self._writer.send_bytes(obj)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 200, in send_bytes
+    self._send_bytes(m[offset:offset + size])
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 427, in _send_bytes
+    self._send(header + buf)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 384, in _send
+    n = write(self._handle, buf)
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+BrokenPipeError: [Errno 32] Broken pipe
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/process.py", line 314, in _bootstrap
+    self.run()
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/pool.py", line 136, in worker
+    put((job, i, (False, wrapped)))
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/queues.py", line 399, in put
+    self._writer.send_bytes(obj)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 200, in send_bytes
+    self._send_bytes(m[offset:offset + size])
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 427, in _send_bytes
+    self._send(header + buf)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 384, in _send
+    n = write(self._handle, buf)
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+BrokenPipeError: [Errno 32] Broken pipe
+Process ForkPoolWorker-344:
+Traceback (most recent call last):
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/pool.py", line 131, in worker
+    put((job, i, result))
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/queues.py", line 399, in put
+    self._writer.send_bytes(obj)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 200, in send_bytes
+    self._send_bytes(m[offset:offset + size])
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 427, in _send_bytes
+    self._send(header + buf)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 384, in _send
+    n = write(self._handle, buf)
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+BrokenPipeError: [Errno 32] Broken pipe
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/process.py", line 314, in _bootstrap
+    self.run()
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/pool.py", line 136, in worker
+    put((job, i, (False, wrapped)))
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/queues.py", line 399, in put
+    self._writer.send_bytes(obj)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 200, in send_bytes
+    self._send_bytes(m[offset:offset + size])
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 427, in _send_bytes
+    self._send(header + buf)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 384, in _send
+    n = write(self._handle, buf)
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+BrokenPipeError: [Errno 32] Broken pipe
+Process ForkPoolWorker-363:
+Traceback (most recent call last):
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/pool.py", line 131, in worker
+    put((job, i, result))
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/queues.py", line 399, in put
+    self._writer.send_bytes(obj)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 200, in send_bytes
+    self._send_bytes(m[offset:offset + size])
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 427, in _send_bytes
+    self._send(header + buf)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 384, in _send
+    n = write(self._handle, buf)
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+BrokenPipeError: [Errno 32] Broken pipe
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/process.py", line 314, in _bootstrap
+    self.run()
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/pool.py", line 136, in worker
+    put((job, i, (False, wrapped)))
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/queues.py", line 399, in put
+    self._writer.send_bytes(obj)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 200, in send_bytes
+    self._send_bytes(m[offset:offset + size])
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 427, in _send_bytes
+    self._send(header + buf)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 384, in _send
+    n = write(self._handle, buf)
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+BrokenPipeError: [Errno 32] Broken pipe
+Process ForkPoolWorker-381:
+Traceback (most recent call last):
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/pool.py", line 131, in worker
+    put((job, i, result))
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/queues.py", line 399, in put
+    self._writer.send_bytes(obj)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 200, in send_bytes
+    self._send_bytes(m[offset:offset + size])
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 427, in _send_bytes
+    self._send(header + buf)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 384, in _send
+    n = write(self._handle, buf)
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+BrokenPipeError: [Errno 32] Broken pipe
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/process.py", line 314, in _bootstrap
+    self.run()
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/pool.py", line 136, in worker
+    put((job, i, (False, wrapped)))
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/queues.py", line 399, in put
+    self._writer.send_bytes(obj)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 200, in send_bytes
+    self._send_bytes(m[offset:offset + size])
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 427, in _send_bytes
+    self._send(header + buf)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 384, in _send
+    n = write(self._handle, buf)
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+BrokenPipeError: [Errno 32] Broken pipe
+Process ForkPoolWorker-309:
+Traceback (most recent call last):
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/pool.py", line 131, in worker
+    put((job, i, result))
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/queues.py", line 399, in put
+    self._writer.send_bytes(obj)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 200, in send_bytes
+    self._send_bytes(m[offset:offset + size])
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 427, in _send_bytes
+    self._send(header + buf)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 384, in _send
+    n = write(self._handle, buf)
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+BrokenPipeError: [Errno 32] Broken pipe
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/process.py", line 314, in _bootstrap
+    self.run()
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/pool.py", line 136, in worker
+    put((job, i, (False, wrapped)))
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/queues.py", line 399, in put
+    self._writer.send_bytes(obj)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 200, in send_bytes
+    self._send_bytes(m[offset:offset + size])
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 427, in _send_bytes
+    self._send(header + buf)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 384, in _send
+    n = write(self._handle, buf)
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+BrokenPipeError: [Errno 32] Broken pipe
+Process ForkPoolWorker-359:
+Traceback (most recent call last):
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/pool.py", line 131, in worker
+    put((job, i, result))
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/queues.py", line 399, in put
+    self._writer.send_bytes(obj)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 200, in send_bytes
+    self._send_bytes(m[offset:offset + size])
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 427, in _send_bytes
+    self._send(header + buf)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 384, in _send
+    n = write(self._handle, buf)
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+BrokenPipeError: [Errno 32] Broken pipe
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/process.py", line 314, in _bootstrap
+    self.run()
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/pool.py", line 136, in worker
+    put((job, i, (False, wrapped)))
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/queues.py", line 399, in put
+    self._writer.send_bytes(obj)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 200, in send_bytes
+    self._send_bytes(m[offset:offset + size])
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 427, in _send_bytes
+    self._send(header + buf)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 384, in _send
+    n = write(self._handle, buf)
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+BrokenPipeError: [Errno 32] Broken pipe
+Process ForkPoolWorker-283:
+Traceback (most recent call last):
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/pool.py", line 131, in worker
+    put((job, i, result))
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/queues.py", line 399, in put
+    self._writer.send_bytes(obj)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 200, in send_bytes
+    self._send_bytes(m[offset:offset + size])
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 427, in _send_bytes
+    self._send(header + buf)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 384, in _send
+    n = write(self._handle, buf)
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+BrokenPipeError: [Errno 32] Broken pipe
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/process.py", line 314, in _bootstrap
+    self.run()
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/pool.py", line 136, in worker
+    put((job, i, (False, wrapped)))
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/queues.py", line 399, in put
+    self._writer.send_bytes(obj)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 200, in send_bytes
+    self._send_bytes(m[offset:offset + size])
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 427, in _send_bytes
+    self._send(header + buf)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 384, in _send
+    n = write(self._handle, buf)
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+BrokenPipeError: [Errno 32] Broken pipe
+Process ForkPoolWorker-300:
+Traceback (most recent call last):
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/pool.py", line 131, in worker
+    put((job, i, result))
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/queues.py", line 399, in put
+    self._writer.send_bytes(obj)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 200, in send_bytes
+    self._send_bytes(m[offset:offset + size])
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 427, in _send_bytes
+    self._send(header + buf)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 384, in _send
+    n = write(self._handle, buf)
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+BrokenPipeError: [Errno 32] Broken pipe
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/process.py", line 314, in _bootstrap
+    self.run()
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/pool.py", line 136, in worker
+    put((job, i, (False, wrapped)))
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/queues.py", line 399, in put
+    self._writer.send_bytes(obj)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 200, in send_bytes
+    self._send_bytes(m[offset:offset + size])
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 427, in _send_bytes
+    self._send(header + buf)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 384, in _send
+    n = write(self._handle, buf)
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+BrokenPipeError: [Errno 32] Broken pipe
+Process ForkPoolWorker-299:
+Traceback (most recent call last):
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/pool.py", line 131, in worker
+    put((job, i, result))
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/queues.py", line 399, in put
+    self._writer.send_bytes(obj)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 200, in send_bytes
+    self._send_bytes(m[offset:offset + size])
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 427, in _send_bytes
+    self._send(header + buf)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 384, in _send
+    n = write(self._handle, buf)
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+BrokenPipeError: [Errno 32] Broken pipe
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/process.py", line 314, in _bootstrap
+    self.run()
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/pool.py", line 136, in worker
+    put((job, i, (False, wrapped)))
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/queues.py", line 399, in put
+    self._writer.send_bytes(obj)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 200, in send_bytes
+    self._send_bytes(m[offset:offset + size])
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 427, in _send_bytes
+    self._send(header + buf)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 384, in _send
+    n = write(self._handle, buf)
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+BrokenPipeError: [Errno 32] Broken pipe
+Process ForkPoolWorker-330:
+Traceback (most recent call last):
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/pool.py", line 131, in worker
+    put((job, i, result))
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/queues.py", line 399, in put
+    self._writer.send_bytes(obj)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 200, in send_bytes
+    self._send_bytes(m[offset:offset + size])
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 427, in _send_bytes
+    self._send(header + buf)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 384, in _send
+    n = write(self._handle, buf)
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+BrokenPipeError: [Errno 32] Broken pipe
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/process.py", line 314, in _bootstrap
+    self.run()
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/pool.py", line 136, in worker
+    put((job, i, (False, wrapped)))
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/queues.py", line 399, in put
+    self._writer.send_bytes(obj)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 200, in send_bytes
+    self._send_bytes(m[offset:offset + size])
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 427, in _send_bytes
+    self._send(header + buf)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 384, in _send
+    n = write(self._handle, buf)
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+BrokenPipeError: [Errno 32] Broken pipe
+Process ForkPoolWorker-347:
+Traceback (most recent call last):
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/pool.py", line 131, in worker
+    put((job, i, result))
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/queues.py", line 399, in put
+    self._writer.send_bytes(obj)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 200, in send_bytes
+    self._send_bytes(m[offset:offset + size])
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 427, in _send_bytes
+    self._send(header + buf)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 384, in _send
+    n = write(self._handle, buf)
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+BrokenPipeError: [Errno 32] Broken pipe
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/process.py", line 314, in _bootstrap
+    self.run()
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/pool.py", line 136, in worker
+    put((job, i, (False, wrapped)))
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/queues.py", line 399, in put
+    self._writer.send_bytes(obj)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 200, in send_bytes
+    self._send_bytes(m[offset:offset + size])
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 427, in _send_bytes
+    self._send(header + buf)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 384, in _send
+    n = write(self._handle, buf)
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+BrokenPipeError: [Errno 32] Broken pipe
+Process ForkPoolWorker-382:
+Traceback (most recent call last):
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/pool.py", line 131, in worker
+    put((job, i, result))
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/queues.py", line 399, in put
+    self._writer.send_bytes(obj)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 200, in send_bytes
+    self._send_bytes(m[offset:offset + size])
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 427, in _send_bytes
+    self._send(header + buf)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 384, in _send
+    n = write(self._handle, buf)
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+BrokenPipeError: [Errno 32] Broken pipe
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/process.py", line 314, in _bootstrap
+    self.run()
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/pool.py", line 136, in worker
+    put((job, i, (False, wrapped)))
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/queues.py", line 399, in put
+    self._writer.send_bytes(obj)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 200, in send_bytes
+    self._send_bytes(m[offset:offset + size])
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 427, in _send_bytes
+    self._send(header + buf)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 384, in _send
+    n = write(self._handle, buf)
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+BrokenPipeError: [Errno 32] Broken pipe
+Process ForkPoolWorker-280:
+Traceback (most recent call last):
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/pool.py", line 131, in worker
+    put((job, i, result))
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/queues.py", line 399, in put
+    self._writer.send_bytes(obj)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 200, in send_bytes
+    self._send_bytes(m[offset:offset + size])
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 427, in _send_bytes
+    self._send(header + buf)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 384, in _send
+    n = write(self._handle, buf)
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+BrokenPipeError: [Errno 32] Broken pipe
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/process.py", line 314, in _bootstrap
+    self.run()
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/pool.py", line 136, in worker
+    put((job, i, (False, wrapped)))
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/queues.py", line 399, in put
+    self._writer.send_bytes(obj)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 200, in send_bytes
+    self._send_bytes(m[offset:offset + size])
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 427, in _send_bytes
+    self._send(header + buf)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 384, in _send
+    n = write(self._handle, buf)
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+BrokenPipeError: [Errno 32] Broken pipe
+Process ForkPoolWorker-368:
+Traceback (most recent call last):
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/pool.py", line 131, in worker
+    put((job, i, result))
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/queues.py", line 399, in put
+    self._writer.send_bytes(obj)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 200, in send_bytes
+    self._send_bytes(m[offset:offset + size])
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 427, in _send_bytes
+    self._send(header + buf)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 384, in _send
+    n = write(self._handle, buf)
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+BrokenPipeError: [Errno 32] Broken pipe
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/process.py", line 314, in _bootstrap
+    self.run()
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/pool.py", line 136, in worker
+    put((job, i, (False, wrapped)))
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/queues.py", line 399, in put
+    self._writer.send_bytes(obj)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 200, in send_bytes
+    self._send_bytes(m[offset:offset + size])
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 427, in _send_bytes
+    self._send(header + buf)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 384, in _send
+    n = write(self._handle, buf)
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+BrokenPipeError: [Errno 32] Broken pipe
+Process ForkPoolWorker-297:
+Traceback (most recent call last):
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/pool.py", line 131, in worker
+    put((job, i, result))
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/queues.py", line 399, in put
+    self._writer.send_bytes(obj)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 200, in send_bytes
+    self._send_bytes(m[offset:offset + size])
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 427, in _send_bytes
+    self._send(header + buf)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 384, in _send
+    n = write(self._handle, buf)
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+BrokenPipeError: [Errno 32] Broken pipe
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/process.py", line 314, in _bootstrap
+    self.run()
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/pool.py", line 136, in worker
+    put((job, i, (False, wrapped)))
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/queues.py", line 399, in put
+    self._writer.send_bytes(obj)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 200, in send_bytes
+    self._send_bytes(m[offset:offset + size])
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 427, in _send_bytes
+    self._send(header + buf)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 384, in _send
+    n = write(self._handle, buf)
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+BrokenPipeError: [Errno 32] Broken pipe
+Process ForkPoolWorker-320:
+Traceback (most recent call last):
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/pool.py", line 131, in worker
+    put((job, i, result))
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/queues.py", line 399, in put
+    self._writer.send_bytes(obj)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 200, in send_bytes
+    self._send_bytes(m[offset:offset + size])
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 427, in _send_bytes
+    self._send(header + buf)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 384, in _send
+    n = write(self._handle, buf)
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+BrokenPipeError: [Errno 32] Broken pipe
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/process.py", line 314, in _bootstrap
+    self.run()
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/pool.py", line 136, in worker
+    put((job, i, (False, wrapped)))
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/queues.py", line 399, in put
+    self._writer.send_bytes(obj)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 200, in send_bytes
+    self._send_bytes(m[offset:offset + size])
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 427, in _send_bytes
+    self._send(header + buf)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 384, in _send
+    n = write(self._handle, buf)
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+BrokenPipeError: [Errno 32] Broken pipe
+Process ForkPoolWorker-336:
+Traceback (most recent call last):
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/pool.py", line 131, in worker
+    put((job, i, result))
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/queues.py", line 399, in put
+    self._writer.send_bytes(obj)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 200, in send_bytes
+    self._send_bytes(m[offset:offset + size])
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 427, in _send_bytes
+    self._send(header + buf)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 384, in _send
+    n = write(self._handle, buf)
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+BrokenPipeError: [Errno 32] Broken pipe
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/process.py", line 314, in _bootstrap
+    self.run()
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/pool.py", line 136, in worker
+    put((job, i, (False, wrapped)))
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/queues.py", line 399, in put
+    self._writer.send_bytes(obj)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 200, in send_bytes
+    self._send_bytes(m[offset:offset + size])
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 427, in _send_bytes
+    self._send(header + buf)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 384, in _send
+    n = write(self._handle, buf)
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+BrokenPipeError: [Errno 32] Broken pipe
+Process ForkPoolWorker-348:
+Traceback (most recent call last):
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/pool.py", line 131, in worker
+    put((job, i, result))
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/queues.py", line 399, in put
+    self._writer.send_bytes(obj)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 200, in send_bytes
+    self._send_bytes(m[offset:offset + size])
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 427, in _send_bytes
+    self._send(header + buf)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 384, in _send
+    n = write(self._handle, buf)
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+BrokenPipeError: [Errno 32] Broken pipe
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/process.py", line 314, in _bootstrap
+    self.run()
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/pool.py", line 136, in worker
+    put((job, i, (False, wrapped)))
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/queues.py", line 399, in put
+    self._writer.send_bytes(obj)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 200, in send_bytes
+    self._send_bytes(m[offset:offset + size])
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 427, in _send_bytes
+    self._send(header + buf)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 384, in _send
+    n = write(self._handle, buf)
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+BrokenPipeError: [Errno 32] Broken pipe
+Process ForkPoolWorker-312:
+Traceback (most recent call last):
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/pool.py", line 131, in worker
+    put((job, i, result))
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/queues.py", line 399, in put
+    self._writer.send_bytes(obj)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 200, in send_bytes
+    self._send_bytes(m[offset:offset + size])
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 427, in _send_bytes
+    self._send(header + buf)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 384, in _send
+    n = write(self._handle, buf)
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+BrokenPipeError: [Errno 32] Broken pipe
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/process.py", line 314, in _bootstrap
+    self.run()
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/pool.py", line 136, in worker
+    put((job, i, (False, wrapped)))
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/queues.py", line 399, in put
+    self._writer.send_bytes(obj)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 200, in send_bytes
+    self._send_bytes(m[offset:offset + size])
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 427, in _send_bytes
+    self._send(header + buf)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 384, in _send
+    n = write(self._handle, buf)
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+BrokenPipeError: [Errno 32] Broken pipe
+Process ForkPoolWorker-334:
+Traceback (most recent call last):
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/pool.py", line 131, in worker
+    put((job, i, result))
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/queues.py", line 399, in put
+    self._writer.send_bytes(obj)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 200, in send_bytes
+    self._send_bytes(m[offset:offset + size])
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 427, in _send_bytes
+    self._send(header + buf)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 384, in _send
+    n = write(self._handle, buf)
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+BrokenPipeError: [Errno 32] Broken pipe
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/process.py", line 314, in _bootstrap
+    self.run()
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/pool.py", line 136, in worker
+    put((job, i, (False, wrapped)))
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/queues.py", line 399, in put
+    self._writer.send_bytes(obj)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 200, in send_bytes
+    self._send_bytes(m[offset:offset + size])
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 427, in _send_bytes
+    self._send(header + buf)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 384, in _send
+    n = write(self._handle, buf)
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+BrokenPipeError: [Errno 32] Broken pipe
+Process ForkPoolWorker-355:
+Traceback (most recent call last):
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/pool.py", line 131, in worker
+    put((job, i, result))
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/queues.py", line 399, in put
+    self._writer.send_bytes(obj)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 200, in send_bytes
+    self._send_bytes(m[offset:offset + size])
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 427, in _send_bytes
+    self._send(header + buf)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 384, in _send
+    n = write(self._handle, buf)
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+BrokenPipeError: [Errno 32] Broken pipe
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/process.py", line 314, in _bootstrap
+    self.run()
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/pool.py", line 136, in worker
+    put((job, i, (False, wrapped)))
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/queues.py", line 399, in put
+    self._writer.send_bytes(obj)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 200, in send_bytes
+    self._send_bytes(m[offset:offset + size])
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 427, in _send_bytes
+    self._send(header + buf)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 384, in _send
+    n = write(self._handle, buf)
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+BrokenPipeError: [Errno 32] Broken pipe
+Process ForkPoolWorker-361:
+Traceback (most recent call last):
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/pool.py", line 131, in worker
+    put((job, i, result))
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/queues.py", line 399, in put
+    self._writer.send_bytes(obj)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 200, in send_bytes
+    self._send_bytes(m[offset:offset + size])
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 427, in _send_bytes
+    self._send(header + buf)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 384, in _send
+    n = write(self._handle, buf)
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+BrokenPipeError: [Errno 32] Broken pipe
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/process.py", line 314, in _bootstrap
+    self.run()
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/pool.py", line 136, in worker
+    put((job, i, (False, wrapped)))
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/queues.py", line 399, in put
+    self._writer.send_bytes(obj)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 200, in send_bytes
+    self._send_bytes(m[offset:offset + size])
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 427, in _send_bytes
+    self._send(header + buf)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 384, in _send
+    n = write(self._handle, buf)
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+BrokenPipeError: [Errno 32] Broken pipe
+Process ForkPoolWorker-376:
+Traceback (most recent call last):
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/pool.py", line 131, in worker
+    put((job, i, result))
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/queues.py", line 399, in put
+    self._writer.send_bytes(obj)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 200, in send_bytes
+    self._send_bytes(m[offset:offset + size])
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 427, in _send_bytes
+    self._send(header + buf)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 384, in _send
+    n = write(self._handle, buf)
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+BrokenPipeError: [Errno 32] Broken pipe
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/process.py", line 314, in _bootstrap
+    self.run()
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/pool.py", line 136, in worker
+    put((job, i, (False, wrapped)))
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/queues.py", line 399, in put
+    self._writer.send_bytes(obj)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 200, in send_bytes
+    self._send_bytes(m[offset:offset + size])
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 427, in _send_bytes
+    self._send(header + buf)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 384, in _send
+    n = write(self._handle, buf)
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+BrokenPipeError: [Errno 32] Broken pipe
+Process ForkPoolWorker-357:
+Traceback (most recent call last):
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/pool.py", line 131, in worker
+    put((job, i, result))
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/queues.py", line 399, in put
+    self._writer.send_bytes(obj)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 200, in send_bytes
+    self._send_bytes(m[offset:offset + size])
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 427, in _send_bytes
+    self._send(header + buf)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 384, in _send
+    n = write(self._handle, buf)
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+BrokenPipeError: [Errno 32] Broken pipe
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/process.py", line 314, in _bootstrap
+    self.run()
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/pool.py", line 136, in worker
+    put((job, i, (False, wrapped)))
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/queues.py", line 399, in put
+    self._writer.send_bytes(obj)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 200, in send_bytes
+    self._send_bytes(m[offset:offset + size])
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 427, in _send_bytes
+    self._send(header + buf)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 384, in _send
+    n = write(self._handle, buf)
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+BrokenPipeError: [Errno 32] Broken pipe
+Process ForkPoolWorker-311:
+Traceback (most recent call last):
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/pool.py", line 131, in worker
+    put((job, i, result))
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/queues.py", line 399, in put
+    self._writer.send_bytes(obj)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 200, in send_bytes
+    self._send_bytes(m[offset:offset + size])
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 427, in _send_bytes
+    self._send(header + buf)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 384, in _send
+    n = write(self._handle, buf)
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+BrokenPipeError: [Errno 32] Broken pipe
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/process.py", line 314, in _bootstrap
+    self.run()
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/pool.py", line 136, in worker
+    put((job, i, (False, wrapped)))
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/queues.py", line 399, in put
+    self._writer.send_bytes(obj)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 200, in send_bytes
+    self._send_bytes(m[offset:offset + size])
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 427, in _send_bytes
+    self._send(header + buf)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/connection.py", line 384, in _send
+    n = write(self._handle, buf)
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+BrokenPipeError: [Errno 32] Broken pipe
+/var/spool/slurm/slurmd/job26605356/slurm_script: line 22: 171025 Killed                  python3 evalCoverage.py
+Fri Dec  6 01:59:52 UTC 2024
+Script completed.
+slurmstepd-cpu082: error: Detected 2 oom_kill events in StepId=26605356.batch. Some of the step tasks have been OOM Killed.
