@@ -15,6 +15,7 @@ from pandarallel import pandarallel
 from shapely.geometry import box
 
 from reaches import readNHD
+from reaches import findNadir
 from reaches import readSegments
 from reaches import bitwiseMask
 from reaches import makeGDF
@@ -29,7 +30,7 @@ dtype_dic= {'cycle': str, 'pass': str, 'tile': str, 'version': str}
 
 # Read in HUC lookup table
 pixc_lookup = pd.read_csv(os.path.join(mdata_path,
-                                       'PIXC_v2_0_HUC2_01_best_files.csv'),
+                                       'PIXC_v2_0_HUC2_01_best_files_no_exits.csv'),
                           dtype=dtype_dic).drop(columns='index')
 
 # Get job index
@@ -37,85 +38,56 @@ slurm = int(os.environ['SLURM_ARRAY_TASK_ID'])
 
 # Get filepath
 file_name = pixc_lookup.loc[slurm, 'files']
+granule_name = file_name[:-3]
+tile_name = file_name[20:28]
+pass_num = file_name[20:23] 
 
+## Read in PIXC
 # PIXC datapath
 data_path = '/nas/cee-water/cjgleason/fiona/data/PIXC_v2_0_HUC2_01/'
 pixc_path = os.path.join(data_path, file_name)
-tile_name = pixc_path[-71:-3]
 
-## Check if tile intersects NHD
-# Read in xarray, global
-ds_GLOB = xr.open_mfdataset(paths=pixc_path, engine='h5netcdf')
-
-# Get bounding coordinates for SWOT tile
-west_lon = ds_GLOB.geospatial_lon_min
-south_lat = ds_GLOB.geospatial_lat_min
-east_lon = ds_GLOB.geospatial_lon_max
-north_lat = ds_GLOB.geospatial_lat_max
-
-# Clip width polygons to current points
-bbox = box(west_lon, south_lat, east_lon, north_lat)
-bbox = gpd.GeoDataFrame({'geometry': [bbox]}, crs="EPSG:4326")
-bbox = bbox.to_crs(epsg='32618')
-                   
-# Read in HUC4 boundaries (no Great Lakes)
-data_path = '/nas/cee-water/cjgleason/fiona/narrow_rivers_PIXC_data/all_wbd_no_great_lakes.parquet'
-wbd = gpd.read_parquet(path=data_path)
-                   
-# Project CRS
-wbd = wbd.to_crs(epsg=32618)
-
-# Check if granule intersects NHD 
-test = gpd.sjoin(wbd, bbox, how='inner', predicate='intersects')
-if test.shape[0] == 0:
-    print('This granule does not intersect the NHD, exiting.')
-    sys.exit()
-                   
-## If so, proceed
-pass_num = ds_GLOB.pass_number
-pass_num
-
-# Read in xarray, pixel group
-ds_PIXC = xr.open_mfdataset(paths=pixc_path,
-                            group='pixel_cloud', engine='h5netcdf')
+# Read in pixel group
+ds_PIXC = xr.open_mfdataset(paths=pixc_path, group = 'pixel_cloud', engine='h5netcdf')
 
 # Make mask
 mask = bitwiseMask(ds_PIXC)
 
+# Check that we didn't lose all pixels
 if mask.shape[0] == 0:
     print('This granule has no pixels after masking, exiting.')
     sys.exit()
 
+# Set desired data vars
 variables = ['azimuth_index', 'range_index', 'cross_track',
              'pixel_area', 'height', 'geoid',
              'dlatitude_dphase', 'dlongitude_dphase',
              'dheight_dphase', 'classification']
                    
-# Make PIXC into GeoDataFrame
+# Convert PIXC to GeoDataFrame
 gdf_PIXC = makeGDF(ds=ds_PIXC, mask=mask, data_vars=variables)
-                   
-### FIND CORRECT HUC4
-# Get NHD index metadata
+
+### NHDPlus HR
+## Find correct HUC4s
+# Read in tile and HUC4 intersection data
+dtype_dic= {'tile': str, 'huc4': str, 'coverage': float}
+tile_huc4 = pd.read_csv(os.path.join(mdata_path,
+                                    'huc4_swot_science_tiles.csv'),
+                        dtype=dtype_dic)
+# Make list of HUC4s that intersect our tile
+hucs = list(tile_huc4[tile_huc4['tile'] == tile_name]['huc4'])
+
+## Get NHD index metadata
 # Define dtypes for lookup tables to preserve leading zeros
 dtype_dic= {'HUC4': str, 'HUC2': str, 'toBasin': str, 'level': str}
 # Read in HUC lookup table
 lookup = pd.read_csv(os.path.join(mdata_path,
                                   'HUC4_lookup_no_great_lakes.csv'),
                      dtype=dtype_dic)
-
-# Merge on index metadata
-wbd = pd.merge(left=wbd, right=lookup, how='inner', left_on='huc4',
-               right_on='HUC4').drop(columns=['HUC4', 'HUC2',
-                                              'toBasin', 'level'])
-        
-# Get bounds of PIXC tile
-bounds_PIXC = gdf_PIXC.union_all().convex_hull
-gdf_bounds = gpd.GeoDataFrame({'geometry': [bounds_PIXC]}, crs=wbd.crs)
-                   
-# Get slurm indices (from mdata) of basins that intersect PIXC tile
-indices = gpd.sjoin(wbd, gdf_bounds, how='inner', predicate='intersects')['slurm_index'].to_list()
-                   
-### READ IN HUC4 BASINS
+# Extract indices for read-in
+indices = list(lookup[lookup['HUC4'].isin(hucs)]['slurm_index'])
+                 
+## READ IN HUC4 BASINS
 # Create merged dataframe of all basins intersected
 if len(indices) == 1:
     # Read prepped NHD
@@ -141,16 +113,18 @@ else:
     # Merge GeoDataFrames
     basin = pd.concat(d)
 
-# Project crs
+# Project CRS (currently to WGS 84 / UTM zone 18N)
 basin = basin.to_crs(epsg=32618)
                    
-# Buffer with an extra 50 m on each side to be safe
+# Buffer flowlines with an extra 50 m on each side to be safe
+# This is beyond the max distance that the pixels
+# could extend once converted to pseudo pixels
 basin['buffer'] = basin.buffer(distance=((basin.WidthM/2)+50), cap_style='flat')
                    
 # Set geometry to buffered reaches
 basin = basin.set_geometry('buffer')
-                   
-# Get only pixels within buffered reaches
+
+## Clip masked pixels to buffered reaches
 gdf_PIXC_clip = gpd.sjoin(gdf_PIXC, basin, how='inner', predicate='within')
 
 if gdf_PIXC_clip.shape[0] == 0:
@@ -170,22 +144,13 @@ pixel_pt = gdf_PIXC_clip.iloc[0].geometry
 # Read in nadir (science orbit)
 nadir = gpd.read_file('/nas/cee-water/cjgleason/data/SWOT/swath/swot_science_hr_Aug2021-v05_shapefile_nadir/swot_science_hr_2.0s_4.0s_Aug2021-v5_nadir.shp')
 
-# Convert CRS to WGS 84 / UTM zone 18N
+# Project CRS  (currently to WGS 84 / UTM zone 18N)
 nadir = nadir.to_crs(epsg=32618)
+
+# Find correct nadir segment and return its geometry
+nadir_segment_ln = findNadir(nadir=nadir, pass_num=pass_num, pixel_pt=pixel_pt)
                    
-# Find candidate nadir segments
-candidates = nadir[nadir['ID_PASS'] == pass_num]
-                   
-# Find distance from each candidate to single pixel
-candidates['dist'] = candidates.loc[:,'geometry'].distance(pixel_pt)
-                   
-# Get nadir segment closest to single pixel
-nadir_segment = candidates[candidates.dist == candidates.dist.min()]
-                   
-# Get nadir segment geoemtry
-nadir_segment_ln = nadir_segment.geometry[nadir_segment.index[0]]
-                   
-### MAKE PSEUDO-PIXRLS
+### MAKE PSEUDO-PIXELS
 # Set along-track pixel resolution
 azimuth_res = 22 # meters
                    
@@ -195,7 +160,7 @@ pandarallel.initialize()
 gdf_PIXC_clip['pseudo_pixel'] = gdf_PIXC_clip.parallel_apply(user_defined_function=makePseudoPixels,
                                                              args=(nadir_segment_ln, azimuth_res),
                                                              axis=1)
-            
+# xxxWHY NOT JUST KEEP THE SAME DATA FRAME AND DROP THE UNWANTED COLS?     
 pseudo = gdf_PIXC_clip.drop(columns='geometry').set_geometry('pseudo_pixel').set_crs(crs=gdf_PIXC_clip.crs)
                    
 # Get bounds of PIXC tile
@@ -209,14 +174,11 @@ pseudo_poly = box(pseudo_bounds[0], pseudo_bounds[1],
 if len(indices) == 1:
     # Read prepped NHD
     segments, _, _ = readSegments(index=indices[0])
-
 else:
     # Initialize lists
     d = []
-    
     # Loop through indices and store in lists
     for idx in indices:
-
         # Read prepped NHD
         segments, huc4, _ = readSegments(index=idx)
         # Make column with HUC4 id
@@ -227,7 +189,8 @@ else:
         
     # Merge GeoDataFrames
     segments = pd.concat(d)
-                   
+
+# Project CRS (currently to WGS 84 / UTM zone 18N)
 segments = segments.to_crs(epsg='32618')
 segments = segments.reset_index().rename(columns={'index': 'index_old'})
                    
@@ -332,6 +295,6 @@ save_path = os.path.join('/nas/cee-water/cjgleason/fiona/narrow_rivers_PIXC_data
 if not os.path.isdir(save_path):
     os.makedirs(save_path)
     
-# sj.to_csv(os.path.join(save_path, tile_name + '_coverage.csv'))
-nodes.to_csv(os.path.join(save_path, tile_name + '_nodes.csv'))
-reaches.to_csv(os.path.join(save_path, tile_name + '_reaches.csv'))
+# sj.to_csv(os.path.join(save_path, granule_name + '_coverage.csv'))
+nodes.to_csv(os.path.join(save_path, granule_name + '_nodes.csv'))
+reaches.to_csv(os.path.join(save_path, granule_name + '_reaches.csv'))

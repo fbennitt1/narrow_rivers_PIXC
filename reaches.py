@@ -30,11 +30,11 @@ def readNHD(index):
     print(str(huc4))
     
     # Set data filepath
-    file_path = os.path.join(prep_path, huc2, huc4 + '_prepped.gpkg')
+    file_path = os.path.join(prep_path, huc2, huc4 + '_prepped.parquet')
 
     ## Read in prepped NHD flowlines
     features = ['NHDPlusID', 'GNIS_Name', 'LengthKM', 'WidthM', 'Bin', 'geometry']
-    basin = gpd.read_file(filename=file_path, columns=features, engine='pyogrio')
+    basin = gpd.read_parquet(path=file_path, columns=features)
     print('read in')
     
     # Make geometry 2D LineStrings
@@ -42,6 +42,21 @@ def readNHD(index):
     print('exploded')
     
     return basin, huc4, huc2
+
+def findNadir(nadir, pass_num, pixel_pt):
+    '''
+    XXX
+    '''
+    # Find candidate nadir segments
+    candidates = nadir[nadir['ID_PASS'] == pass_num]
+    # Find distance from each candidate to single pixel
+    candidates['dist'] = candidates.loc[:,'geometry'].distance(pixel_pt)
+    # Get nadir segment closest to single pixel
+    nadir_segment = candidates[candidates.dist == candidates.dist.min()]
+    # Get nadir segment geometry
+    nadir_segment_ln = nadir_segment.geometry[nadir_segment.index[0]]
+    
+    return nadir_segment_ln
 
 def readSegments(index):
     '''
