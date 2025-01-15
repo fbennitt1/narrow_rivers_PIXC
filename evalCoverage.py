@@ -40,9 +40,7 @@ file_name = pixc_lookup.loc[slurm, 'files']
 
 # PIXC datapath
 data_path = '/nas/cee-water/cjgleason/fiona/data/PIXC_v2_0_HUC2_01/'
-
 pixc_path = os.path.join(data_path, file_name)
-
 tile_name = pixc_path[-71:-3]
 
 ## Check if tile intersects NHD
