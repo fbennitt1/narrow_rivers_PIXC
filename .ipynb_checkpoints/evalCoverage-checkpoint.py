@@ -1,3 +1,4 @@
+from argparse import ArgumentParser
 import os
 import sys
 import time
@@ -16,12 +17,36 @@ from shapely.geometry import box
 
 from reaches import readNHD
 from reaches import findNadir
-from reaches import readSegments
 from reaches import bitwiseMask
 from reaches import makeGDF
 from reaches import makePseudoPixels
-from reaches import specialDissolve
-from reaches import specialClip
+
+from utils import specialBuffer
+from utils import specialClip
+from utils import specialDissolve
+
+### PARSE ARGUMENTS
+parser = ArgumentParser(description='Please specify whether you would\
+                        like to use the min, mean, or max predicted\
+                        bankfull width for this analysis.')
+parser.add_argument('width_set', type=str, help='min, mean, or max')
+args=parser.parse_args()
+width_set = args.width_set
+
+# FOR NOW, SET
+width_set = 'mean'
+
+# Control flow
+if width_set == 'mean':
+    width_col = 'WidthM'
+elif width_set == 'min':
+    width_col = 'WidthM_Min'
+elif width_set == 'max':
+    width_col = 'WidthM_Max'
+else:
+    print('Invalid width option specified, exiting.')
+    # sys.exit()
+
 
 ### PIXEL CLOUD
 # Get PIXC index metadata
@@ -40,7 +65,7 @@ slurm = int(os.environ['SLURM_ARRAY_TASK_ID'])
 file_name = pixc_lookup.loc[slurm, 'files']
 granule_name = file_name[:-3]
 tile_name = file_name[20:28]
-pass_num = file_name[20:23] 
+pass_num = int(file_name[20:23]) 
 
 ## Read in PIXC
 # PIXC datapath
@@ -48,7 +73,8 @@ data_path = '/nas/cee-water/cjgleason/fiona/data/PIXC_v2_0_HUC2_01/'
 pixc_path = os.path.join(data_path, file_name)
 
 # Read in pixel group
-ds_PIXC = xr.open_mfdataset(paths=pixc_path, group = 'pixel_cloud', engine='h5netcdf')
+ds_PIXC = xr.open_mfdataset(paths=pixc_path, group = 'pixel_cloud',
+                            engine='h5netcdf')
 
 # Make mask
 mask = bitwiseMask(ds_PIXC)
@@ -101,10 +127,8 @@ else:
     
     # Loop through indices and store in lists
     for idx in indices:
-
         # Read prepped NHD
         basin, huc4, huc2 = readNHD(index=idx)
-
         # Append to lists
         d.append(basin)
         huc4_list.append(huc4)
@@ -115,14 +139,20 @@ else:
 
 # Project CRS (currently to WGS 84 / UTM zone 18N)
 basin = basin.to_crs(epsg=32618)
+
+# Initialize panarallel
+pandarallel.initialize()
                    
 # Buffer flowlines with an extra 50 m on each side to be safe
 # This is beyond the max distance that the pixels
 # could extend once converted to pseudo pixels
-basin['buffer'] = basin.buffer(distance=((basin.WidthM/2)+50), cap_style='flat')
+basin['buffer'] = basin.parallel_apply(user_defined_function=specialBuffer,
+                                                         args=(width_col,
+                                                               'flat',True),
+                                                         axis=1)
                    
 # Set geometry to buffered reaches
-basin = basin.set_geometry('buffer')
+basin = basin.set_geometry('buffer').set_crs(epsg=32618)
 
 ## Clip masked pixels to buffered reaches
 gdf_PIXC_clip = gpd.sjoin(gdf_PIXC, basin, how='inner', predicate='within')
@@ -141,33 +171,26 @@ gdf_PIXC_clip = gdf_PIXC_clip.drop(columns=['index_right',
 # Get single pixel for selecting correct nadir segment
 pixel_pt = gdf_PIXC_clip.iloc[0].geometry
                    
-# Read in nadir (science orbit)
-nadir = gpd.read_file('/nas/cee-water/cjgleason/data/SWOT/swath/swot_science_hr_Aug2021-v05_shapefile_nadir/swot_science_hr_2.0s_4.0s_Aug2021-v5_nadir.shp')
-
-# Project CRS  (currently to WGS 84 / UTM zone 18N)
-nadir = nadir.to_crs(epsg=32618)
-
 # Find correct nadir segment and return its geometry
-nadir_segment_ln = findNadir(nadir=nadir, pass_num=pass_num, pixel_pt=pixel_pt)
+nadir_segment_ln = findNadir(pass_num=pass_num, pixel_pt=pixel_pt)
                    
 ### MAKE PSEUDO-PIXELS
 # Set along-track pixel resolution
-azimuth_res = 22 # meters
-                   
-pandarallel.initialize()
+azimuth_res = 21 # meters
                    
 # Make pseudo pixels
 gdf_PIXC_clip['pseudo_pixel'] = gdf_PIXC_clip.parallel_apply(user_defined_function=makePseudoPixels,
-                                                             args=(nadir_segment_ln, azimuth_res),
-                                                             axis=1)
-# xxxWHY NOT JUST KEEP THE SAME DATA FRAME AND DROP THE UNWANTED COLS?     
-pseudo = gdf_PIXC_clip.drop(columns='geometry').set_geometry('pseudo_pixel').set_crs(crs=gdf_PIXC_clip.crs)
-                   
-# Get bounds of PIXC tile
-# pseudo_bounds = pseudo.union_all().convex_hull
-pseudo_bounds = pseudo.total_bounds
-pseudo_poly = box(pseudo_bounds[0], pseudo_bounds[1],
-                      pseudo_bounds[2], pseudo_bounds[3])
+                                                         args=(nadir_segment_ln,
+                                                               azimuth_res),
+                                                         axis=1)
+gdf_PIXC_clip = gdf_PIXC_clip.rename(columns={'geometry': 'pixel_centroid'}).set_geometry('pseudo_pixel')
+# # xxxWHY NOT JUST KEEP THE SAME DATA FRAME AND DROP THE UNWANTED COLS?     
+# pseudo = gdf_PIXC_clip.drop(columns='geometry').set_geometry('pseudo_pixel').set_crs(crs=gdf_PIXC_clip.crs)
+
+#Get bounds of PIXC tile
+pseudo_bounds = gdf_PIXC_clip.total_bounds
+# pseudo_poly = box(pseudo_bounds[0], pseudo_bounds[1],
+#                       pseudo_bounds[2], pseudo_bounds[3])
                    
 ### READ IN SEGMENTS
 # Create merged dataframe of all basins intersected
@@ -184,6 +207,8 @@ else:
         # Make column with HUC4 id
         segments['huc4_long'] = huc4
         segments['huc4'] = segments['huc4_long'].str[10:14]
+        # Rename segments to geometry
+        segments = segments.rename(columns={'segments': 'geometry'}).set_geometry('geometry')
         # Append to list
         d.append(segments)
         
@@ -206,18 +231,21 @@ segments_clip = segments.clip(pseudo_bounds)
 segments_clip = segments_clip.groupby('NHDPlusID').filter(lambda x: len(x) == 10)
                    
 # Buffer segments
-segments_clip['buffered'] = segments_clip.buffer(distance=(segments_clip.WidthM/2), cap_style='flat')
+segments_clip['buffer'] = segments_clip.parallel_apply(user_defined_function=specialBuffer,
+                                                         args=(width_col,
+                                                               'flat', False),
+                                                         axis=1)
                    
-segments_clip = segments_clip.set_geometry('buffered')
+segments_clip = segments_clip.set_geometry('buffer')
                    
 # Calculate segment area
 segments_clip['segment_area'] = segments_clip.geometry.area
                    
 # Copy geometry column as sjoin will discard it
-pseudo['pseudo_geom'] = pseudo.geometry
+gdf_PIXC_clip['pseudo_geom'] = gdf_PIXC_clip.geometry
                    
 # Merge the segments and pseudo-puxels by intersection
-sj = gpd.sjoin(segments_clip, pseudo, how='left', predicate='intersects')
+sj = gpd.sjoin(segments_clip, gdf_PIXC_clip, how='left', predicate='intersects')
 
 # Drop unneeded columns
 sj = sj.drop(columns=['index_right', 'points', 'azimuth_index',
