@@ -3,27 +3,17 @@ import os
 import sys
 import time
 
-# import contextily as ctx
 import geopandas as gpd
-# import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import shapely
 import xarray as xr
 
-# from matplotlib import colors
 from pandarallel import pandarallel
-from shapely.geometry import box
+# from shapely.geometry import box
 
-from reaches import readNHD
-from reaches import findNadir
-from reaches import bitwiseMask
-from reaches import makeGDF
-from reaches import makePseudoPixels
-
-from utils import specialBuffer
-from utils import specialClip
-from utils import specialDissolve
+from reaches import *
+from utils import *
 
 ### PARSE ARGUMENTS
 parser = ArgumentParser(description='Please specify whether you would\
@@ -34,18 +24,18 @@ args=parser.parse_args()
 width_set = args.width_set
 
 # FOR NOW, SET
-width_set = 'mean'
+width = 'WidthM'
 
-# Control flow
-if width_set == 'mean':
-    width_col = 'WidthM'
-elif width_set == 'min':
-    width_col = 'WidthM_Min'
-elif width_set == 'max':
-    width_col = 'WidthM_Max'
-else:
-    print('Invalid width option specified, exiting.')
-    # sys.exit()
+# # Set correct width
+# if width_set == 'mean':
+#     width = 'WidthM'
+# elif width_set == 'min':
+#     width = 'WidthM_Min'
+# elif width_set == 'max':
+#     width = 'WidthM_Max'
+# else:
+#     print('Invalid width option specified, exiting.')
+#     sys.exit()
 
 
 ### PIXEL CLOUD
@@ -61,7 +51,7 @@ pixc_lookup = pd.read_csv(os.path.join(mdata_path,
 # Get job index
 slurm = int(os.environ['SLURM_ARRAY_TASK_ID'])
 
-# Get filepath
+# Get filepath and other things
 file_name = pixc_lookup.loc[slurm, 'files']
 granule_name = file_name[:-3]
 tile_name = file_name[20:28]
@@ -107,60 +97,55 @@ hucs = list(tile_huc4[tile_huc4['tile'] == tile_name]['huc4'])
 # Define dtypes for lookup tables to preserve leading zeros
 dtype_dic= {'HUC4': str, 'HUC2': str, 'toBasin': str, 'level': str}
 # Read in HUC lookup table
-lookup = pd.read_csv(os.path.join(mdata_path,
+huc_lookup = pd.read_csv(os.path.join(mdata_path,
                                   'HUC4_lookup_no_great_lakes.csv'),
                      dtype=dtype_dic)
 # Extract indices for read-in
-indices = list(lookup[lookup['HUC4'].isin(hucs)]['slurm_index'])
+indices = list(huc_lookup[huc_lookup['HUC4'].isin(hucs)]['slurm_index'])
                  
 ## READ IN HUC4 BASINS
 # Create merged dataframe of all basins intersected
 if len(indices) == 1:
     # Read prepped NHD
-    basin, huc4_list, huc2_list = readNHD(index=indices[0])
-
+    flowlines, huc4_list, huc2_list = readNHD(index=indices[0])
 else:
     # Initialize lists
     d = []
     huc4_list = []
     huc2_list = []
-    
     # Loop through indices and store in lists
-    for idx in indices:
+    for i in indices:
         # Read prepped NHD
-        basin, huc4, huc2 = readNHD(index=idx)
+        flowlines, huc4, huc2 = readNHD(index=i)
         # Append to lists
-        d.append(basin)
-        huc4_list.append(huc4)
-        huc2_list.append(huc2)
-        
+        d.append(flowlines)
+        huc4_list.append(huc4) # I DON'T DO ANYTHING WITH THIS
+        huc2_list.append(huc2) # I DON'T DO ANYTHING WITH THIS
     # Merge GeoDataFrames
-    basin = pd.concat(d)
-
+    flowlines = pd.concat(d)
+    
 # Project CRS (currently to WGS 84 / UTM zone 18N)
-basin = basin.to_crs(epsg=32618)
+flowlines = flowlines.to_crs(epsg=32618)
 
 # Initialize panarallel
 pandarallel.initialize()
                    
 # Buffer flowlines with an extra 50 m on each side to be safe
-# This is beyond the max distance that the pixels
-# could extend once converted to pseudo pixels
-basin['buffer'] = basin.parallel_apply(user_defined_function=specialBuffer,
-                                                         args=(width_col,
+# This is beyond the max distance that the pixels could
+# extend once converted to pseudo pixels
+flowlines['buffer'] = flowlines.parallel_apply(user_defined_function=specialBuffer,
+                                                         args=(width,
                                                                'flat',True),
-                                                         axis=1)
-                   
+                                                         axis=1)          
 # Set geometry to buffered reaches
-basin = basin.set_geometry('buffer').set_crs(epsg=32618)
+flowlines = flowlines.set_geometry('buffer').set_crs(epsg=32618)
 
 ## Clip masked pixels to buffered reaches
-gdf_PIXC_clip = gpd.sjoin(gdf_PIXC, basin, how='inner', predicate='within')
-
+gdf_PIXC_clip = gpd.sjoin(gdf_PIXC, flowlines, how='inner', predicate='within')
+# Check that there are pixels that intersect
 if gdf_PIXC_clip.shape[0] == 0:
     print('This granule has no pixels that intersect reaches, exiting.')
     sys.exit() 
-
 # Drop unneeded cols
 gdf_PIXC_clip = gdf_PIXC_clip.drop(columns=['index_right',
                                             'Bin', 'GNIS_Name',
@@ -169,132 +154,115 @@ gdf_PIXC_clip = gdf_PIXC_clip.drop(columns=['index_right',
                    
 ### NADIR TRACK
 # Get single pixel for selecting correct nadir segment
-pixel_pt = gdf_PIXC_clip.iloc[0].geometry
-                   
+pixel_pt = gdf_PIXC_clip.iloc[0].geometry      
 # Find correct nadir segment and return its geometry
 nadir_segment_ln = findNadir(pass_num=pass_num, pixel_pt=pixel_pt)
                    
 ### MAKE PSEUDO-PIXELS
 # Set along-track pixel resolution
 azimuth_res = 21 # meters
-                   
 # Make pseudo pixels
 gdf_PIXC_clip['pseudo_pixel'] = gdf_PIXC_clip.parallel_apply(user_defined_function=makePseudoPixels,
                                                          args=(nadir_segment_ln,
                                                                azimuth_res),
                                                          axis=1)
+# Clean-up
 gdf_PIXC_clip = gdf_PIXC_clip.rename(columns={'geometry': 'pixel_centroid'}).set_geometry('pseudo_pixel')
-# # xxxWHY NOT JUST KEEP THE SAME DATA FRAME AND DROP THE UNWANTED COLS?     
-# pseudo = gdf_PIXC_clip.drop(columns='geometry').set_geometry('pseudo_pixel').set_crs(crs=gdf_PIXC_clip.crs)
-
 #Get bounds of PIXC tile
 pseudo_bounds = gdf_PIXC_clip.total_bounds
-# pseudo_poly = box(pseudo_bounds[0], pseudo_bounds[1],
-#                       pseudo_bounds[2], pseudo_bounds[3])
+# Copy geometry column as sjoin will discard it
+gdf_PIXC_clip['pseudo_geom'] = gdf_PIXC_clip.geometry
                    
 ### READ IN SEGMENTS
 # Create merged dataframe of all basins intersected
 if len(indices) == 1:
     # Read prepped NHD
-    segments, _, _ = readSegments(index=indices[0])
+    segments, _, _ = readSegments(index=indices[0]) # DO I WANT TO ALSO EXTRACT HUC4
 else:
     # Initialize lists
     d = []
     # Loop through indices and store in lists
-    for idx in indices:
+    for i in indices:
         # Read prepped NHD
-        segments, huc4, _ = readSegments(index=idx)
+        segments, huc4, _ = readSegments(index=i)
         # Make column with HUC4 id
         segments['huc4_long'] = huc4
-        segments['huc4'] = segments['huc4_long'].str[10:14]
+        segments['huc4'] = segments['huc4_long'].str[10:14] # DO I USE THESE
         # Rename segments to geometry
         segments = segments.rename(columns={'segments': 'geometry'}).set_geometry('geometry')
         # Append to list
         d.append(segments)
-        
     # Merge GeoDataFrames
     segments = pd.concat(d)
 
 # Project CRS (currently to WGS 84 / UTM zone 18N)
 segments = segments.to_crs(epsg='32618')
+# Clean-up
 segments = segments.reset_index().rename(columns={'index': 'index_old'})
-                   
 # Assign a unique counter within each index group
-segments['counter'] = segments.groupby('NHDPlusID').cumcount()
-                   
+segments['counter'] = segments.groupby('NHDPlusID').cumcount()            
 # Keep only first ten segments (some reaches repeat)
 segments = segments[segments['counter'] < 10]
-                   
-segments_clip = segments.clip(pseudo_bounds)
-                   
+# Clip the segments to the bounds of the PIXC with pseudo-pixels           
+segments = segments.clip(pseudo_bounds)
 # Keep only reaches that are fully contained in PIXC granule
-segments_clip = segments_clip.groupby('NHDPlusID').filter(lambda x: len(x) == 10)
+segments = segments.groupby('NHDPlusID').filter(lambda x: len(x) == 10)
                    
 # Buffer segments
-segments_clip['buffer'] = segments_clip.parallel_apply(user_defined_function=specialBuffer,
-                                                         args=(width_col,
+segments['buffer'] = segments.parallel_apply(user_defined_function=specialBuffer,
+                                                         args=(width,
                                                                'flat', False),
-                                                         axis=1)
-                   
-segments_clip = segments_clip.set_geometry('buffer')
-                   
+                                                         axis=1)        
+# Set active geometry col to buffered segments
+segments = segments.set_geometry('buffer')                   
 # Calculate segment area
-segments_clip['segment_area'] = segments_clip.geometry.area
-                   
-# Copy geometry column as sjoin will discard it
-gdf_PIXC_clip['pseudo_geom'] = gdf_PIXC_clip.geometry
-                   
-# Merge the segments and pseudo-puxels by intersection
-sj = gpd.sjoin(segments_clip, gdf_PIXC_clip, how='left', predicate='intersects')
+segments['segment_area'] = segments.geometry.area
 
+# Merge the segments and pseudo-puxels by intersection
+sj = gpd.sjoin(segments, gdf_PIXC_clip, how='left', predicate='intersects')
 # Drop unneeded columns
 sj = sj.drop(columns=['index_right', 'points', 'azimuth_index',
                       'range_index', 'cross_track', 'pixel_area',
                       'height', 'geoid', 'dlatitude_dphase',
                       'dlongitude_dphase', 'dheight_dphase',
                       'klass', 'latitude', 'longitude', ])
-
 # Set active geometry column for dissolve
 sj = sj.set_geometry('pseudo_geom')
 
 # Dissolve
-dissolved = sj.groupby('NHDPlusID', as_index=False).parallel_apply(user_defined_function=specialDissolve)
-
+sj = sj.groupby('NHDPlusID', as_index=False).parallel_apply(user_defined_function=specialDissolve)
 # Drop multi-index
-dissolved = dissolved.reset_index().drop(columns=['level_0', 'level_1'])
-
+sj = sj.reset_index().drop(columns=['level_0', 'level_1'])
 # Clip dissolved pseudo-pixels to node areas
-dissolved['pseudo_geom_clip'] = dissolved.parallel_apply(user_defined_function=specialClip,
+sj['pseudo_geom_clip'] = sj.parallel_apply(user_defined_function=specialClip,
                                                          axis=1)
 # Calculate the pseudo-pixel area within each node
-dissolved['pseudo_area'] = dissolved.pseudo_geom_clip.area
-
+sj['pseudo_area'] = sj.pseudo_geom_clip.area
 # Calculate coverage
-dissolved['coverage'] = dissolved.pseudo_area/dissolved.segment_area
-
+sj['coverage'] = sj.pseudo_area/sj.segment_area
 # Copy to fill zeros for stats
-dissolved_w_zero = dissolved.copy()
-dissolved_w_zero['coverage'] = dissolved_w_zero['coverage'].fillna(0)
+sj_w_zero = sj.copy()
+sj_w_zero['coverage'] = sj_w_zero['coverage'].fillna(0)
 
 ### DO STATS
-bins = dissolved.Bin.unique()
-
+bins = sj.Bin.unique()
 ## Nodes
-node_desc = dissolved.groupby('Bin')['coverage'].describe().reset_index()
+# Get descriptive stats
+node_desc = sj.groupby('Bin')['coverage'].describe().reset_index()
 node_desc['with_zero'] = 0
 
-node_quant = pd.DataFrame(dissolved.groupby('Bin')['coverage'].quantile(q=[x / 100.0 for x in range(0,100,1)])).reset_index().rename(columns={'level_1': 'quantile'})
+node_quant = pd.DataFrame(sj.groupby('Bin')['coverage'].quantile(q=[x / 100.0 for x in range(0,100,1)])).reset_index().rename(columns={'level_1': 'quantile'})
 node_quant['with_zero'] = 0
 
 ## Nodes with zeros
-node_desc_w_zero = dissolved_w_zero.groupby('Bin')['coverage'].describe().reset_index()
+node_desc_w_zero = sj_w_zero.groupby('Bin')['coverage'].describe().reset_index()
 node_desc_w_zero['with_zero'] = 1
 
-node_quant_w_zero = pd.DataFrame(dissolved_w_zero.groupby('Bin')['coverage'].quantile(q=[x / 100.0 for x in range(0,100,1)])).reset_index().rename(columns={'level_1': 'quantile'})
+node_quant_w_zero = pd.DataFrame(sj_w_zero.groupby('Bin')['coverage'].quantile(q=[x / 100.0 for x in range(0,100,1)])).reset_index().rename(columns={'level_1': 'quantile'})
 node_quant_w_zero['with_zero'] = 1
 
-# nodes_mean = dissolved.groupby('Bin')['coverage'].mean().to_list()
-# nodes_std = dissolved.groupby('Bin')['coverage'].std().to_list()
+# nodes_mean = sj.groupby('Bin')['coverage'].mean().to_list()
+# nodes_std = sj.groupby('Bin')['coverage'].std().to_list()
 # d = {'mean': nodes_mean, 'std': nodes_std}
 # nodes = pd.DataFrame(data=d).T
 # nodes.columns = bins
@@ -305,7 +273,7 @@ for i in range(1, 10):
     threshold = i/10
     # print(threshold)
     
-    detected = dissolved.groupby(['Bin', 'NHDPlusID'])['coverage'].apply(lambda x: (x > threshold).sum()) / 10
+    detected = sj.groupby(['Bin', 'NHDPlusID'])['coverage'].apply(lambda x: (x > threshold).sum()) / 10
     reach = detected.groupby('Bin').mean().to_list()
     #quantiles
     #std dev
