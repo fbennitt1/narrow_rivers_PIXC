@@ -1,6 +1,8 @@
-import geopandas as gpd
 import os
+
+import geopandas as gpd
 import pandas as pd
+from pandarallel import pandarallel
 
 from reaches import readNHD
 from reaches import cut
@@ -15,8 +17,10 @@ slurm = int(os.environ['SLURM_ARRAY_TASK_ID'])
 # Read prepped NHD
 basin, huc4, huc2 = readNHD(index=slurm)
 
+pandarallel.initialize()
+
 # Segment the reaches
-basin[['segments', 'failed']] = basin.parallel_apply(func=segmentReach, axis=1).apply(pd.Series)
+basin[['segments', 'failed']] = basin.parallel_apply(user_defined_function=segmentReach, axis=1).apply(pd.Series)
 
 # Keep only reaches that were sucessfully segmented
 basin = basin[basin['failed'] == 0]

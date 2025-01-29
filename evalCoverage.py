@@ -23,19 +23,19 @@ parser.add_argument('width_set', type=str, help='min, mean, or max')
 args=parser.parse_args()
 width_set = args.width_set
 
-# FOR NOW, SET
-width = 'WidthM'
+# # FOR NOW, SET
+# width = 'WidthM'
 
-# # Set correct width
-# if width_set == 'mean':
-#     width = 'WidthM'
-# elif width_set == 'min':
-#     width = 'WidthM_Min'
-# elif width_set == 'max':
-#     width = 'WidthM_Max'
-# else:
-#     print('Invalid width option specified, exiting.')
-#     sys.exit()
+# Set correct width
+if width_set == 'mean':
+    width = 'WidthM'
+elif width_set == 'min':
+    width = 'WidthM_Min'
+elif width_set == 'max':
+    width = 'WidthM_Max'
+else:
+    print('Invalid width option specified, exiting.')
+    sys.exit()
 
 
 ### PIXEL CLOUD
@@ -49,7 +49,8 @@ pixc_lookup = pd.read_csv(os.path.join(mdata_path,
                           dtype=dtype_dic).drop(columns='index')
 
 # Get job index
-slurm = int(os.environ['SLURM_ARRAY_TASK_ID'])
+# slurm = int(os.environ['SLURM_ARRAY_TASK_ID'])
+slurm = 0
 
 # Get filepath and other things
 file_name = pixc_lookup.loc[slurm, 'files']
@@ -177,7 +178,7 @@ gdf_PIXC_clip['pseudo_geom'] = gdf_PIXC_clip.geometry
 # Create merged dataframe of all basins intersected
 if len(indices) == 1:
     # Read prepped NHD
-    segments, _, _ = readSegments(index=indices[0]) # DO I WANT TO ALSO EXTRACT HUC4
+    segments, _, _ = readNHD(index=indices[0]) # DO I WANT TO ALSO EXTRACT HUC4
 else:
     # Initialize lists
     d = []
@@ -199,20 +200,26 @@ else:
 segments = segments.to_crs(epsg='32618')
 # Clean-up
 segments = segments.reset_index().rename(columns={'index': 'index_old'})
+print("Shape of segments after reset: " + str(segments.shape))
+
 # Assign a unique counter within each index group
-segments['counter'] = segments.groupby('NHDPlusID').cumcount()            
+segments['counter'] = segments.groupby('NHDPlusID').cumcount()    
+print("Shape of segments after counter: " + str(segments.shape))
+
 # Keep only first ten segments (some reaches repeat)
 segments = segments[segments['counter'] < 10]
+print("Shape of segments after dropping extra: " + str(segments.shape))
+
 # Clip the segments to the bounds of the PIXC with pseudo-pixels           
 segments = segments.clip(pseudo_bounds)
+print("Shape of segments after clipping: " + str(segments.shape))
+
 # Keep only reaches that are fully contained in PIXC granule
 segments = segments.groupby('NHDPlusID').filter(lambda x: len(x) == 10)
+print("Shape of segments after groupby: " + str(segments.shape))
                    
 # Buffer segments
-segments['buffer'] = segments.parallel_apply(user_defined_function=specialBuffer,
-                                                         args=(width,
-                                                               'flat', False),
-                                                         axis=1)        
+segments['buffer'] = segments.parallel_apply(user_defined_function=specialBuffer, args=(width,'flat', False), axis=1)        
 # Set active geometry col to buffered segments
 segments = segments.set_geometry('buffer')                   
 # Calculate segment area
@@ -286,7 +293,7 @@ reaches = pd.DataFrame(data=d).T
 reaches.columns = bins
                    
 ### WRITE OUT
-save_path = os.path.join('/nas/cee-water/cjgleason/fiona/narrow_rivers_PIXC_data/', 'PIXC_v2_0_HUC2_01')
+save_path = os.path.join('/nas/cee-water/cjgleason/fiona/narrow_rivers_PIXC_data/', 'PIXC_v2_0_HUC2_01_testing')
 
 if not os.path.isdir(save_path):
     os.makedirs(save_path)

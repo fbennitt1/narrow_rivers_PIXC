@@ -1,0 +1,11 @@
+Removing conda
+Loading conda
+Wed Jan 29 20:19:21 UTC 2025
+NHDPLUS_H_1802_HU4_GDB
+read in
+exploded
+INFO: Pandarallel will run on 128 workers.
+INFO: Pandarallel will use Memory file system to transfer data between the main process and workers.
+/var/spool/slurm/slurmd/job28238289/slurm_script: line 22: 1498822 Killed                  python3 segmentNHD.py
+Wed Jan 29 20:28:24 UTC 2025
+slurmstepd-ceewater-cpu008: error: Detected 1 oom_kill event in StepId=28238289.batch. Some of the step tasks have been OOM Killed.

@@ -1,11 +1,15 @@
 from shapely.geometry import *
 import geopandas as gpd
 
-def specialBuffer(df, width_col, cap_style, extra=False):
+def specialBuffer(df, width_col, cap_style, segmented=False, extra=False):
     '''
     XXX
     '''
-    reach = df.geometry
+    if segmented == True:
+        reach = df.segments
+    else:
+        reach = df.geometry
+    
     half_width = df[width_col]/2
     
     if extra == True:
