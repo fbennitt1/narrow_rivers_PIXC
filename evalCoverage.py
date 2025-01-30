@@ -135,8 +135,7 @@ pandarallel.initialize()
 # This is beyond the max distance that the pixels could
 # extend once converted to pseudo pixels
 flowlines['buffer'] = flowlines.parallel_apply(user_defined_function=specialBuffer,
-                                                         args=(width,
-                                                               'flat',True),
+                                                         args=(width, 'flat', False, True),
                                                          axis=1)          
 # Set geometry to buffered reaches
 flowlines = flowlines.set_geometry('buffer').set_crs(epsg=32618)
@@ -173,19 +172,21 @@ gdf_PIXC_clip = gdf_PIXC_clip.rename(columns={'geometry': 'pixel_centroid'}).set
 pseudo_bounds = gdf_PIXC_clip.total_bounds
 # Copy geometry column as sjoin will discard it
 gdf_PIXC_clip['pseudo_geom'] = gdf_PIXC_clip.geometry
-                   
+
+print('Indices: ' + str(indices))
+
 ### READ IN SEGMENTS
 # Create merged dataframe of all basins intersected
 if len(indices) == 1:
     # Read prepped NHD
-    segments, _, _ = readNHD(index=indices[0]) # DO I WANT TO ALSO EXTRACT HUC4
+    segments, _, _ = readNHD(index=indices[0], segmented=True) # DO I WANT TO ALSO EXTRACT HUC4
 else:
     # Initialize lists
     d = []
     # Loop through indices and store in lists
     for i in indices:
         # Read prepped NHD
-        segments, huc4, _ = readSegments(index=i)
+        segments, huc4, _ = readSegments(index=i, segmented=True)
         # Make column with HUC4 id
         segments['huc4_long'] = huc4
         segments['huc4'] = segments['huc4_long'].str[10:14] # DO I USE THESE
@@ -198,34 +199,31 @@ else:
 
 # Project CRS (currently to WGS 84 / UTM zone 18N)
 segments = segments.to_crs(epsg='32618')
-# Clean-up
+
+## Clean-up
 segments = segments.reset_index().rename(columns={'index': 'index_old'})
 print("Shape of segments after reset: " + str(segments.shape))
-
 # Assign a unique counter within each index group
 segments['counter'] = segments.groupby('NHDPlusID').cumcount()    
-print("Shape of segments after counter: " + str(segments.shape))
-
+print("Shape of segments after creating counter: " + str(segments.shape))
 # Keep only first ten segments (some reaches repeat)
 segments = segments[segments['counter'] < 10]
-print("Shape of segments after dropping extra: " + str(segments.shape))
-
+print("Shape of segments after dropping reapeated segments: " + str(segments.shape))
 # Clip the segments to the bounds of the PIXC with pseudo-pixels           
 segments = segments.clip(pseudo_bounds)
-print("Shape of segments after clipping: " + str(segments.shape))
-
+print("Shape of segments after clipping reaches: " + str(segments.shape))
 # Keep only reaches that are fully contained in PIXC granule
 segments = segments.groupby('NHDPlusID').filter(lambda x: len(x) == 10)
-print("Shape of segments after groupby: " + str(segments.shape))
+print("Shape of segments after dropping partial reaches: " + str(segments.shape))
                    
-# Buffer segments
-segments['buffer'] = segments.parallel_apply(user_defined_function=specialBuffer, args=(width,'flat', False), axis=1)        
+## Buffer segments
+segments['buffer'] = segments.parallel_apply(user_defined_function=specialBuffer, args=(width,'flat', True, False), axis=1)        
 # Set active geometry col to buffered segments
 segments = segments.set_geometry('buffer')                   
 # Calculate segment area
 segments['segment_area'] = segments.geometry.area
 
-# Merge the segments and pseudo-puxels by intersection
+## Merge the segments and pseudo-puxels by intersection
 sj = gpd.sjoin(segments, gdf_PIXC_clip, how='left', predicate='intersects')
 # Drop unneeded columns
 sj = sj.drop(columns=['index_right', 'points', 'azimuth_index',
@@ -236,7 +234,7 @@ sj = sj.drop(columns=['index_right', 'points', 'azimuth_index',
 # Set active geometry column for dissolve
 sj = sj.set_geometry('pseudo_geom')
 
-# Dissolve
+## Dissolve
 sj = sj.groupby('NHDPlusID', as_index=False).parallel_apply(user_defined_function=specialDissolve)
 # Drop multi-index
 sj = sj.reset_index().drop(columns=['level_0', 'level_1'])
@@ -293,11 +291,13 @@ reaches = pd.DataFrame(data=d).T
 reaches.columns = bins
                    
 ### WRITE OUT
-save_path = os.path.join('/nas/cee-water/cjgleason/fiona/narrow_rivers_PIXC_data/', 'PIXC_v2_0_HUC2_01_testing')
+save_path = os.path.join('/nas/cee-water/cjgleason/fiona/narrow_rivers_PIXC_output/', 'PIXC_v2_0_HUC2_01_2025_01_31_min')
 
 if not os.path.isdir(save_path):
     os.makedirs(save_path)
     
 # sj.to_csv(os.path.join(save_path, granule_name + '_coverage.csv'))
+
+### MAKE PARQUET
 nodes.to_csv(os.path.join(save_path, granule_name + '_nodes.csv'))
 reaches.to_csv(os.path.join(save_path, granule_name + '_reaches.csv'))

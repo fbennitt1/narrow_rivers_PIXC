@@ -16,8 +16,10 @@ def readNHD(index, segmented=False):
     ## Set-up
     mdata_path = '/nas/cee-water/cjgleason/fiona/narrow_rivers_PIXC/data/'
     if segmented == False:
+        print('setup normal')
         prep_path = '/nas/cee-water/cjgleason/fiona/narrow_rivers_PIXC_data/NHD_prepped/'
     else:
+        print('setup segmented')
         prep_path = '/nas/cee-water/cjgleason/fiona/narrow_rivers_PIXC_data/NHD_prepped_segmented/'
 
     # Define dtypes for lookup tables to preserve leading zeros
@@ -40,7 +42,7 @@ def readNHD(index, segmented=False):
         features = ['NHDPlusID', 'GNIS_Name', 'LengthKM', 'WidthM', 'WidthM_Min',
                     'WidthM_Max', 'Bin', 'geometry']
         basin = gpd.read_parquet(path=file_path, columns=features)
-        print('read in')
+        print('flowlines read-in')
 
         # Make geometry 2D LineStrings
         basin['geometry'] = basin.geometry.explode().force_2d()
@@ -52,46 +54,9 @@ def readNHD(index, segmented=False):
 
         ## Read in prepped NHD flowlines
         basin = gpd.read_parquet(path=file_path)
-        print('read in')
-
+        print('segments read-in')
+        
     return basin, huc4, huc2
-
-# def readNHD(index):
-#     '''
-#     This function takes the index for an NHD HUC4 basin (see
-#     ./data/HUC4_lookup_no_great_lakes_PIXC.csv), reads it in,
-#     forces the geometry to 2D, and returns the basin dataframe.
-#     '''
-    
-#     ## Set-up
-#     mdata_path = '/nas/cee-water/cjgleason/fiona/narrow_rivers_PIXC/data/'
-#     prep_path = '/nas/cee-water/cjgleason/fiona/narrow_rivers_PIXC_data/NHD_prepped/'
-
-#     # Define dtypes for lookup tables to preserve leading zeros
-#     dtype_dic= {'HUC4': str, 'HUC2': str, 'toBasin': str, 'level': str}
-#     # Read in HUC lookup table
-#     lookup = pd.read_csv(os.path.join(mdata_path,
-#                                       'HUC4_lookup_no_great_lakes.csv'),
-#                          dtype=dtype_dic)
-
-#     # Get current HUC2 and HUC4 IDs
-#     huc2 = 'HUC2_' + lookup.loc[index,'HUC4'][0:2]
-#     huc4 = 'NHDPLUS_H_' + lookup.loc[index,'HUC4'] + '_HU4_GDB'
-#     print(str(huc4))
-    
-#     # Set data filepath
-#     file_path = os.path.join(prep_path, huc2, huc4 + '_prepped.parquet')
-
-#     ## Read in prepped NHD flowlines
-#     features = ['NHDPlusID', 'GNIS_Name', 'LengthKM', 'WidthM', 'Bin', 'geometry']
-#     basin = gpd.read_parquet(path=file_path, columns=features)
-#     print('read in')
-    
-#     # Make geometry 2D LineStrings
-#     basin['geometry'] = basin.geometry.explode().force_2d()
-#     print('exploded')
-    
-#     return basin, huc4, huc2
 
 def findNadir(pass_num, pixel_pt):
     '''
@@ -111,38 +76,6 @@ def findNadir(pass_num, pixel_pt):
     nadir_segment_ln = nadir_segment.geometry[nadir_segment.index[0]]
     
     return nadir_segment_ln
-
-# def readSegments(index):
-#     '''
-#     This function takes the index for an NHD HUC4 basin (see
-#     ./data/HUC4_lookup_no_great_lakes_PIXC.csv), reads in the
-#     segmented and exploded version, and returns the basin
-#     dataframe.
-#     '''
-    
-#     ## Set-up
-#     mdata_path = '/nas/cee-water/cjgleason/fiona/narrow_rivers_PIXC/data/'
-#     prep_path = '/nas/cee-water/cjgleason/fiona/narrow_rivers_PIXC_data/NHD_prepped_segmented/'
-
-#     # Define dtypes for lookup tables to preserve leading zeros
-#     dtype_dic= {'HUC4': str, 'HUC2': str, 'toBasin': str, 'level': str}
-#     # Read in HUC lookup table
-#     lookup = pd.read_csv(os.path.join(mdata_path,
-#                                       'HUC4_lookup_no_great_lakes.csv'),
-#                          dtype=dtype_dic)
-
-#     # Get current HUC2 and HUC4 IDs
-#     huc2 = 'HUC2_' + lookup.loc[index,'HUC4'][0:2]
-#     huc4 = 'NHDPLUS_H_' + lookup.loc[index,'HUC4'] + '_HU4_GDB'
-    
-#     # Set data filepath
-#     file_path = os.path.join(prep_path, huc2, huc4 + '_prepped_segmented.parquet')
-
-#     ## Read in prepped NHD flowlines
-#     basin = gpd.read_parquet(path=file_path)
-#     print('read in')
-    
-#     return basin, huc4, huc2
 
 def cut(line, distance):
     '''
@@ -271,41 +204,3 @@ def makePseudoPixels(pixel, segment_ln, azimuth_res):
     pseudo_pixel = Polygon((one_coord, two_coord, three_coord, four_coord, one_coord))
     
     return pseudo_pixel
-
-# OLD VERSION
-# def getCoverage(reach, basin_crs, gdf_PIXC, num):
-#     '''
-#     Ths function takes a segmented reach, explodes it to get one row
-#     per reach, buffers the reach segments with 1/2 the calculated width
-#     on either of the reach segment centerlines, intersects the buffered
-#     segments with the SWOT PIXC, and calculates the percent coverage for
-#     the whole reach, and returns this proportion.
-    
-#     Right now, a segment only needs to have one pixel in it to be
-#     considered "detected".
-#     '''
-    
-#     # Make GeoSeries with just segments
-#     segments = gpd.GeoSeries(data=reach['segments'], crs=basin_crs)
-
-#     # Buffer segments by 1/2 the calculated width
-#     # CITE BEIGER
-#     segments = segments.buffer(distance=(reach.WidthM/2),cap_style='flat')
-    
-#     # Make GeoDataFrame of segments
-#     segments = gpd.GeoDataFrame(geometry=segments)
-    
-#     # Get pixels in reach
-#     inside = gpd.sjoin(gdf_PIXC, segments, how='inner',
-#                        predicate='within').rename(columns={'index_right': 'segment'})
-
-#     if inside.empty:
-#         prop = 0
-#     else:    
-#         # Get number of pixels in each reach segment
-#         counts = pd.DataFrame(inside.segment.value_counts().reset_index().sort_index())
-        
-#         # Calculate coverage (proportion of reaches with >= 1 pixel in them)
-#         prop = len(counts.loc[counts['count'] >= 1])/10
-        
-#     return prop
