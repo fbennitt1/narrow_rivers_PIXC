@@ -6,7 +6,6 @@ def specialBuffer(df, width_col, cap_style, segmented=False, extra=False):
     XXX
     '''
     # print(df.index)
-    
     if segmented == True:
         reach = df.segments
     else:

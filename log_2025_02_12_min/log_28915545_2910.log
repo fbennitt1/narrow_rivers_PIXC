@@ -1,0 +1,12 @@
+Removing conda
+Loading conda
+Thu Feb 13 21:14:12 UTC 2025
+SWOT_L2_HR_PIXC_019_270_081R_20240809T095750_20240809T095758_PIC0_02
+(2705294,)
+type: normal
+NHDPLUS_H_0109_HU4_GDB
+flowlines read-in
+exploded
+INFO: Pandarallel will run on 128 workers.
+INFO: Pandarallel will use Memory file system to transfer data between the main process and workers.
+slurmstepd-ceewater-cpu009: error: *** JOB 28915593 ON ceewater-cpu009 CANCELLED AT 2025-02-13T21:14:36 ***

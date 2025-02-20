@@ -1,0 +1,39 @@
+Removing conda
+Loading conda
+Wed Feb  5 03:08:10 UTC 2025
+(514411,)
+type: normal
+NHDPLUS_H_0110_HU4_GDB
+flowlines read-in
+exploded
+type: normal
+NHDPLUS_H_0202_HU4_GDB
+flowlines read-in
+exploded
+type: normal
+NHDPLUS_H_0203_HU4_GDB
+flowlines read-in
+exploded
+INFO: Pandarallel will run on 64 workers.
+INFO: Pandarallel will use Memory file system to transfer data between the main process and workers.
+/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/site-packages/geopandas/geodataframe.py:1819: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  super().__setitem__(key, value)
+Indices: [6, 7, 121]
+type: segmented
+NHDPLUS_H_0110_HU4_GDB
+/nas/cee-water/cjgleason/fiona/narrow_rivers_PIXC_data/NHD_prepped_segmented/HUC2_01/NHDPLUS_H_0110_HU4_GDB_prepped_segmented.parquet
+segments read-in
+type: segmented
+NHDPLUS_H_0202_HU4_GDB
+/nas/cee-water/cjgleason/fiona/narrow_rivers_PIXC_data/NHD_prepped_segmented/HUC2_02/NHDPLUS_H_0202_HU4_GDB_prepped_segmented.parquet
+segments read-in
+type: segmented
+NHDPLUS_H_0203_HU4_GDB
+/nas/cee-water/cjgleason/fiona/narrow_rivers_PIXC_data/NHD_prepped_segmented/HUC2_02/NHDPLUS_H_0203_HU4_GDB_prepped_segmented.parquet
+segments read-in
+Wed Feb  5 03:09:50 UTC 2025
+Script completed.

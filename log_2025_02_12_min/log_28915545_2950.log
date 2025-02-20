@@ -1,0 +1,6 @@
+Removing conda
+Loading conda
+Thu Feb 13 21:14:12 UTC 2025
+slurmstepd-zhoulin-cpu004: error: *** JOB 28915633 ON zhoulin-cpu004 CANCELLED AT 2025-02-13T21:14:36 ***
+slurmstepd-zhoulin-cpu004: error: container_p_join: open failed for /var/tmp//zhoulin-cpu004/28915633/.ns: No such file or directory
+slurmstepd-zhoulin-cpu004: error: container_g_join(28915633): No such file or directory

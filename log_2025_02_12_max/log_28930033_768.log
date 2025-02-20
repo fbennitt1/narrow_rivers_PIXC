@@ -1,0 +1,34 @@
+Removing conda
+Loading conda
+Fri Feb 14 00:15:25 UTC 2025
+SWOT_L2_HR_PIXC_006_214_073R_20231110T040925_20231110T040936_PGC0_01
+(358790,)
+type: normal
+NHDPLUS_H_0101_HU4_GDB
+flowlines read-in
+exploded
+INFO: Pandarallel will run on 128 workers.
+INFO: Pandarallel will use Memory file system to transfer data between the main process and workers.
+/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/site-packages/geopandas/geodataframe.py:1819: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  super().__setitem__(key, value)
+Indices: [0]
+type: segmented
+NHDPLUS_H_0101_HU4_GDB
+/nas/cee-water/cjgleason/fiona/narrow_rivers_PIXC_data/NHD_prepped_segmented/HUC2_01/NHDPLUS_H_0101_HU4_GDB_prepped_segmented.parquet
+segments read-in
+Traceback (most recent call last):
+  File "/nas/cee-water/cjgleason/fiona/narrow_rivers_PIXC/evalCoverage.py", line 251, in <module>
+    sj['pseudo_geom_clip'] = sj.parallel_apply(user_defined_function=specialClip,
+    ~~^^^^^^^^^^^^^^^^^^^^
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/site-packages/geopandas/geodataframe.py", line 1819, in __setitem__
+    super().__setitem__(key, value)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/site-packages/pandas/core/frame.py", line 4301, in __setitem__
+    self._set_item_frame_value(key, value)
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/site-packages/pandas/core/frame.py", line 4464, in _set_item_frame_value
+    raise ValueError(
+ValueError: Cannot set a DataFrame without columns to the column pseudo_geom_clip
+Fri Feb 14 00:15:52 UTC 2025

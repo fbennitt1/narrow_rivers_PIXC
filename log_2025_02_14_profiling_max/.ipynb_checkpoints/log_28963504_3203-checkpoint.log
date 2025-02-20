@@ -1,0 +1,9 @@
+Removing conda
+Loading conda
+Fri Feb 14 18:18:53 UTC 2025
+Traceback (most recent call last):
+  File "/nas/cee-water/cjgleason/fiona/narrow_rivers_PIXC/evalCoverage.py", line 53, in <module>
+    cpus_per_task = os.environ.get('SLURM_CPUS_PER_TASK') if os.environ.get('SLURM_CPUS_PER_TASK') < 65 else 1
+                                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: '<' not supported between instances of 'str' and 'int'
+Fri Feb 14 18:18:55 UTC 2025

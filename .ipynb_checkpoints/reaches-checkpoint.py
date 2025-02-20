@@ -16,10 +16,10 @@ def readNHD(index, segmented=False):
     ## Set-up
     mdata_path = '/nas/cee-water/cjgleason/fiona/narrow_rivers_PIXC/data/'
     if segmented == False:
-        print('setup normal')
+        print('type: normal')
         prep_path = '/nas/cee-water/cjgleason/fiona/narrow_rivers_PIXC_data/NHD_prepped/'
     else:
-        print('setup segmented')
+        print('type: segmented')
         prep_path = '/nas/cee-water/cjgleason/fiona/narrow_rivers_PIXC_data/NHD_prepped_segmented/'
 
     # Define dtypes for lookup tables to preserve leading zeros
@@ -51,6 +51,7 @@ def readNHD(index, segmented=False):
     else:
         # Set data filepath
         file_path = os.path.join(prep_path, huc2, huc4 + '_prepped_segmented.parquet')
+        print(file_path)
 
         ## Read in prepped NHD flowlines
         basin = gpd.read_parquet(path=file_path)
@@ -204,3 +205,25 @@ def makePseudoPixels(pixel, segment_ln, azimuth_res):
     pseudo_pixel = Polygon((one_coord, two_coord, three_coord, four_coord, one_coord))
     
     return pseudo_pixel
+
+def summarizeCoverage(df, bins):
+    '''
+    '''
+    ## Reaches
+    d = {}
+    # d_q = {}
+    for i in range(1, 10):
+        threshold = i/10
+
+        detected = df.groupby(['Bin', 'NHDPlusID'])['coverage'].apply(lambda x: (x > threshold).sum()) / 10
+
+        reach = detected.groupby('Bin').quantile(q=[x / 100.0 for x in range(0,100,1)]).reset_index()
+
+        d[threshold] = reach
+
+    for threshold, data in d.items():
+        data['threshold'] = threshold
+
+    reaches_cent = pd.concat(d.values()).rename(columns={'level_1': 'quantile'})
+    
+    return reaches_cent

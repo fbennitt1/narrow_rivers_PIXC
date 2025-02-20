@@ -1,0 +1,19 @@
+Removing conda
+Loading conda
+Thu Feb 13 21:38:20 UTC 2025
+SWOT_L2_HR_PIXC_005_548_072R_20231101T054729_20231101T054740_PGC0_01
+(759526,)
+Traceback (most recent call last):
+  File "/nas/cee-water/cjgleason/fiona/narrow_rivers_PIXC/evalCoverage.py", line 128, in <module>
+    flowlines = pd.concat(d)
+                ^^^^^^^^^^^^
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/site-packages/pandas/core/reshape/concat.py", line 382, in concat
+    op = _Concatenator(
+         ^^^^^^^^^^^^^^
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/site-packages/pandas/core/reshape/concat.py", line 445, in __init__
+    objs, keys = self._clean_keys_and_objs(objs, keys)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/site-packages/pandas/core/reshape/concat.py", line 507, in _clean_keys_and_objs
+    raise ValueError("No objects to concatenate")
+ValueError: No objects to concatenate
+Thu Feb 13 21:38:46 UTC 2025

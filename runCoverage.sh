@@ -1,14 +1,14 @@
 #!/bin/bash
 #SBATCH --partition=cpu-preempt #ceewater_cjgleason-cpu #gpu-preempt #gpu #cpu
 #SBATCH --nodes=1 
-#SBATCH --ntasks-per-node=1 
-#SBATCH --cpus-per-task=8 
-#SBATCH --mem=50000
-#SBATCH --time=60 #in minutes 
+#SBATCH --ntasks-per-node=1
+#SBATCH --cpus-per-task=16
+#SBATCH --mem=15000
+#SBATCH --time=10 #in minutes 
 
-#SBATCH --array=7992-9375
-#SBATCH --output=./log_2024_12_04/log_%A_%a.log # job id: %A_ 
-#SBATCH --job-name=prepCoverage
+#SBATCH --array=3203 #3981-5963 #1999-3980 #0-1998
+#SBATCH --output=./log_2025_02_14_profiling_max/log_%A_%a.log # job id: %A_ 
+#SBATCH --job-name=evalCoverage
 
 #setup env
 module load conda/latest
@@ -18,9 +18,7 @@ conda activate narrowPIXC
 date
 
 #run code 
-python3 evalCoverage.py
+python3 evalCoverage.py max
 
 #time stamp
 date
-
-echo "Script completed."

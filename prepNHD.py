@@ -125,6 +125,8 @@ def prepNHD(data_path, save_path):
 
     ## Bin reaches by width, set to string for parquet
     basin['Bin'] = pd.cut(basin['WidthM'], bins).astype(str)
+    basin['Bin_Min'] = pd.cut(basin['WidthM_Min'], bins).astype(str)
+    basin['Bin_Max'] = pd.cut(basin['WidthM_Max'], bins).astype(str)
 
     # ## Write out gdf as gpkg file
     # if not os.path.isdir(save_path):

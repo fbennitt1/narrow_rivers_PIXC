@@ -1,0 +1,26 @@
+Removing conda
+Loading conda
+Thu Feb 13 21:14:13 UTC 2025
+SWOT_L2_HR_PIXC_020_020_080L_20240821T082057_20240821T082108_PIC0_01
+(383177,)
+type: normal
+NHDPLUS_H_0110_HU4_GDB
+flowlines read-in
+exploded
+type: normal
+NHDPLUS_H_0202_HU4_GDB
+flowlines read-in
+exploded
+INFO: Pandarallel will run on 64 workers.
+INFO: Pandarallel will use Memory file system to transfer data between the main process and workers.
+slurmstepd-umd-cscdr-cpu001: error: *** JOB 28915716 ON umd-cscdr-cpu001 CANCELLED AT 2025-02-13T21:14:36 ***
+Traceback (most recent call last):
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/managers.py", line 813, in _callmethod
+    conn = self._tls.connection
+           ^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'ForkAwareLocal' object has no attribute 'connection'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/nas/cee-water/cjgleason/fiona/narrow_rivers_PIXC/evalCoverage.py", line 139, in <module>

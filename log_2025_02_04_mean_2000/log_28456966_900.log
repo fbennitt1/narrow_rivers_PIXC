@@ -1,0 +1,36 @@
+Removing conda
+Loading conda
+Wed Feb  5 02:53:11 UTC 2025
+(2187350,)
+type: normal
+NHDPLUS_H_0101_HU4_GDB
+flowlines read-in
+exploded
+INFO: Pandarallel will run on 64 workers.
+INFO: Pandarallel will use Memory file system to transfer data between the main process and workers.
+/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/site-packages/geopandas/geodataframe.py:1819: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  super().__setitem__(key, value)
+Indices: [0]
+type: segmented
+NHDPLUS_H_0101_HU4_GDB
+/nas/cee-water/cjgleason/fiona/narrow_rivers_PIXC_data/NHD_prepped_segmented/HUC2_01/NHDPLUS_H_0101_HU4_GDB_prepped_segmented.parquet
+segments read-in
+Traceback (most recent call last):
+  File "/nas/cee-water/cjgleason/fiona/narrow_rivers_PIXC/evalCoverage.py", line 227, in <module>
+    segments['buffer'] = segments.parallel_apply(user_defined_function=specialBuffer, args=(width,'flat', True, False), axis=1)        
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/site-packages/pandarallel/core.py", line 294, in closure
+    pool = CONTEXT.Pool(nb_workers)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/context.py", line 119, in Pool
+    return Pool(processes, initializer, initargs, maxtasksperchild,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/multiprocessing/pool.py", line 205, in __init__
+    raise ValueError("Number of processes must be at least 1")
+ValueError: Number of processes must be at least 1
+Wed Feb  5 02:53:34 UTC 2025
+Script completed.

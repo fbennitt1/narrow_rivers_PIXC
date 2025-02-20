@@ -48,15 +48,19 @@ pixc_lookup = pd.read_csv(os.path.join(mdata_path,
                                        'PIXC_v2_0_HUC2_01_best_files_no_exits.csv'),
                           dtype=dtype_dic).drop(columns='index')
 
-# Get job index
-# slurm = int(os.environ['SLURM_ARRAY_TASK_ID'])
-slurm = 0
+# Get job index, cpus
+slurm = int(os.environ['SLURM_ARRAY_TASK_ID'])
+cpus = int(os.environ.get('SLURM_CPUS_PER_TASK'))
+cpus_per_task = cpus if cpus < 65 else 1
+# slurm = 0
 
 # Get filepath and other things
 file_name = pixc_lookup.loc[slurm, 'files']
 granule_name = file_name[:-3]
 tile_name = file_name[20:28]
-pass_num = int(file_name[20:23]) 
+pass_num = int(file_name[20:23])
+
+print(granule_name)
 
 ## Read in PIXC
 # PIXC datapath
@@ -129,7 +133,7 @@ else:
 flowlines = flowlines.to_crs(epsg=32618)
 
 # Initialize panarallel
-pandarallel.initialize()
+pandarallel.initialize(nb_workers=cpus_per_task)
                    
 # Buffer flowlines with an extra 50 m on each side to be safe
 # This is beyond the max distance that the pixels could
@@ -186,35 +190,33 @@ else:
     # Loop through indices and store in lists
     for i in indices:
         # Read prepped NHD
-        segments, huc4, _ = readSegments(index=i, segmented=True)
+        segments, huc4, _ = readNHD(index=i, segmented=True)
         # Make column with HUC4 id
         segments['huc4_long'] = huc4
         segments['huc4'] = segments['huc4_long'].str[10:14] # DO I USE THESE
         # Rename segments to geometry
-        segments = segments.rename(columns={'segments': 'geometry'}).set_geometry('geometry')
+        # segments = segments.rename(columns={'segments': 'geometry'}).set_geometry('geometry')
         # Append to list
         d.append(segments)
     # Merge GeoDataFrames
     segments = pd.concat(d)
+    
+# print(segments.columns)
+# sys.exit()
 
 # Project CRS (currently to WGS 84 / UTM zone 18N)
 segments = segments.to_crs(epsg='32618')
 
 ## Clean-up
 segments = segments.reset_index().rename(columns={'index': 'index_old'})
-print("Shape of segments after reset: " + str(segments.shape))
 # Assign a unique counter within each index group
 segments['counter'] = segments.groupby('NHDPlusID').cumcount()    
-print("Shape of segments after creating counter: " + str(segments.shape))
 # Keep only first ten segments (some reaches repeat)
 segments = segments[segments['counter'] < 10]
-print("Shape of segments after dropping reapeated segments: " + str(segments.shape))
 # Clip the segments to the bounds of the PIXC with pseudo-pixels           
 segments = segments.clip(pseudo_bounds)
-print("Shape of segments after clipping reaches: " + str(segments.shape))
 # Keep only reaches that are fully contained in PIXC granule
 segments = segments.groupby('NHDPlusID').filter(lambda x: len(x) == 10)
-print("Shape of segments after dropping partial reaches: " + str(segments.shape))
                    
 ## Buffer segments
 segments['buffer'] = segments.parallel_apply(user_defined_function=specialBuffer, args=(width,'flat', True, False), axis=1)        
@@ -245,53 +247,18 @@ sj['pseudo_geom_clip'] = sj.parallel_apply(user_defined_function=specialClip,
 sj['pseudo_area'] = sj.pseudo_geom_clip.area
 # Calculate coverage
 sj['coverage'] = sj.pseudo_area/sj.segment_area
-# Copy to fill zeros for stats
-sj_w_zero = sj.copy()
-sj_w_zero['coverage'] = sj_w_zero['coverage'].fillna(0)
+# Fill zeros for stats
+sj['coverage'] = sj['coverage'].fillna(0)
 
 ### DO STATS
 bins = sj.Bin.unique()
-## Nodes
-# Get descriptive stats
-node_desc = sj.groupby('Bin')['coverage'].describe().reset_index()
-node_desc['with_zero'] = 0
 
-node_quant = pd.DataFrame(sj.groupby('Bin')['coverage'].quantile(q=[x / 100.0 for x in range(0,100,1)])).reset_index().rename(columns={'level_1': 'quantile'})
-node_quant['with_zero'] = 0
-
-## Nodes with zeros
-node_desc_w_zero = sj_w_zero.groupby('Bin')['coverage'].describe().reset_index()
-node_desc_w_zero['with_zero'] = 1
-
-node_quant_w_zero = pd.DataFrame(sj_w_zero.groupby('Bin')['coverage'].quantile(q=[x / 100.0 for x in range(0,100,1)])).reset_index().rename(columns={'level_1': 'quantile'})
-node_quant_w_zero['with_zero'] = 1
-
-# nodes_mean = sj.groupby('Bin')['coverage'].mean().to_list()
-# nodes_std = sj.groupby('Bin')['coverage'].std().to_list()
-# d = {'mean': nodes_mean, 'std': nodes_std}
-# nodes = pd.DataFrame(data=d).T
-# nodes.columns = bins
-
-## Reaches
-d = {}
-for i in range(1, 10):
-    threshold = i/10
-    # print(threshold)
-    
-    detected = sj.groupby(['Bin', 'NHDPlusID'])['coverage'].apply(lambda x: (x > threshold).sum()) / 10
-    reach = detected.groupby('Bin').mean().to_list()
-    #quantiles
-    #std dev
-    #n
-    # size of the dataframe (are we including the reaches with nothing detected?????)
-    
-    d[threshold] = reach
-    
-reaches = pd.DataFrame(data=d).T
-reaches.columns = bins
+reaches_cent = summarizeCoverage(sj, bins)
                    
 ### WRITE OUT
-save_path = os.path.join('/nas/cee-water/cjgleason/fiona/narrow_rivers_PIXC_output/', 'PIXC_v2_0_HUC2_01_2025_01_31_min')
+dir_name = 'PIXC_v2_0_HUC2_01_2025_02_04_'+ width_set
+save_path = os.path.join('/nas/cee-water/cjgleason/fiona/narrow_rivers_PIXC_output/',
+                         dir_name)
 
 if not os.path.isdir(save_path):
     os.makedirs(save_path)
@@ -299,5 +266,7 @@ if not os.path.isdir(save_path):
 # sj.to_csv(os.path.join(save_path, granule_name + '_coverage.csv'))
 
 ### MAKE PARQUET
-nodes.to_csv(os.path.join(save_path, granule_name + '_nodes.csv'))
-reaches.to_csv(os.path.join(save_path, granule_name + '_reaches.csv'))
+# nodes.to_csv(os.path.join(save_path, granule_name + '_nodes.csv'))
+reaches_cent.to_parquet(os.path.join(save_path, granule_name + '_reaches_cent.parquet'))
+
+print('Script completed, wrote out results.')

@@ -1,0 +1,27 @@
+Removing conda
+Loading conda
+Fri Feb 14 18:10:49 UTC 2025
+SWOT_L2_HR_PIXC_020_548_076L_20240909T050421_20240909T050432_PIC0_01
+(453368,)
+type: normal
+NHDPLUS_H_0102_HU4_GDB
+flowlines read-in
+exploded
+type: normal
+NHDPLUS_H_0103_HU4_GDB
+flowlines read-in
+exploded
+type: normal
+NHDPLUS_H_0104_HU4_GDB
+flowlines read-in
+exploded
+type: normal
+NHDPLUS_H_0105_HU4_GDB
+flowlines read-in
+exploded
+Traceback (most recent call last):
+  File "/nas/cee-water/cjgleason/fiona/narrow_rivers_PIXC/evalCoverage.py", line 134, in <module>
+    pandarallel.initialize(nb_workers=int(sys.environ['SLURM_CPUS_PER_TASK']))
+                                          ^^^^^^^^^^^
+AttributeError: module 'sys' has no attribute 'environ'
+Fri Feb 14 18:11:08 UTC 2025

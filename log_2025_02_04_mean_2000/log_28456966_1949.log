@@ -1,0 +1,20 @@
+Removing conda
+Loading conda
+Wed Feb  5 02:58:43 UTC 2025
+(5947884,)
+type: normal
+NHDPLUS_H_0105_HU4_GDB
+flowlines read-in
+exploded
+INFO: Pandarallel will run on 128 workers.
+INFO: Pandarallel will use Memory file system to transfer data between the main process and workers.
+/work/pi_cjgleason_umass_edu/.conda/envs/narrowPIXC/lib/python3.12/site-packages/geopandas/geodataframe.py:1819: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  super().__setitem__(key, value)
+/var/spool/slurm/slurmd/job28459294/slurm_script: line 21: 1529384 Killed                  python3 evalCoverage.py mean
+Wed Feb  5 03:00:54 UTC 2025
+Script completed.
+slurmstepd-ceewater-cpu008: error: Detected 10 oom_kill events in StepId=28459294.batch. Some of the step tasks have been OOM Killed.

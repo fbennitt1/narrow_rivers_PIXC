@@ -1,0 +1,20 @@
+Removing conda
+Loading conda
+Thu Feb 13 21:14:13 UTC 2025
+SWOT_L2_HR_PIXC_019_576_082R_20240820T082046_20240820T082050_PIC0_01
+(1562636,)
+type: normal
+NHDPLUS_H_0109_HU4_GDB
+flowlines read-in
+exploded
+type: normal
+NHDPLUS_H_0110_HU4_GDB
+flowlines read-in
+exploded
+type: normal
+NHDPLUS_H_0203_HU4_GDB
+flowlines read-in
+exploded
+INFO: Pandarallel will run on 64 workers.
+INFO: Pandarallel will use Memory file system to transfer data between the main process and workers.
+slurmstepd-uri-cpu050: error: *** JOB 28915702 ON uri-cpu050 CANCELLED AT 2025-02-13T21:14:36 ***
