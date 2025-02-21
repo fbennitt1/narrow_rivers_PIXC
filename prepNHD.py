@@ -2,20 +2,15 @@ import geopandas as gpd
 import os
 import pandas as pd
 
-'''
-This function takes a filepath to the NHD HR Plus (currently located at
-/nas/cee-water/cjgleason/craig/CONUS_ephemeral_data, merges on the VAA
-and EROMMA tables, intersects the flowlines with the waterbodies and 
-discards those that are within, finds the physiographic division for
-each reach, and calculates the width for each reach. It writes out
-the merged HUC4 files as gpkgs.
-'''
-
-slurm = int(os.environ['SLURM_ARRAY_TASK_ID'])
-print(slurm)
-
-def prepNHD(data_path, save_path):
-    
+def prepNHD(data_path, save_path, slurm):
+    '''
+    This function takes a filepath to the NHD HR Plus (currently located at
+    /nas/cee-water/cjgleason/craig/CONUS_ephemeral_data, merges on the VAA
+    and EROMMA tables, intersects the flowlines with the waterbodies and 
+    discards those that are within, finds the physiographic division for
+    each reach, and calculates the width for each reach. It writes out
+    the merged HUC4 files as gpkgs.
+    '''
     ## Set-up
     mdata_path = '/nas/cee-water/cjgleason/fiona/narrow_rivers_PIXC/data/'
     # Max binsize of 1000 is plenty for CONUS w/o lakes
@@ -29,12 +24,9 @@ def prepNHD(data_path, save_path):
                                       'HUC4_lookup_no_great_lakes.csv'),
                          dtype=dtype_dic)
     
-    # Get slurm job index
-    i = slurm
-    
     # Get current HUC2 and HUC4 IDs
-    huc2 = 'HUC2_' + lookup.loc[i,'HUC4'][0:2]
-    huc4 = 'NHDPLUS_H_' + lookup.loc[i,'HUC4'] + '_HU4_GDB'
+    huc2 = 'HUC2_' + lookup.loc[index,'HUC4'][0:2]
+    huc4 = 'NHDPLUS_H_' + lookup.loc[index,'HUC4'] + '_HU4_GDB'
 
     # Set data filepath
     file_path = os.path.join(data_path, huc2, huc4, huc4 + '.gdb')
@@ -46,7 +38,8 @@ def prepNHD(data_path, save_path):
     
     ## Prep Physiographic Regions
     # https://www.sciencebase.gov/catalog/item/631405bbd34e36012efa304e
-    physio = gpd.read_file(filename=os.path.join(data_path,
+    physio = gpd.read_f
+    le(filename=os.path.join(data_path,
                                                  'other_shapefiles/physio.shp'),
                            engine='pyogrio')
     # Set CRS to Web Mercator
@@ -137,8 +130,12 @@ def prepNHD(data_path, save_path):
     if not os.path.isdir(save_path):
         os.makedirs(save_path)
     basin.to_parquet(os.path.join(save_path, save_file))
-            
-data_path = '/nas/cee-water/cjgleason/craig/CONUS_ephemeral_data/'
-save_path = '../narrow_rivers_PIXC_data/NHD_prepped/'
+    
+slurm = int(os.environ['SLURM_ARRAY_TASK_ID'])
+print(slurm)
 
-prepNHD(data_path=data_path, save_path=save_path)
+if __name__ == "__main__":
+    data_path = '/nas/cee-water/cjgleason/craig/CONUS_ephemeral_data/'
+    save_path = '../narrow_rivers_PIXC_data/NHD_prepped/'
+
+    prepNHD(data_path=data_path, save_path=save_path, index=slurm)
