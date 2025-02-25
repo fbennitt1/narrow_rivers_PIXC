@@ -1,3 +1,5 @@
+import json
+
 from shapely.geometry import *
 import geopandas as gpd
 
@@ -34,3 +36,8 @@ def specialDissolve(reach):
     '''
     reach = reach.dissolve(by='counter', as_index=False)
     return reach
+
+def open_json(file_path):
+    with open(file_path, 'r') as file:
+        data = json.load(file)
+        return data

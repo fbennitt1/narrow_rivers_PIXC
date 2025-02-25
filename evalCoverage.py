@@ -15,7 +15,7 @@ from pandarallel import pandarallel
 from reaches import *
 from utils import *
 
-def evalCoverage(width_set, index, cpus_per_task, pixc_ref, data_path, save_dir):
+def evalCoverage(width_set, index, cpus_per_task, huc2, data_path, save_dir):
     # # FOR NOW, SET
     # width = 'WidthM'
     
@@ -31,16 +31,12 @@ def evalCoverage(width_set, index, cpus_per_task, pixc_ref, data_path, save_dir)
         sys.exit()
 
     ### PIXEL CLOUD
-    # Get PIXC index metadata
-    mdata_path = '/nas/cee-water/cjgleason/fiona/narrow_rivers_PIXC/data/'
-    dtype_dic= {'cycle': str, 'pass': str, 'tile': str, 'version': str}
-
-    # Read in HUC lookup table
-    pixc_lookup = pd.read_csv(os.path.join(mdata_path, pixc_ref),
-                              dtype=dtype_dic).drop(columns='index')
-
-    # Get filepath and other things
-    file_name = pixc_lookup.loc[index, 'files']
+    # Get PIXC filepath
+    file_path = '/nas/cee-water/cjgleason/fiona/narrow_rivers_PIXC/data/PIXC_v2_0_HUC2_' + huc2 + '_filtered.json'
+    data = open_json(file_path)
+    file_name = data[index]
+    
+    # Get PIXC metadata
     granule_name = file_name[:-3]
     tile_name = file_name[20:28]
     pass_num = int(file_name[20:23])
@@ -66,8 +62,7 @@ def evalCoverage(width_set, index, cpus_per_task, pixc_ref, data_path, save_dir)
     # Set desired data vars
     variables = ['azimuth_index', 'range_index', 'cross_track',
                  'pixel_area', 'height', 'geoid',
-                 'dlatitude_dphase', 'dlongitude_dphase',
-                 'dheight_dphase', 'classification']
+                 'prior_water_prob', 'classification']
 
     # Convert PIXC to GeoDataFrame
     gdf_PIXC = makeGDF(ds=ds_PIXC, mask=mask, data_vars=variables)
@@ -75,12 +70,15 @@ def evalCoverage(width_set, index, cpus_per_task, pixc_ref, data_path, save_dir)
     ### NHDPlus HR
     ## Find correct HUC4s
     # Read in tile and HUC4 intersection data
+    mdata_path = '/nas/cee-water/cjgleason/fiona/narrow_rivers_PIXC/data/'
     dtype_dic= {'tile': str, 'huc4': str, 'coverage': float}
     tile_huc4 = pd.read_csv(os.path.join(mdata_path,
                                         'huc4_swot_science_tiles.csv'),
                             dtype=dtype_dic)
-    # Make list of HUC4s that intersect our tile
+    # Make list of HUC4s that intersect the tile
     hucs = list(tile_huc4[tile_huc4['tile'] == tile_name]['huc4'])
+    # Limit to the current HUC2
+    hucs = [x for x in hucs if x.startswith(huc2)]
 
     ## Get NHD index metadata
     # Define dtypes for lookup tables to preserve leading zeros
@@ -92,24 +90,26 @@ def evalCoverage(width_set, index, cpus_per_task, pixc_ref, data_path, save_dir)
     # Extract indices for read-in
     indices = list(huc_lookup[huc_lookup['HUC4'].isin(hucs)]['slurm_index'])
 
-    ## READ IN HUC4 BASINS
-    # Create merged dataframe of all basins intersected
+    ## READ IN HUC4 FLOWLINES
+    # Create merged dataframe of all flowlines intersected
     if len(indices) == 1:
         # Read prepped NHD
-        flowlines, huc4_list, huc2_list = readNHD(index=indices[0])
+        flowlines, _, _,  = readNHD(index=indices[0])
+        # huc4_list, huc2_list = readNHD(index=indices[0])
     else:
         # Initialize lists
         d = []
-        huc4_list = []
-        huc2_list = []
+        # huc4_list = []
+        # huc2_list = []
         # Loop through indices and store in lists
         for i in indices:
             # Read prepped NHD
-            flowlines, huc4, huc2 = readNHD(index=i)
+            flowlines, _, _ = readNHD(index=i)
+            # huc4, huc2 = readNHD(index=i)
             # Append to lists
             d.append(flowlines)
-            huc4_list.append(huc4) # I DON'T DO ANYTHING WITH THIS
-            huc2_list.append(huc2) # I DON'T DO ANYTHING WITH THIS
+            # huc4_list.append(huc4) # I DON'T DO ANYTHING WITH THIS
+            # huc2_list.append(huc2) # I DON'T DO ANYTHING WITH THIS
         # Merge GeoDataFrames
         flowlines = pd.concat(d)
 
@@ -133,12 +133,12 @@ def evalCoverage(width_set, index, cpus_per_task, pixc_ref, data_path, save_dir)
     # Check that there are pixels that intersect
     if gdf_PIXC_clip.shape[0] == 0:
         print('This granule has no pixels that intersect reaches, exiting.')
-        sys.exit() 
+        sys.exit()
     # Drop unneeded cols
-    gdf_PIXC_clip = gdf_PIXC_clip.drop(columns=['index_right',
-                                                'Bin', 'GNIS_Name',
-                                                'LengthKM', 'NHDPlusID',
-                                                'WidthM', 'geometry_right'])
+    gdf_PIXC_clip = gdf_PIXC_clip.drop(columns=['index_right', 'NHDPlusID',
+                                                'GNIS_Name', 'LengthKM',
+                                                'WidthM', 'WidthM_Min',
+                                                'WidthM_Max', 'Bin', 'geometry_right'])
 
     ### NADIR TRACK
     # Get single pixel for selecting correct nadir segment
@@ -270,9 +270,9 @@ cpus = int(os.environ.get('SLURM_CPUS_PER_TASK'))
 cpus_per_task = cpus if cpus < 65 else 1
 
 if __name__ == "__main__":
-    data_path = '/nas/cee-water/cjgleason/fiona/data/PIXC_v2_0_HUC2_01_2025_02_20/' ##RENAME
-    pixc_ref = 'PIXC_v2_0_HUC2_01_best_files_no_exits.csv' ## CHANGE THIS
+    huc2 = '01'
+    data_path = '/nas/cee-water/cjgleason/fiona/data/PIXC_v2_0_HUC2_' + huc2
+    # pixc_ref = 'PIXC_v2_0_HUC2_01_best_files_no_exits.csv' ## CHANGE THIS
     save_dir = 'PIXC_v2_0_HUC2_01_2025_02_04_'+ width_set
     
-    evalCoverage(width_set=width_set, index=slurm, cpus_per_task=cpus_per_task,
-                 pixc_ref=pixc_ref, data_path=data_path, save_dir=save_dir)
+    evalCoverage(width_set=width_set, index=slurm, cpus_per_task=cpus_per_task, huc2=huc2, data_path=data_path, save_dir=save_dir)

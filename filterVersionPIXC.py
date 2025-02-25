@@ -32,6 +32,9 @@ def filterVersionPIXC(directories, outpath):
     
     # Get all file names from directories
     for directory in directories:
+        # dir_name = os.path.split(directory)
+        # huc2 = dir_name[-1]
+        
         # List to store all file paths
         files = []
         for file in os.listdir(directory):
@@ -62,17 +65,19 @@ def filterVersionPIXC(directories, outpath):
 
 
         # Split filepath for naming json
-        pieces = dirs[0].split('/')
+        pieces = directory.split('/')
 
         # Write out best files as json
-        with open(os.path.join(outpath, pieces[5] + '_filtered.json'), 'w', encoding='utf-8') as f:
+        with open(os.path.join(outpath, pieces[-2] + '_filtered.json'), 'w', encoding='utf-8') as f:
             json.dump(best_files, f)
 
-        print(f"Wrote out the unique and most recently processed {str(len(best_files))} files to {outpath}{pieces[5]}_filtered.json")
+        print(f"Wrote out the unique and most recently processed {str(len(best_files))} files to {outpath}{pieces[5]}_filtered.json\n" )
 
-# Directories to filter    
-dirs = ['/nas/cee-water/cjgleason/fiona/data_downloads']
-# Outpath for json
-out = '/nas/cee-water/cjgleason/fiona/'
+if __name__ == "__main__":
+    # Directories to filter    
+    dirs = ['/nas/cee-water/cjgleason/fiona/data/PIXC_v2_0_HUC2_01/',
+            '/nas/cee-water/cjgleason/fiona/data/PIXC_v2_0_HUC2_15/']
+    # Outpath for json
+    out = '/nas/cee-water/cjgleason/fiona/narrow_rivers_PIXC/data/'
 
-filterVersionPIXC(directories=dirs, outpath=out)
+    filterVersionPIXC(directories=dirs, outpath=out)

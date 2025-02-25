@@ -1,4 +1,4 @@
-fvfvcffrom shapely.geometry import *
+from shapely.geometry import *
 import geopandas as gpd
 import numpy as np
 import os
