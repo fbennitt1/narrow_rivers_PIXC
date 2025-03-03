@@ -16,19 +16,21 @@ from reaches import *
 from utils import *
 
 def evalCoverage(width_set, index, cpus_per_task, huc2, data_path, save_dir):
-    # # FOR NOW, SET
+    ## FOR NOW, SET
     # width = 'WidthM'
     
-    ### Set correct width
+    ## SET UP
     if width_set == 'mean':
         width = 'WidthM'
+        binn = 'Bin'
     elif width_set == 'min':
         width = 'WidthM_Min'
+        binn = 'Bin_Min'
     elif width_set == 'max':
         width = 'WidthM_Max'
+        binn = 'Bin_Max'
     else:
         print('Invalid width option specified, exiting.')
-        sys.exit()
 
     ### PIXEL CLOUD
     # Get PIXC filepath
@@ -138,7 +140,8 @@ def evalCoverage(width_set, index, cpus_per_task, huc2, data_path, save_dir):
     gdf_PIXC_clip = gdf_PIXC_clip.drop(columns=['index_right', 'NHDPlusID',
                                                 'GNIS_Name', 'LengthKM',
                                                 'WidthM', 'WidthM_Min',
-                                                'WidthM_Max', 'Bin', 'geometry_right'])
+                                                'WidthM_Max', 'Bin', 'Bin_Min',
+                                                'Bin_Max', 'geometry_right'])
 
     ### NADIR TRACK
     # Get single pixel for selecting correct nadir segment
@@ -201,6 +204,9 @@ def evalCoverage(width_set, index, cpus_per_task, huc2, data_path, save_dir):
     segments = segments.clip(pseudo_bounds)
     # Keep only reaches that are fully contained in PIXC granule
     segments = segments.groupby('NHDPlusID').filter(lambda x: len(x) == 10)
+    
+    # Get number of reaches per bin
+    counts = pd.DataFrame(segments[binn].value_counts()).reset_index()
 
     ## Buffer segments
     segments['buffer'] = segments.parallel_apply(user_defined_function=specialBuffer, args=(width,'flat', True, False), axis=1)        
@@ -213,10 +219,9 @@ def evalCoverage(width_set, index, cpus_per_task, huc2, data_path, save_dir):
     sj = gpd.sjoin(segments, gdf_PIXC_clip, how='left', predicate='intersects')
     # Drop unneeded columns
     sj = sj.drop(columns=['index_right', 'points', 'azimuth_index',
-                          'range_index', 'cross_track', 'pixel_area',
-                          'height', 'geoid', 'dlatitude_dphase',
-                          'dlongitude_dphase', 'dheight_dphase',
-                          'klass', 'latitude', 'longitude', ])
+                          'range_index',
+                          'height', 'geoid',
+                          'klass', 'latitude', 'longitude'])
     # Set active geometry column for dissolve
     sj = sj.set_geometry('pseudo_geom')
 
@@ -237,7 +242,8 @@ def evalCoverage(width_set, index, cpus_per_task, huc2, data_path, save_dir):
     ### DO STATS
     bins = sj.Bin.unique()
 
-    reaches_cent = summarizeCoverage(sj, bins)
+    reaches_cent, reaches_min = summarizeCoverage(df=sj, binn=binn,
+                                                  bins=bins, counts=counts)
 
     ### WRITE OUT
     save_path = os.path.join('/nas/cee-water/cjgleason/fiona/narrow_rivers_PIXC_output/',
@@ -251,10 +257,8 @@ def evalCoverage(width_set, index, cpus_per_task, huc2, data_path, save_dir):
     ### MAKE PARQUET
     # nodes.to_csv(os.path.join(save_path, granule_name + '_nodes.csv'))
     reaches_cent.to_parquet(os.path.join(save_path, granule_name + '_reaches_cent.parquet'))
-
+    reaches_min.to_parquet(os.path.join(save_path, granule_name + '_reaches_min.parquet'))
     print('Script completed, wrote out results.')
-
-    
     
 ### PARSE ARGUMENTS
 parser = ArgumentParser(description='Please specify whether you would\
@@ -273,6 +277,6 @@ if __name__ == "__main__":
     huc2 = '01'
     data_path = '/nas/cee-water/cjgleason/fiona/data/PIXC_v2_0_HUC2_' + huc2
     # pixc_ref = 'PIXC_v2_0_HUC2_01_best_files_no_exits.csv' ## CHANGE THIS
-    save_dir = 'PIXC_v2_0_HUC2_01_2025_02_04_'+ width_set
+    save_dir = 'PIXC_v2_0_HUC2_01_2025_03_02_'+ width_set
     
     evalCoverage(width_set=width_set, index=slurm, cpus_per_task=cpus_per_task, huc2=huc2, data_path=data_path, save_dir=save_dir)

@@ -40,7 +40,7 @@ def readNHD(index, segmented=False):
 
         ## Read in prepped NHD flowlines
         features = ['NHDPlusID', 'GNIS_Name', 'LengthKM', 'WidthM', 'WidthM_Min',
-                    'WidthM_Max', 'Bin', 'geometry']
+                    'WidthM_Max', 'Bin', 'Bin_Min', 'Bin_Max', 'geometry']
         basin = gpd.read_parquet(path=file_path, columns=features)
         print('flowlines read-in')
 
@@ -206,18 +206,19 @@ def makePseudoPixels(pixel, segment_ln, azimuth_res):
     
     return pseudo_pixel
 
-def summarizeCoverage(df, bins):
+def summarizeCoverage(df, binn, bins, counts):
     '''
     '''
-    ## Reaches
+    ### REACHES
+    ## Centiles
     d = {}
     # d_q = {}
     for i in range(1, 10):
         threshold = i/10
 
-        detected = df.groupby(['Bin', 'NHDPlusID'])['coverage'].apply(lambda x: (x > threshold).sum()) / 10
+        detected = df.groupby([binn, 'NHDPlusID'])['coverage'].apply(lambda x: (x > threshold).sum()) / 10
 
-        reach = detected.groupby('Bin').quantile(q=[x / 100.0 for x in range(0,100,1)]).reset_index()
+        reach = detected.groupby(binn).quantile(q=[x / 100.0 for x in range(0,100,1)]).reset_index()
 
         d[threshold] = reach
 
@@ -226,4 +227,12 @@ def summarizeCoverage(df, bins):
 
     reaches_cent = pd.concat(d.values()).rename(columns={'level_1': 'quantile'})
     
-    return reaches_cent
+    # Merge on reach counts
+    reaches_cent = pd.merge(left=reaches_cent, right=counts, how='left', on=binn)
+    
+    ## Minimum coverage
+    reaches_min = pd.DataFrame(df.groupby('NHDPlusID')['coverage'].min()).reset_index()
+    # Merge on bins
+    reaches_min = pd.merge(left=reaches_min, right=df[['NHDPlusID', binn]], how='left', on='NHDPlusID')
+    
+    return reaches_cent, reaches_min
