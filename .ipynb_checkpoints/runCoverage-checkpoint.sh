@@ -6,8 +6,8 @@
 #SBATCH --mem=20000
 #SBATCH --time=15 #in minutes 
 
-#SBATCH --array=3109-4662 # 0-1554 # 1555-3108 #
-#SBATCH --output=./log_2025_03_02_max/log_%A_%a.log # job id: %A_ 
+##SBATCH --array=#3109-4662 # 0-1554 # 1555-3108 #
+#SBATCH --output=./log_2025_03_05_HUC2_15_mean/log_%A_%a.log # job id: %A_ 
 #SBATCH --job-name=evalCoverage
 
 #setup env
@@ -18,7 +18,7 @@ conda activate narrowPIXC
 date
 
 #run code 
-python3 evalCoverage.py max # CHANGE
+python3 evalCoverage.py mean # CHANGE
 
 #time stamp
 date

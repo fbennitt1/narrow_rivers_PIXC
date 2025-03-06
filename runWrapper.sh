@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Parameters
-total_jobs=5964  # Total number of jobs you need to submit
-batch_size=1800  # Maximum number of jobs to submit per batch
+total_jobs=8828  # Total number of jobs you need to submit #HUC2_01: 4663
+batch_size=1000  # Maximum number of jobs to submit per batch
 concurrent_jobs=400  # Limit on concurrent jobs per batch (adjust to fit your QOS)
 
 # SLURM script to be submitted
@@ -10,7 +10,7 @@ slurm_script="runCoverage.sh"
 date
 
 # Submit in batches
-start=3990
+start=0
 while [ $start -lt $total_jobs ]; do
     end=$((start + batch_size - 1))
     if [ $end -ge $total_jobs ]; then

@@ -106,7 +106,7 @@ def bitwiseMask(ds):
     # See page 65 of PIXC PDD: https://podaac.jpl.nasa.gov/SWOT?tab=datasets-information&sections=about%2Bdata
     '''
     # Fow now, eliminate the really bad stuff
-    mask = np.where((ds.classification > 2) & (ds.geolocation_qual < 2**16) &
+    mask = np.where((ds.classification > 1) & (ds.geolocation_qual < 2**16) &
                     (np.abs(ds.cross_track) > 10000) & (np.abs(ds.cross_track) < 60000))[0]
     
     print(mask.shape)
@@ -210,29 +210,39 @@ def summarizeCoverage(df, binn, bins, counts):
     '''
     '''
     ### REACHES
-    ## Centiles
+    ## Centiles, thresholds
+    d_c = {}
     d = {}
-    # d_q = {}
+
     for i in range(1, 10):
         threshold = i/10
 
         detected = df.groupby([binn, 'NHDPlusID'])['coverage'].apply(lambda x: (x > threshold).sum()) / 10
 
-        reach = detected.groupby(binn).quantile(q=[x / 100.0 for x in range(0,100,1)]).reset_index()
-
+        reach_c = detected.groupby(binn).quantile(q=[x / 100.0 for x in range(0,100,1)]).reset_index()
+        d_c[threshold] = reach_c
+        
+        reach = detected.reset_index()
         d[threshold] = reach
-
-    for threshold, data in d.items():
-        data['threshold'] = threshold
-
-    reaches_cent = pd.concat(d.values()).rename(columns={'level_1': 'quantile'})
     
+    # Centiles
+    for threshold, data in d_c.items():
+        data['threshold'] = threshold
+        
+    reaches_cent  = pd.concat(d.values()).rename(columns={'level_1': 'quantile'})    
     # Merge on reach counts
     reaches_cent = pd.merge(left=reaches_cent, right=counts, how='left', on=binn)
     
-    ## Minimum coverage
+    # All
+    for threshold, data in d.items():
+        data['threshold'] = threshold
+        
+    reaches_thresh = pd.concat(d.values()).rename(columns={'level_1': 'quantile'})
+    
+    # Minimum coverage
     reaches_min = pd.DataFrame(df.groupby('NHDPlusID')['coverage'].min()).reset_index()
     # Merge on bins
     reaches_min = pd.merge(left=reaches_min, right=df[['NHDPlusID', binn]], how='left', on='NHDPlusID')
-    
-    return reaches_cent, reaches_min
+
+    # return reaches_cent, reaches_min
+    return reaches_cent, reaches_thresh, reaches_min

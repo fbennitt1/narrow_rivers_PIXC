@@ -16,9 +16,6 @@ from reaches import *
 from utils import *
 
 def evalCoverage(width_set, index, cpus_per_task, huc2, data_path, save_dir):
-    ## FOR NOW, SET
-    # width = 'WidthM'
-    
     ## SET UP
     if width_set == 'mean':
         width = 'WidthM'
@@ -241,9 +238,11 @@ def evalCoverage(width_set, index, cpus_per_task, huc2, data_path, save_dir):
 
     ### DO STATS
     bins = sj.Bin.unique()
-
-    reaches_cent, reaches_min = summarizeCoverage(df=sj, binn=binn,
-                                                  bins=bins, counts=counts)
+    
+    # reaches_cent, reaches_min = summarizeCoverage(df=sj, binn=binn,
+    #                                                 bins=bins, counts=counts)
+    reaches_cent, reaches_thresh, reaches_min = summarizeCoverage(df=sj, binn=binn,
+                                                bins=bins, counts=counts)
 
     ### WRITE OUT
     save_path = os.path.join('/nas/cee-water/cjgleason/fiona/narrow_rivers_PIXC_output/',
@@ -255,8 +254,8 @@ def evalCoverage(width_set, index, cpus_per_task, huc2, data_path, save_dir):
     # sj.to_csv(os.path.join(save_path, granule_name + '_coverage.csv'))
 
     ### MAKE PARQUET
-    # nodes.to_csv(os.path.join(save_path, granule_name + '_nodes.csv'))
     reaches_cent.to_parquet(os.path.join(save_path, granule_name + '_reaches_cent.parquet'))
+    reaches_thresh.to_parquet(os.path.join(save_path, granule_name + '_reaches_thresh.parquet'))
     reaches_min.to_parquet(os.path.join(save_path, granule_name + '_reaches_min.parquet'))
     print('Script completed, wrote out results.')
     
@@ -274,9 +273,9 @@ cpus = int(os.environ.get('SLURM_CPUS_PER_TASK'))
 cpus_per_task = cpus if cpus < 65 else 1
 
 if __name__ == "__main__":
-    huc2 = '01'
+    huc2 = '15'
     data_path = '/nas/cee-water/cjgleason/fiona/data/PIXC_v2_0_HUC2_' + huc2
     # pixc_ref = 'PIXC_v2_0_HUC2_01_best_files_no_exits.csv' ## CHANGE THIS
-    save_dir = 'PIXC_v2_0_HUC2_01_2025_03_02_'+ width_set
+    save_dir = 'PIXC_v2_0_HUC2_' + huc2 + '_2025_03_05_'+ width_set
     
     evalCoverage(width_set=width_set, index=slurm, cpus_per_task=cpus_per_task, huc2=huc2, data_path=data_path, save_dir=save_dir)
