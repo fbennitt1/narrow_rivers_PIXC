@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Parameters
-total_jobs=8228  # Total number of jobs you need to submit #HUC2_01: 4663 #HUC2_15: 8228
+total_jobs=4663  # Total number of jobs you need to submit #HUC2_01: 4663 #HUC2_15: 8228
 batch_size=1000  # Maximum number of jobs to submit per batch
 concurrent_jobs=400  # Limit on concurrent jobs per batch (adjust to fit your QOS)
 

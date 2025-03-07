@@ -7,7 +7,7 @@
 #SBATCH --time=15 #in minutes 
 
 ##SBATCH --array=#3109-4662 # 0-1554 # 1555-3108 #
-#SBATCH --output=./log_2025_03_06_HUC2_15_max/log_%A_%a.log # job id: %A_ 
+#SBATCH --output=./log_2025_03_06_HUC2_01_max/log_%A_%a.log # job id: %A_ 
 #SBATCH --job-name=evalCoverage
 
 #setup env

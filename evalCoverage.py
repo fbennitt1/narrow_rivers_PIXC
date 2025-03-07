@@ -273,7 +273,7 @@ cpus = int(os.environ.get('SLURM_CPUS_PER_TASK'))
 cpus_per_task = cpus if cpus < 65 else 1
 
 if __name__ == "__main__":
-    huc2 = '15'
+    huc2 = '01'
     data_path = '/nas/cee-water/cjgleason/fiona/data/PIXC_v2_0_HUC2_' + huc2
     # pixc_ref = 'PIXC_v2_0_HUC2_01_best_files_no_exits.csv' ## CHANGE THIS
     save_dir = 'PIXC_v2_0_HUC2_' + huc2 + '_2025_03_06_'+ width_set
