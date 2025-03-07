@@ -113,7 +113,7 @@ def evalCoverage(width_set, index, cpus_per_task, huc2, data_path, save_dir):
         flowlines = pd.concat(d)
 
     # Project CRS (currently to WGS 84 / UTM zone 18N)
-    flowlines = flowlines.to_crs(epsg=32618)
+    flowlines = flowlines.to_crs(epsg=3857)
 
     # Initialize panarallel
     pandarallel.initialize(nb_workers=cpus_per_task)
@@ -125,7 +125,7 @@ def evalCoverage(width_set, index, cpus_per_task, huc2, data_path, save_dir):
                                                              args=(width, 'flat', False, True),
                                                              axis=1)          
     # Set geometry to buffered reaches
-    flowlines = flowlines.set_geometry('buffer').set_crs(epsg=32618)
+    flowlines = flowlines.set_geometry('buffer').set_crs(epsg=3857)
 
     ## Clip masked pixels to buffered reaches
     gdf_PIXC_clip = gpd.sjoin(gdf_PIXC, flowlines, how='inner', predicate='within')
@@ -148,7 +148,7 @@ def evalCoverage(width_set, index, cpus_per_task, huc2, data_path, save_dir):
 
     ### MAKE PSEUDO-PIXELS
     # Set along-track pixel resolution
-    azimuth_res = 21 # meters
+    azimuth_res = 22 # meters
     # Make pseudo pixels
     gdf_PIXC_clip['pseudo_pixel'] = gdf_PIXC_clip.parallel_apply(user_defined_function=makePseudoPixels,
                                                              args=(nadir_segment_ln,
@@ -189,7 +189,7 @@ def evalCoverage(width_set, index, cpus_per_task, huc2, data_path, save_dir):
     # sys.exit()
 
     # Project CRS (currently to WGS 84 / UTM zone 18N)
-    segments = segments.to_crs(epsg='32618')
+    segments = segments.to_crs(epsg='3857')
 
     ## Clean-up
     segments = segments.reset_index().rename(columns={'index': 'index_old'})
@@ -276,6 +276,6 @@ if __name__ == "__main__":
     huc2 = '15'
     data_path = '/nas/cee-water/cjgleason/fiona/data/PIXC_v2_0_HUC2_' + huc2
     # pixc_ref = 'PIXC_v2_0_HUC2_01_best_files_no_exits.csv' ## CHANGE THIS
-    save_dir = 'PIXC_v2_0_HUC2_' + huc2 + '_2025_03_05_'+ width_set
+    save_dir = 'PIXC_v2_0_HUC2_' + huc2 + '_2025_03_06_'+ width_set
     
     evalCoverage(width_set=width_set, index=slurm, cpus_per_task=cpus_per_task, huc2=huc2, data_path=data_path, save_dir=save_dir)

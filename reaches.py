@@ -66,7 +66,7 @@ def findNadir(pass_num, pixel_pt):
     # Read in nadir (science orbit)
     nadir = gpd.read_file('/nas/cee-water/cjgleason/data/SWOT/swath/swot_science_hr_Aug2021-v05_shapefile_nadir/swot_science_hr_2.0s_4.0s_Aug2021-v5_nadir.shp')
     # Project CRS (currently to WGS 84 / UTM zone 18N)
-    nadir = nadir.to_crs(epsg=32618)
+    nadir = nadir.to_crs(epsg=3857)
     # Find candidate nadir segments
     candidates = nadir[nadir['ID_PASS'] == pass_num]
     # Find distance from each candidate to single pixel
@@ -133,7 +133,7 @@ def makeGDF(ds, mask, data_vars):
         gdf_PIXC.rename(columns={'classification': 'klass'}, inplace=True)
     
     # Convert the crs to WGS 84 / UTM zone 18N
-    gdf_PIXC = gdf_PIXC.to_crs(epsg='32618')
+    gdf_PIXC = gdf_PIXC.to_crs(epsg='3857')
     
     return gdf_PIXC
 

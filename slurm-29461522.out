@@ -1,0 +1,12 @@
+Wed Mar  5 18:20:50 UTC 2025
+Submitting jobs 0 to 999
+Waiting for job array 29461525 to finish...
+Batch 29461525 has finished. Submitting next batch.
+Wed Mar  5 18:35:57 UTC 2025
+Submitting jobs 1000 to 1999
+Waiting for job array 29463436 to finish...
+Batch 29463436 has finished. Submitting next batch.
+Wed Mar  5 19:07:29 UTC 2025
+Submitting jobs 2000 to 2999
+Waiting for job array 29464806 to finish...
+slurmstepd-gypsum-gpu008: error: *** JOB 29461522 ON gypsum-gpu008 CANCELLED AT 2025-03-05T19:20:57 DUE TO TIME LIMIT ***
