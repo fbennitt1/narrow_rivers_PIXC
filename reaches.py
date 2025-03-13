@@ -244,6 +244,8 @@ def summarizeCoverage(df, binn, bins, counts):
     reaches_min = pd.DataFrame(df.groupby('NHDPlusID')['coverage'].min()).reset_index()
     # Merge on bins
     reaches_min = pd.merge(left=reaches_min, right=df[['NHDPlusID', binn]], how='left', on='NHDPlusID')
+        # Take every tenth row to get reach-level results
+    reaches_min = reaches_min.sort_values(by=['NHDPlusID'])[::10].reset_index()
 
     # return reaches_cent, reaches_min
     return reaches_cent, reaches_thresh, reaches_min
