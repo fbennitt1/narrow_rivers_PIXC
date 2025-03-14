@@ -122,8 +122,8 @@ def evalCoverage(width_set, index, cpus_per_task, huc2, data_path, save_dir):
     # This is beyond the max distance that the pixels could
     # extend once converted to pseudo pixels
     flowlines['buffer'] = flowlines.parallel_apply(user_defined_function=specialBuffer,
-                                                             args=(width, 'flat', False, True),
-                                                             axis=1)          
+                                                   args=(width, 'flat', False, True),
+                                                   axis=1)          
     # Set geometry to buffered reaches
     flowlines = flowlines.set_geometry('buffer').set_crs(epsg=3857)
 
@@ -155,7 +155,7 @@ def evalCoverage(width_set, index, cpus_per_task, huc2, data_path, save_dir):
                                                                    azimuth_res),
                                                              axis=1)
     # Clean-up
-    gdf_PIXC_clip = gdf_PIXC_clip.rename(columns={'geometry': 'pixel_centroid'}).set_geometry('pseudo_pixel')
+    gdf_PIXC_clip = gdf_PIXC_clip.rename(columns={'geometry': 'pixel_centroid'}).set_geometry('pseudo_pixel').set_crs(epsg=3857)
     #Get bounds of PIXC tile
     pseudo_bounds = gdf_PIXC_clip.total_bounds
     # Copy geometry column as sjoin will discard it
@@ -208,7 +208,7 @@ def evalCoverage(width_set, index, cpus_per_task, huc2, data_path, save_dir):
     ## Buffer segments
     segments['buffer'] = segments.parallel_apply(user_defined_function=specialBuffer, args=(width,'flat', True, False), axis=1)        
     # Set active geometry col to buffered segments
-    segments = segments.set_geometry('buffer')                   
+    segments = segments.set_geometry('buffer').set_crs(epsg=3857)                   
     # Calculate segment area
     segments['segment_area'] = segments.geometry.area
 
@@ -220,7 +220,7 @@ def evalCoverage(width_set, index, cpus_per_task, huc2, data_path, save_dir):
                           'height', 'geoid',
                           'klass', 'latitude', 'longitude'])
     # Set active geometry column for dissolve
-    sj = sj.set_geometry('pseudo_geom')
+    sj = sj.set_geometry('pseudo_geom').set_crs(epsg=3857)
 
     ## Dissolve
     sj = sj.groupby('NHDPlusID', as_index=False).parallel_apply(user_defined_function=specialDissolve)
