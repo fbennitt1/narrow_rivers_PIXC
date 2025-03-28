@@ -1,7 +1,8 @@
 import json
 
-from shapely.geometry import *
 import geopandas as gpd
+
+from shapely.geometry import *
 
 def specialBuffer(df, width_col, cap_style, segmented=False, extra=False):
     '''

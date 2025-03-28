@@ -2,12 +2,12 @@
 #SBATCH --partition=cpu-preempt #ceewater_cjgleason-cpu #gpu-preempt #gpu #cpu
 #SBATCH --nodes=1 
 #SBATCH --ntasks-per-node=1
-#SBATCH --cpus-per-task=16
+#SBATCH --cpus-per-task=8
 #SBATCH --mem=20000
 #SBATCH --time=15 #in minutes 
 
-##SBATCH --array=#3109-4662 # 0-1554 # 1555-3108 #
-#SBATCH --output=./log_2025_03_06_HUC2_01_max/log_%A_%a.log # job id: %A_ 
+#SBATCH --array=3203 #3109-4662 # 0-1554 # 1555-3108
+#SBATCH --output=./log_2025_03_25_HUC2_01_mean_profile/log_%A_%a.log # job id: %A_ 
 #SBATCH --job-name=evalCoverage
 
 #setup env
@@ -18,7 +18,7 @@ conda activate narrowPIXC
 date
 
 #run code 
-python3 evalCoverage.py max # CHANGE
+python3 evalCoverage.py mean # CHANGE
 
 #time stamp
 date

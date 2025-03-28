@@ -276,6 +276,6 @@ if __name__ == "__main__":
     huc2 = '01'
     data_path = '/nas/cee-water/cjgleason/fiona/data/PIXC_v2_0_HUC2_' + huc2
     # pixc_ref = 'PIXC_v2_0_HUC2_01_best_files_no_exits.csv' ## CHANGE THIS
-    save_dir = 'PIXC_v2_0_HUC2_' + huc2 + '_2025_03_06_'+ width_set
+    save_dir = 'PIXC_v2_0_HUC2_' + huc2 + '_2025_03_25_profile_'+ width_set
     
     evalCoverage(width_set=width_set, index=slurm, cpus_per_task=cpus_per_task, huc2=huc2, data_path=data_path, save_dir=save_dir)

@@ -1,10 +1,14 @@
-from shapely.geometry import *
-import geopandas as gpd
-import numpy as np
 import os
+
+import geopandas as gpd
+import math
+import numpy as np
 import pandas as pd
 import shapely as shp
 import xarray as xr
+
+from scipy.stats import linregress
+from shapely.geometry import *
 
 def readNHD(index, segmented=False):
     '''
@@ -137,6 +141,52 @@ def makeGDF(ds, mask, data_vars):
     gdf_PIXC = gdf_PIXC.to_crs(epsg='3857')
     
     return gdf_PIXC
+
+def calcAzimuth(line):
+    # Set-up
+    x_coords = [coord[0] for coord in line.coords]
+    y_coords = [coord[1] for coord in line.coords]
+    
+    # Find deltas
+    dx = x_coords[-1] - x_coords[0]
+    dy = y_coords[-1] - y_coords[0]
+    
+    # Find azimuth
+    azimuth = math.degrees(math.atan2(dy, dx))
+        
+    if azimuth < 0:
+        azimuth += 360
+    
+    return azimuth
+
+def calcAzSin(df):
+    # Set-up
+    line = df.geometry
+    x_coords = [coord[0] for coord in line.coords]
+    y_coords = [coord[1] for coord in line.coords]
+    
+    # Regress
+    result = linregress(x_coords, y_coords)
+    slope = result.slope
+    intercept = result.intercept
+    
+    # Find deltas
+    dx = x_coords[-1] - x_coords[0]
+    dy = y_coords[-1] - y_coords[0]
+    dy_reg = (slope*x_coords[-1] + intercept) - y_coords[0]
+    
+    # Find azimuth
+    azimuth = math.degrees(math.atan2(dy_reg, dx))
+        
+    if azimuth < 0:
+        azimuth += 360
+    
+    # Find sinuosity
+    distance = np.sqrt(dx**2 + dy**2)
+    
+    sinuosity = line.length/distance
+    
+    return azimuth, sinuosity
 
 def segmentReach(reach):
     '''
