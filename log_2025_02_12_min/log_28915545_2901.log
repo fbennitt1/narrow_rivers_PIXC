@@ -1,6 +1,0 @@
-Removing conda
-Loading conda
-Thu Feb 13 21:14:13 UTC 2025
-slurmstepd-gaoseismolab-cpu005: error: *** JOB 28915584 ON gaoseismolab-cpu005 CANCELLED AT 2025-02-13T21:14:36 ***
-slurmstepd-gaoseismolab-cpu005: error: container_p_join: open failed for /var/tmp//gaoseismolab-cpu005/28915584/.ns: No such file or directory
-slurmstepd-gaoseismolab-cpu005: error: container_g_join(28915584): No such file or directory
