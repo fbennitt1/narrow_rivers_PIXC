@@ -45,7 +45,7 @@ def readNHD(index, segmented=False):
         ## Read in prepped NHD flowlines
         features = ['NHDPlusID', 'GNIS_Name', 'LengthKM', 'WidthM', 'WidthM_Min',
                     'WidthM_Max', 'Bin', 'Bin_Min', 'Bin_Max', 'StreamOrde',
-                    'geometry']
+                    'Slope', 'geometry']
         basin = gpd.read_parquet(path=file_path, columns=features)
         print('flowlines read-in')
 
