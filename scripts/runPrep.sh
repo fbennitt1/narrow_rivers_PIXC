@@ -14,13 +14,7 @@
 module load conda/latest
 conda activate narrowPIXC
 
-#time stamp
-date
-
 #run code
 # python3 prepNHD.py
 python3 segmentNHD.py
 # python3 prepNHDkeepWaterbody.py
-
-#time stamp
-date

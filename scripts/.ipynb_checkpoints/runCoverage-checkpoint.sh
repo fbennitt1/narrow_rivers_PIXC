@@ -14,11 +14,5 @@
 module load conda/latest
 conda activate narrowPIXC
 
-#time stamp
-date
-
 #run code 
 python3 evalCoverage.py mean # CHANGE
-
-#time stamp
-date

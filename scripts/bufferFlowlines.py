@@ -47,9 +47,9 @@ def bufferNHD(width_set, index, cpus_per_task):
 
         # Write out
     # Set write filepath
-    save_path = '/nas/cee-water/cjgleason/fiona/narrow_rivers_PIXC_data/NHD_prepped_extra_buffered/'
+    save_path = '/nas/cee-water/cjgleason/fiona/narrow_rivers_PIXC_data/NHD_prepped_buffered_extra/'
     save_path = os.path.join(save_path, huc2)
-    save_file = huc4 + '_prepped_buffered_w_extra_' + width_set + '.parquet'
+    save_file = huc4 + '_prepped_buffered_extra_' + width_set + '.parquet'
 
     #Write out gdf as parquet file
     if not os.path.isdir(save_path):
