@@ -44,15 +44,16 @@ def bufferNHD(width_set, index, cpus_per_task):
     # Drop original reach geometry column, set buffered geometry as active geometry
     df = df.drop(columns='segments').set_geometry('buffers').set_crs(crs=df.crs)
     
+    # Reset index
+    df = df.reset_index().rename(columns={'index': 'index_old'})
     
-    segments = segments.reset_index().rename(columns={'index': 'index_old'})
     # Assign a unique counter within each index group
-    segments['counter'] = segments.groupby('NHDPlusID').cumcount()
-    # Keep only first ten segments (some reaches repeat)
-    segments = segments[segments['counter'] < 10]
+    df['counter'] = df.groupby('NHDPlusID').cumcount()
     
-
-        # Write out
+    # Keep only first ten segments (some reaches repeat)
+    df = df[df['counter'] < 10]
+    
+    ## Write out
     # Set write filepath
     save_path = '/nas/cee-water/cjgleason/fiona/narrow_rivers_PIXC_data/NHD_prepped_segmented_buffered/'
     save_path = os.path.join(save_path, huc2)
