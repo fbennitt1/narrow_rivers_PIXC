@@ -75,7 +75,7 @@ def findNadir(pass_num, pixel_pt):
     # Find candidate nadir segments
     candidates = nadir[nadir['ID_PASS'] == pass_num]
     # Find distance from each candidate to single pixel
-    candidates['dist'] = candidates.loc[:,'geometry'].distance(pixel_pt)
+    candidates.loc[:,'dist'] = candidates.loc[:,'geometry'].distance(pixel_pt)
     # Get nadir segment closest to single pixel
     nadir_segment = candidates[candidates.dist == candidates.dist.min()]
     # Get nadir segment geometry

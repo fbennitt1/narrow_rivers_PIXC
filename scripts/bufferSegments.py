@@ -43,6 +43,14 @@ def bufferNHD(width_set, index, cpus_per_task):
         
     # Drop original reach geometry column, set buffered geometry as active geometry
     df = df.drop(columns='segments').set_geometry('buffers').set_crs(crs=df.crs)
+    
+    
+    segments = segments.reset_index().rename(columns={'index': 'index_old'})
+    # Assign a unique counter within each index group
+    segments['counter'] = segments.groupby('NHDPlusID').cumcount()
+    # Keep only first ten segments (some reaches repeat)
+    segments = segments[segments['counter'] < 10]
+    
 
         # Write out
     # Set write filepath
