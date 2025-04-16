@@ -27,7 +27,7 @@ def specialClip(df):
     XXX
     '''
     left = gpd.GeoSeries(df.pseudo_geom)
-    right = gpd.GeoSeries(df.buffer)
+    right = gpd.GeoSeries(df.buffers)
     pseudo_geom_clip = left.clip(right)
     return pseudo_geom_clip
 
@@ -42,3 +42,13 @@ def open_json(file_path):
     with open(file_path, 'r') as file:
         data = json.load(file)
         return data
+    
+# def getFilepaths(data_path, huc2, huc4s, width_set):
+#     file_paths = []
+    
+#     for huc in huc4s:
+#         file_path = data_path + 'NHDPLUS_H_' + huc + '_HU4_GDB_prepped_buffered_extra_' + width_set + '.parquet'
+#         file_paths.append(file_path)
+        
+#     return file_paths
+    

@@ -160,6 +160,8 @@ def calcAzimuth(line):
     return azimuth
 
 def calcAzSin(df):
+    '''
+    '''
     # Set-up
     line = df.geometry
     x_coords = [coord[0] for coord in line.coords]
