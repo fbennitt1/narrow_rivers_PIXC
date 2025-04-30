@@ -104,7 +104,7 @@ def cut(line, distance):
                 LineString(coords[:i] + [(cp.x, cp.y)]),
                 LineString([(cp.x, cp.y)] + coords[i:])]
         
-def bitwiseMask(ds): # CHANGE
+def bitwiseMask(ds): # HERE
     '''
     This function masks a PIXC granules: for now, it ony remove pixels
     with land classification and those with bad geolocation_qual.

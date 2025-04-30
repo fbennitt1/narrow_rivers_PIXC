@@ -17,7 +17,7 @@ def specialBuffer(df, width_col, cap_style, segmented=False, extra=False):
     half_width = df[width_col]/2
     
     if extra == True:
-        buffer = reach.buffer(distance=(half_width+50), cap_style=cap_style)
+        buffer = reach.buffer(distance=(half_width+32), cap_style=cap_style)
     else:
         buffer = reach.buffer(distance=half_width, cap_style=cap_style)
     return buffer
