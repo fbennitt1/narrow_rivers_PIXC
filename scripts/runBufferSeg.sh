@@ -6,8 +6,8 @@
 #SBATCH --mem=40000 #64512  #
 #SBATCH --time=20 #4320 #2880 #in minutes
 
-#SBATCH --array=0-204 # %5 means limit the runs with 5 arrays at a time
-#SBATCH --output=../logs/log_2025_04_30_buffer_max/log_%A_%a.log # job id: %A_ 
+#SBATCH --array=197,108# 3,19,20,22,32,60 # 0-204 # %5 means limit the runs with 5 arrays at a time
+#SBATCH --output=../logs/log_2025_04_30_buffer_mean/log_%A_%a.log # job id: %A_ 
 #SBATCH --job-name=bufferNHD
 
 #setup env
