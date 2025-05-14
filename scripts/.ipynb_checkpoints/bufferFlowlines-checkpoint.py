@@ -45,18 +45,16 @@ def bufferNHD(width_set, index, cpus_per_task):
     # Drop original reach geometry column, set buffered geometry as active geometry
     df = df.drop(columns='geometry').set_geometry('buffers').set_crs(crs=df.crs)
 
-        # Write out
+    ## Write out
     # Set write filepath
     save_path = '/nas/cee-water/cjgleason/fiona/narrow_rivers_PIXC_data/NHD_prepped_buffered_json/'
     save_path = os.path.join(save_path, huc2)
-    # save_file = huc4 + '_prepped_buffered_' + width_set + '.parquet'
-    save_file = huc4 + '_prepped_buffered_' + width_set + '.json'
+    save_file = huc4 + '_prepped_buffered_' + width_set + '.parquet''
 
     #Write out gdf as parquet file
     if not os.path.isdir(save_path):
         os.makedirs(save_path)
-    # df.to_parquet(os.path.join(save_path, save_file))
-    df.to_file(filename=os.path.join(save_path, save_file), driver='GeoJSON')
+    df.to_parquet(os.path.join(save_path, save_file))
     
     print('Script completed, wrote out results.')
     
