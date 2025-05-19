@@ -41,7 +41,7 @@ def bufferNHD(width_set, index, cpus_per_task):
     pandarallel.initialize(nb_workers=cpus_per_task)
     
     ## Prepare data
-    # Read segmented NHD
+    # Read NHD
     df, huc4, huc2 = readNHD(index=slurm, segmented=False)
     # print('Original crs: ' + str(df.crs))
 
@@ -59,15 +59,14 @@ def bufferNHD(width_set, index, cpus_per_task):
     df = df.drop(columns='geometry').set_geometry('buffers').set_crs(crs=df.crs)
     df = df[['NHDPlusID', 'buffers']]
     
-#     # Open NLCD to get proper crs
-#     nlcd_path = '/nas/cee-water/cjgleason/data/NLCD/Annual_NLCD_LndCov_2023_CU_C1V0.tif'
+    # Open NLCD to get proper crs
+    nlcd_path = '/nas/cee-water/cjgleason/data/NLCD/Annual_NLCD_LndCov_2023_CU_C1V0.tif'
     
-#     with rasterio.open(nlcd_path) as src:
-#         nlcd_crs = src.crs
+    with rasterio.open(nlcd_path) as src:
+        nlcd_crs = src.crs
 
     # Reproject data to match NLCD
-    # df = df.to_crs(nlcd_crs)
-    # print('New crs: ' + str(df.crs))
+    df = df.to_crs(nlcd_crs)
 
     ## Write out
     # Set write filepath

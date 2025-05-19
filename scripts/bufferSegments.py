@@ -59,15 +59,13 @@ def bufferNHD(width_set, index, cpus_per_task):
     # Set write filepath
     save_path = '/nas/cee-water/cjgleason/fiona/narrow_rivers_PIXC_data/NHD_prepped_segmented_buffered_json/'
     save_path = os.path.join(save_path, huc2)
-    # save_file = huc4 + '_prepped_segmented_buffered_' + width_set + '.parquet'
-    save_file = huc4 + '_prepped_segmented_buffered_' + width_set + '.json'
+    save_file = huc4 + '_prepped_segmented_buffered_' + width_set + '.parquet'
 
 
     #Write out gdf as parquet file
     if not os.path.isdir(save_path):
         os.makedirs(save_path)
-    # df.to_parquet(os.path.join(save_path, save_file))
-    df.to_file(filename=os.path.join(save_path, save_file), driver='GeoJSON')
+    df.to_parquet(os.path.join(save_path, save_file))
     
     print('Script completed, wrote out results.')
     

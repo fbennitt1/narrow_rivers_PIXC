@@ -6,8 +6,8 @@
 #SBATCH --mem=20000 #64512  #
 #SBATCH --time=20 #4320 #2880 #in minutes
 
-#SBATCH --array=197 #0-204 # %5 means limit the runs with 5 arrays at a time
-#SBATCH --output=../logs/log_2025_05_14_buffer_flow_nlcd_max/log_%A_%a.log # job id: %A_ 
+#SBATCH --array=0-204 # %5 means limit the runs with 5 arrays at a time
+#SBATCH --output=../logs/log_2025_05_16_buffer_flow_nlcd_min/log_%A_%a.log # job id: %A_ 
 #SBATCH --job-name=bufferFlowlinesNLCD
 
 #setup env
@@ -18,7 +18,7 @@ conda activate narrowPIXC
 date
 
 #run code
-python3 bufferFlowlinesNLCD.py max
+python3 bufferFlowlinesNLCD.py min
 
 #time stamp
 date
