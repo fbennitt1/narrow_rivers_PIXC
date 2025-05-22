@@ -75,8 +75,10 @@ def filterVersionPIXC(directories, outpath):
 
 if __name__ == "__main__":
     # Directories to filter    
-    dirs = ['/nas/cee-water/cjgleason/fiona/data/PIXC_v2_0_HUC2_01/',
-            '/nas/cee-water/cjgleason/fiona/data/PIXC_v2_0_HUC2_15/']
+    dirs = ['/nas/cee-water/cjgleason/data/SWOT/PIXC_v2_0_HUC2_01/',
+            '/nas/cee-water/cjgleason/data/SWOT/PIXC_v2_0_HUC2_08/',
+            '/nas/cee-water/cjgleason/data/SWOT/PIXC_v2_0_HUC2_15/',
+           '/nas/cee-water/cjgleason/data/SWOT/PIXC_v2_0_HUC2_17/']
     # Outpath for json
     out = '/nas/cee-water/cjgleason/fiona/narrow_rivers_PIXC/data/'
 
