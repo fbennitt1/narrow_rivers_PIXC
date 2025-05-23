@@ -182,13 +182,15 @@ def calcAzSin(df):
         
     if azimuth < 0:
         azimuth += 360
+        
+    alignment = azimuth - df.az_nadir
     
     # Find sinuosity
     distance = np.sqrt(dx**2 + dy**2)
     
     sinuosity = line.length/distance
     
-    return azimuth, sinuosity
+    return alignment, sinuosity
 
 def segmentReach(reach):
     '''
