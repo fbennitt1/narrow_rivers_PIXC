@@ -43,6 +43,10 @@ def open_json(file_path):
         data = json.load(file)
         return data
     
+def project_point(line, point):
+    # Project point onto line
+    return line.project(point)
+    
 # def getFilepaths(data_path, huc2, huc4s, width_set):
 #     file_paths = []
     

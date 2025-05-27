@@ -111,8 +111,15 @@ def bitwiseMask(ds): # HERE
     # See page 65 of PIXC PDD: https://podaac.jpl.nasa.gov/SWOT?tab=datasets-information&sections=about%2Bdata
     '''
     # Fow now, eliminate the really bad stuff
-    mask = np.where((ds.classification > 1) & (ds.geolocation_qual < 2**16) &
-                    (np.abs(ds.cross_track) > 10000) & (np.abs(ds.cross_track) < 60000))[0]
+    # mask = np.where((ds.classification > 1) & (ds.geolocation_qual < 2**16) &
+    #                 (np.abs(ds.cross_track) > 10000) & (np.abs(ds.cross_track) < 60000))[0]
+    mask = np.where((ds.classification > 1) &
+                    (ds.interferogram_qual < 2**16) &
+                    (ds.classification_qual < 2**16) &
+                    (ds.geolocation_qual < 2**16) &
+                    (ds.sig0_qual < 2**16) &
+                    (np.abs(ds.cross_track) > 10000) &
+                    (np.abs(ds.cross_track) < 60000))[0]
     
     print(mask.shape)
     return mask
@@ -260,6 +267,18 @@ def makePseudoPixels(pixel, segment_ln, azimuth_res):
     pseudo_pixel = Polygon((one_coord, two_coord, three_coord, four_coord, one_coord))
     
     return pseudo_pixel
+
+
+def group_regress(group):
+    
+    # group = group.filter(lambda x: x['agg_wse'] == 1)
+    
+    if (len(group) > 2) and (len(group['distance'].unique()) > 1):
+        slope, _, r, _, se = (linregress(x=group['distance'], y=group['wse']))
+        return pd.Series({'swot_slope': slope, 'swot_r': r, 'swot_se': se})
+    else:
+        return pd.Series({'swot_slope': np.nan, 'swot_r': np.nan, 'swot_se': np.nan})
+    
 
 def summarizeCoverage(df, binn, bins, counts):
     '''
