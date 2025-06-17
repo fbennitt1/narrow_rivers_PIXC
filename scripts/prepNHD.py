@@ -2,7 +2,7 @@ import geopandas as gpd
 import os
 import pandas as pd
 
-def prepNHD(data_path, save_path, slurm):
+def prepNHD(data_path, save_path, index):
     '''
     This function takes a filepath to the NHD HR Plus (currently located at
     /nas/cee-water/cjgleason/craig/CONUS_ephemeral_data, merges on the VAA
@@ -38,8 +38,7 @@ def prepNHD(data_path, save_path, slurm):
     
     ## Prep Physiographic Regions
     # https://www.sciencebase.gov/catalog/item/631405bbd34e36012efa304e
-    physio = gpd.read_f
-    le(filename=os.path.join(data_path,
+    physio = gpd.read_file(filename=os.path.join(data_path,
                                                  'other_shapefiles/physio.shp'),
                            engine='pyogrio')
     # Set CRS to Web Mercator
@@ -101,7 +100,7 @@ def prepNHD(data_path, save_path, slurm):
 
     ## Get bankfull widths
     # Merge on bankfull width coefficient
-    basin = basin.merge(bankfull, on='DIVISION', how='left')
+    basin = basin.merge(right=bankfull, on='DIVISION', how='left')
     # Calculate width from cumulative drainage area
     basin['WidthM'] = basin.a*basin.TotDASqKm**basin.b
     
@@ -135,7 +134,7 @@ slurm = int(os.environ['SLURM_ARRAY_TASK_ID'])
 print(slurm)
 
 if __name__ == "__main__":
-    data_path = '/nas/cee-water/cjgleason/craig/CONUS_ephemeral_data/'
+    data_path = '/nas/cee-water/cjgleason/data/NHDPlus_HR/'
     save_path = '../narrow_rivers_PIXC_data/NHD_prepped/'
 
     prepNHD(data_path=data_path, save_path=save_path, index=slurm)
